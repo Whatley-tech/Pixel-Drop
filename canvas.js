@@ -8,6 +8,7 @@ const Canvas = class {
 		this.ctx = null;
 		this.pixels = [[]];
 		this.currentIndex = 0;
+		this.isDrawing = false;
 
 		this.saveState = function () {
 			if (this.currentIndex !== this.pixels.length - 1) {
@@ -16,6 +17,7 @@ const Canvas = class {
 			let copyState = _.cloneDeep(_.last(this.pixels));
 			this.pixels.push(copyState);
 			this.currentIndex = this.pixels.length - 1;
+			console.log(this);
 		};
 
 		this.undo = function () {
@@ -51,7 +53,6 @@ const Canvas = class {
 			this.canvasElement = canvasElement;
 			this.ctx = ctx;
 			ctx.scale(this.scale, this.scale);
-			// ctx.translate(-1, -1);
 		};
 
 		this.pixelSize = function () {
@@ -88,6 +89,17 @@ const Canvas = class {
 			this.currentIndex = this.pixels.length - 1;
 			this.drawCanvas();
 			this.canvasElement.addEventListener('click', (e) => this.paintPixel(e));
+			this.canvasElement.addEventListener('mousedown', (e) => {
+				this.saveState();
+				this.isDrawing = true;
+				this.paintPixel(e);
+			});
+			this.canvasElement.addEventListener('mousemove', (e) => {
+				if (this.isDrawing) this.paintPixel(e);
+			});
+			this.canvasElement.addEventListener('mouseup', (e) => {
+				this.isDrawing = false;
+			});
 		};
 
 		this.drawCanvas = function (pixels = this.pixels[this.currentIndex]) {
@@ -98,7 +110,6 @@ const Canvas = class {
 		};
 
 		this.paintPixel = function (evt) {
-			this.saveState();
 			const canvasLeft =
 				this.canvasElement.offsetLeft + this.canvasElement.clientLeft;
 			const canvasTop =
@@ -130,6 +141,5 @@ const Pixel = class {
 		this.yOrigin = y;
 		this.xEnd = this.xOrigin + this.size;
 		this.yEnd = this.yOrigin + this.size;
-		this.changeColor = (color) => (this.color = color);
 	}
 };
