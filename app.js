@@ -60,4 +60,5 @@ newCanvasForm.addEventListener('submit', function (e) {
 	const redoBtn = document.querySelector('#redo');
 
 	undoBtn.addEventListener('click', () => canvas.undo());
+	redoBtn.addEventListener('click', () => canvas.redo());
 });

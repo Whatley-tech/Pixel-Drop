@@ -6,28 +6,30 @@ const Canvas = class {
 		this.container = document.querySelector('#canvasContainer');
 		this.canvasElement = null;
 		this.ctx = null;
-		this.pixels = [];
-		this.undoStates = [];
-		this.redoStates = [];
+		this.pixels = [[]];
+		this.currentIndex = 0;
 
 		this.saveState = function () {
-			this.undoStates = [_.cloneDeep(this.pixels)];
-			// console.log(`This is undoState ${this.pixels}`);
-			// console.log(`this is pixelstate ${this.pixels}`);
-		};
-		this.undo = function () {
-			this.redoStates = [_.cloneDeep(this.pixels)];
-			this.pixels = _.takeRight(this.undoStates);
-			this.drawCanvas();
-			console.log(this.pixels);
-			console.log(this.undoStates);
-		};
-		this.drawCanvas = function () {
-			let pixels = this.pixels;
-			for (let pixel of pixels) {
-				pixel.draw();
+			if (this.currentIndex !== this.pixels.length - 1) {
+				this.pixels.splice(this.currentIndex + 1);
 			}
-			this.saveState();
+			let copyState = _.cloneDeep(_.last(this.pixels));
+			this.pixels.push(copyState);
+			this.currentIndex = this.pixels.length - 1;
+		};
+
+		this.undo = function () {
+			if (this.currentIndex > 0) {
+				this.currentIndex--;
+				this.drawCanvas();
+			}
+		};
+
+		this.redo = function () {
+			if (this.currentIndex < this.pixels.length - 1) {
+				this.currentIndex++;
+				this.drawCanvas();
+			}
 		};
 
 		this.createCanvasElement = function () {
@@ -51,6 +53,7 @@ const Canvas = class {
 			ctx.scale(this.scale, this.scale);
 			// ctx.translate(-1, -1);
 		};
+
 		this.pixelSize = function () {
 			const containerWidth = this.container.scrollWidth;
 			const containerHeight = this.container.scrollHeight;
@@ -79,23 +82,32 @@ const Canvas = class {
 						: (fillColor = lightGray);
 
 					let pixel = new Pixel(this.ctx, fillColor, x, y, this.pixelSize());
-					this.pixels.push(pixel);
-					// pixel.draw();
+					this.pixels[0].push(pixel);
 				}
 			}
+			this.currentIndex = this.pixels.length - 1;
 			this.drawCanvas();
 			this.canvasElement.addEventListener('click', (e) => this.paintPixel(e));
 		};
 
-		this.paintPixel = function (evt) {
-			const elmLeft =
-				this.canvasElement.offsetLeft + this.canvasElement.clientLeft;
-			const elmTop =
-				this.canvasElement.offsetTop + this.canvasElement.clientTop;
-			let x = evt.pageX - elmLeft;
-			let y = evt.pageY - elmTop;
+		this.drawCanvas = function (pixels = this.pixels[this.currentIndex]) {
+			for (let pixel of pixels) {
+				this.ctx.fillStyle = pixel.color;
+				this.ctx.fillRect(pixel.xOrigin, pixel.yOrigin, pixel.size, pixel.size);
+			}
+		};
 
-			this.pixels.forEach((pixel) => {
+		this.paintPixel = function (evt) {
+			this.saveState();
+			const canvasLeft =
+				this.canvasElement.offsetLeft + this.canvasElement.clientLeft;
+			const canvasTop =
+				this.canvasElement.offsetTop + this.canvasElement.clientTop;
+			let x = evt.pageX - canvasLeft;
+			let y = evt.pageY - canvasTop;
+			let pixels = this.pixels[this.pixels.length - 1];
+
+			pixels.forEach((pixel) => {
 				if (
 					x >= pixel.xOrigin &&
 					x <= pixel.xEnd &&
@@ -119,9 +131,5 @@ const Pixel = class {
 		this.xEnd = this.xOrigin + this.size;
 		this.yEnd = this.yOrigin + this.size;
 		this.changeColor = (color) => (this.color = color);
-		this.draw = () => {
-			ctx.fillStyle = this.color;
-			ctx.fillRect(this.xOrigin, this.yOrigin, this.size, this.size);
-		};
 	}
 };
