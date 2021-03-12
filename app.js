@@ -1,5 +1,6 @@
 const newCanvasForm = document.querySelector('#newCanvasForm');
-const pallet = new Pallet();
+let pallet = null;
+let canvas = null;
 
 //user canvas size input
 newCanvasForm.addEventListener('submit', function (e) {
@@ -8,7 +9,8 @@ newCanvasForm.addEventListener('submit', function (e) {
 	const canvasCols = document.querySelector('#canvasCols');
 	const canvasContainer = document.querySelector('#canvasContainer');
 	const hiddenClass = document.querySelectorAll('.hidden');
-	const canvas = new Canvas(canvasRows.value, canvasCols.value);
+	pallet = new Pallet();
+	canvas = new Canvas(canvasRows.value, canvasCols.value);
 
 	//clear canvasContainer
 	while (canvasContainer.firstChild) {
