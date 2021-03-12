@@ -6,18 +6,19 @@ const Canvas = class {
 		this.container = document.querySelector('#canvasContainer');
 		this.canvasElement = null;
 		this.ctx = null;
-		this.pixels = [[]];
 		this.currentIndex = 0;
 		this.isDrawing = false;
+		this.pixels = [[]];
+		this.pixelsLastIndex = () => this.pixels.length - 1;
 
 		this.saveState = function () {
-			if (this.currentIndex !== this.pixels.length - 1) {
+			//delete redos
+			if (this.currentIndex !== this.pixelsLastIndex()) {
 				this.pixels.splice(this.currentIndex + 1);
 			}
 			let copyState = _.cloneDeep(_.last(this.pixels));
 			this.pixels.push(copyState);
-			this.currentIndex = this.pixels.length - 1;
-			console.log(this);
+			this.currentIndex = this.pixelsLastIndex();
 		};
 
 		this.undo = function () {
@@ -28,7 +29,7 @@ const Canvas = class {
 		};
 
 		this.redo = function () {
-			if (this.currentIndex < this.pixels.length - 1) {
+			if (this.currentIndex < this.pixelsLastIndex()) {
 				this.currentIndex++;
 				this.drawCanvas();
 			}
@@ -73,7 +74,6 @@ const Canvas = class {
 			const pixelSize = this.pixelSize();
 			let fillColor = lightGray;
 			let row = 0;
-			console.log(pallet.currentColor);
 
 			for (let y = 0; y < rows * pixelSize; y += pixelSize) {
 				row % 2 === 0 ? (fillColor = darkGray) : (fillColor = lightGray);
@@ -87,7 +87,7 @@ const Canvas = class {
 					this.pixels[0].push(pixel);
 				}
 			}
-			this.currentIndex = this.pixels.length - 1;
+			this.currentIndex = this.pixelsLastIndex();
 			this.drawCanvas();
 
 			this.canvasElement.addEventListener('click', (e) => this.paintPixel(e));
@@ -119,7 +119,7 @@ const Canvas = class {
 				this.canvasElement.offsetTop + this.canvasElement.clientTop;
 			let x = evt.pageX - canvasLeft;
 			let y = evt.pageY - canvasTop;
-			let pixels = this.pixels[this.pixels.length - 1];
+			let pixels = this.pixels[this.pixelsLastIndex()];
 
 			pixels.forEach((pixel) => {
 				if (

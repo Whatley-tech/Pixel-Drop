@@ -17,38 +17,17 @@ newCanvasForm.addEventListener('submit', function (e) {
 		canvasContainer.removeChild(canvasContainer.firstChild);
 	}
 	//initialize canvas & Pallet
-	console.dir(canvas);
 	pallet.initPallet();
-	pallet.setCurrentColor('#000000');
+	pallet.setCurrentColor();
 	canvas.createCanvasElement();
 	canvas.initGrid();
-	// console.log(pallet.currentColor);
 	//unhide interface
 	for (node of hiddenClass) {
 		node.classList.remove('hidden');
 	}
 
-	const undoBtn = document.querySelector('#undo');
+	const undoBtn = documesnt.querySelector('#undo');
 	const redoBtn = document.querySelector('#redo');
-
 	undoBtn.addEventListener('click', () => canvas.undo());
 	redoBtn.addEventListener('click', () => canvas.redo());
 });
-
-// class Foo {
-// 	constructor() {
-// 		this.foo = 'foo';
-// 	}
-// }
-
-// class Bar {
-// 	constructor() {
-// 		this.bar = 'bar';
-// 		this.printFooBar = function () {
-// 			console.log(foo.foo + bar.bar);
-// 		};
-// 	}
-// }
-// const foo = new Foo();
-// const bar = new Bar();
-// console.log(bar.printFooBar());
