@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="reset.css" />
+		<link rel="stylesheet" href="app.css" />
+		<title>PixelPainter</title>
+	</head>
+	<body>
+		<div id="mainContainer">
+			<div id="midContainer">
+				<div id="colorHistoryContainer"></div>
+				<div id="canvasContainer">
+					<div id="formContainer">
+						<form id="newCanvasForm" action="">
+							<label for="rows">Rows:</label>
+							<input
+								type="text"
+								name="rows"
+								id="canvasRows"
+								placeholder="Input rows"
+							/>
+
+							<label for="width">Cols:</label>
+							<input
+								type="text"
+								name="cols"
+								id="canvasCols"
+								placeholder="Input cols"
+							/>
+							<button type="submit" id="submit">Submit</button>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div id="controlsContainer" class="hidden">
+				<div id="colorPickerContainer" class="hidden">
+					<div id="currentColor"></div>
+				</div>
+				<input type="color" id="colorPicker" value="#000000" />
+
+				<div id="stateContainer" class="hidden">
+					<button id="undo">undo</button>
+					<button id="redo">redo</button>
+				</div>
+			</div>
+		</div>
+		<script src="/lib/lodash.js"></script>
+		<script src="canvas.js"></script>
+		<!-- <script src="tools.js"></script> -->
+		<script src="app.js"></script>
+	</body>
+</html>
