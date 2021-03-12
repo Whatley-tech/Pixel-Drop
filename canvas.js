@@ -65,7 +65,7 @@ const Canvas = class {
 			return pixelSize;
 		};
 
-		this.initilizeGrid = function () {
+		this.initGrid = function () {
 			const lightGray = 'rgb(215, 215, 215)';
 			const darkGray = 'rgb(250, 250, 250)';
 			const rows = this.rows;
@@ -73,6 +73,7 @@ const Canvas = class {
 			const pixelSize = this.pixelSize();
 			let fillColor = lightGray;
 			let row = 0;
+			console.log(pallet.currentColor);
 
 			for (let y = 0; y < rows * pixelSize; y += pixelSize) {
 				row % 2 === 0 ? (fillColor = darkGray) : (fillColor = lightGray);
@@ -88,8 +89,10 @@ const Canvas = class {
 			}
 			this.currentIndex = this.pixels.length - 1;
 			this.drawCanvas();
+
 			this.canvasElement.addEventListener('click', (e) => this.paintPixel(e));
 			this.canvasElement.addEventListener('mousedown', (e) => {
+				console.log(pallet.currentColor);
 				this.saveState();
 				this.isDrawing = true;
 				this.paintPixel(e);
@@ -125,7 +128,7 @@ const Canvas = class {
 					y >= pixel.yOrigin &&
 					y <= pixel.yEnd
 				) {
-					pixel.color = currentColor;
+					pixel.color = pallet.currentColor;
 					this.drawCanvas();
 				}
 			});
