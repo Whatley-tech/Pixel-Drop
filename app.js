@@ -26,7 +26,7 @@ newCanvasForm.addEventListener('submit', function (e) {
 		node.classList.remove('hidden');
 	}
 
-	const undoBtn = documesnt.querySelector('#undo');
+	const undoBtn = document.querySelector('#undo');
 	const redoBtn = document.querySelector('#redo');
 	undoBtn.addEventListener('click', () => canvas.undo());
 	redoBtn.addEventListener('click', () => canvas.redo());
