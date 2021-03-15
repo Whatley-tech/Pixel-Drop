@@ -6,6 +6,8 @@ const Pixel = class {
 		this.yOrigin = y;
 		this.xEnd = this.xOrigin + this.size;
 		this.yEnd = this.yOrigin + this.size;
+		this.xCenter = x + size / 2;
+		this.yCenter = y + size / 2;
 	}
 };
 
@@ -141,7 +143,7 @@ class Canvas {
 			);
 		};
 		this.updateBrushSize = function (value = 1) {
-			this.brushSize = Math.floor((this.pixelSize / 2) * value);
+			this.brushSize = Math.floor(this.pixelSize * value);
 		};
 		this.drawCanvas = function (pixels = this.pixels[this.currentIndex]) {
 			for (let pixel of pixels) {
@@ -161,33 +163,21 @@ class Canvas {
 			let pixels = this.pixels[this.pixelsLastIndex()];
 			let brushOffSet = this.brushSize / 2;
 
-			let q1x = x + brushOffSet;
-			let q1y = y - brushOffSet;
-			let q2x = x - brushOffSet;
-			let q2y = y - brushOffSet;
-			let q3x = x - brushOffSet;
-			let q3y = y + brushOffSet;
-			let q4x = x + brushOffSet;
-			let q4y = y + brushOffSet;
-			let quadrants = [
-				[q1x, q1y],
-				[q2x, q2y],
-				[q3x, q3y],
-				[q4x, q4y],
-			];
+			let xTopLeft = x - brushOffSet;
+			let yTopLeft = y - brushOffSet;
+
+			let xBottomRight = x + brushOffSet;
+			let yBottomRight = y + brushOffSet;
 
 			pixels.forEach((pixel) => {
-				for (let quadrant of quadrants) {
-					if (
-						quadrant[0] >= pixel.xOrigin &&
-						quadrant[0] <= pixel.xEnd &&
-						quadrant[1] >= pixel.yOrigin &&
-						quadrant[1] <= pixel.yEnd
-					) {
-						pixel.color = pallet.currentColor;
-						this.drawCanvas();
-					}
-				}
+				if (
+					pixel.xCenter >= xTopLeft &&
+					pixel.xCenter <= xBottomRight &&
+					pixel.yCenter >= yTopLeft &&
+					pixel.yCenter <= yBottomRight
+				)
+					pixel.color = pallet.currentColor;
+				this.drawCanvas();
 			});
 		};
 	}
