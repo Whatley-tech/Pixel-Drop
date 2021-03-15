@@ -1,3 +1,22 @@
+const attachListeners = () => {
+	canvas.element.addEventListener('click', (e) => {
+		brush.updatePosition(e);
+		brush.paintPixel(e);
+	});
+	canvas.element.addEventListener('mousedown', (e) => {
+		canvas.saveState();
+		brush.isDrawing = true;
+		brush.paintPixel(e);
+	});
+	canvas.element.addEventListener('mousemove', (e) => {
+		brush.updatePosition(e);
+		if (brush.isDrawing) brush.paintPixel(e);
+	});
+	canvas.element.addEventListener('mouseup', (e) => {
+		brush.isDrawing = false;
+	});
+};
+
 const newCanvasForm = document.querySelector('#newCanvasForm');
 let pallet = null;
 let canvas = null;
@@ -12,16 +31,19 @@ newCanvasForm.addEventListener('submit', function (e) {
 	const hiddenClass = document.querySelectorAll('.hidden');
 	pallet = new Pallet();
 	canvas = new Canvas(canvasRows.value, canvasCols.value);
+	brush = new Brush(canvas.pixel);
 
 	//clear canvasContainer
 	while (canvasContainer.firstChild) {
 		canvasContainer.removeChild(canvasContainer.firstChild);
 	}
-	//initialize canvas & Pallet
+	//initialize canvas // Pallet //brush
 	pallet.initPallet();
 	pallet.setCurrentColor();
 	canvas.createCanvasElement();
 	canvas.initGrid();
+	brush.updateSize();
+	attachListeners();
 
 	//unhide interface
 	for (node of hiddenClass) {
@@ -37,6 +59,6 @@ newCanvasForm.addEventListener('submit', function (e) {
 	undoBtn.addEventListener('click', () => canvas.undo());
 	redoBtn.addEventListener('click', () => canvas.redo());
 	brushSize.addEventListener('input', () => {
-		canvas.updateBrushSize(brushSize.value);
+		brush.updateSize(brushSize.value);
 	});
 });
