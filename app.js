@@ -1,6 +1,7 @@
 const newCanvasForm = document.querySelector('#newCanvasForm');
 let pallet = null;
 let canvas = null;
+let brush = null;
 
 //user canvas size input
 newCanvasForm.addEventListener('submit', function (e) {
@@ -21,6 +22,7 @@ newCanvasForm.addEventListener('submit', function (e) {
 	pallet.setCurrentColor();
 	canvas.createCanvasElement();
 	canvas.initGrid();
+
 	//unhide interface
 	for (node of hiddenClass) {
 		node.classList.remove('hidden');
@@ -28,6 +30,13 @@ newCanvasForm.addEventListener('submit', function (e) {
 
 	const undoBtn = document.querySelector('#undo');
 	const redoBtn = document.querySelector('#redo');
+	const newBtn = document.querySelector('#newCanvas');
+	const saveBtn = document.querySelector('#saveCanvas');
+	const loadBtn = document.querySelector('#loadCanvas');
+	const brushSize = document.querySelector('#brushSize');
 	undoBtn.addEventListener('click', () => canvas.undo());
 	redoBtn.addEventListener('click', () => canvas.redo());
+	brushSize.addEventListener('input', () => {
+		canvas.updateBrushSize(brushSize.value);
+	});
 });

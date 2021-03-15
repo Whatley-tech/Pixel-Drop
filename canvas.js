@@ -1,4 +1,15 @@
-const Canvas = class {
+const Pixel = class {
+	constructor(color, x, y, size) {
+		this.color = color;
+		this.size = size;
+		this.xOrigin = x;
+		this.yOrigin = y;
+		this.xEnd = this.xOrigin + this.size;
+		this.yEnd = this.yOrigin + this.size;
+	}
+};
+
+class Canvas {
 	constructor(rows, cols) {
 		this.rows = rows;
 		this.cols = cols;
@@ -10,6 +21,14 @@ const Canvas = class {
 		this.isDrawing = false;
 		this.pixels = [[]];
 		this.pixelsLastIndex = () => this.pixels.length - 1;
+		this.brushSize = 1;
+		this.canvasLeft = null;
+		this.canvasTop = null;
+		this.pixelSize = null;
+		this.canvasWidth = null;
+		this.canvasHeight = null;
+		this.xBrushPosition = null;
+		this.yBrushPosition = null;
 
 		this.saveState = function () {
 			//delete redos
@@ -39,31 +58,35 @@ const Canvas = class {
 			const canvasElement = document.createElement('canvas');
 			const ctx = canvasElement.getContext('2d');
 			canvasElement.id = 'canvas';
-			const canvasWidth = this.cols * this.pixelSize();
-			const canvasHeight = this.rows * this.pixelSize();
-			canvasElement.style.width = `${canvasWidth}px`;
-			canvasElement.style.height = `${canvasHeight}px`;
-			canvasElement.width = Math.floor(
-				this.cols * this.pixelSize() * this.scale
-			);
+			this.findPixelSize();
+			this.updateBrushSize();
+			this.canvasWidth = this.cols * this.pixelSize;
+			this.canvasHeight = this.rows * this.pixelSize;
+			canvasElement.style.width = `${this.canvasWidth}px`;
+			canvasElement.style.height = `${this.canvasHeight}px`;
+			canvasElement.width = Math.floor(this.cols * this.pixelSize * this.scale);
 			canvasElement.height = Math.floor(
-				this.rows * this.pixelSize() * this.scale
+				this.rows * this.pixelSize * this.scale
 			);
 			canvasElement.classList.add('canvas');
 			canvasContainer.appendChild(canvasElement);
 			this.canvasElement = canvasElement;
 			this.ctx = ctx;
+			this.canvasLeft =
+				this.canvasElement.offsetLeft + this.canvasElement.clientLeft;
+			this.canvasTop =
+				this.canvasElement.offsetTop + this.canvasElement.clientTop;
 			ctx.scale(this.scale, this.scale);
 		};
 
-		this.pixelSize = function () {
+		this.findPixelSize = function () {
 			const containerWidth = this.container.scrollWidth;
 			const containerHeight = this.container.scrollHeight;
 			const colSize = Math.floor(containerWidth / this.cols);
 			const rowSize = Math.floor(containerHeight / this.rows);
 			const pixelSize =
 				colSize > rowSize || colSize === rowSize ? rowSize : colSize;
-			return pixelSize;
+			this.pixelSize = pixelSize;
 		};
 
 		this.initGrid = function () {
@@ -71,7 +94,7 @@ const Canvas = class {
 			const darkGray = 'rgb(250, 250, 250)';
 			const rows = this.rows;
 			const cols = this.cols;
-			const pixelSize = this.pixelSize();
+			const pixelSize = this.pixelSize;
 			let fillColor = lightGray;
 			let row = 0;
 
@@ -83,16 +106,20 @@ const Canvas = class {
 						? (fillColor = darkGray)
 						: (fillColor = lightGray);
 
-					let pixel = new Pixel(this.ctx, fillColor, x, y, this.pixelSize());
+					let pixel = new Pixel(fillColor, x, y, this.pixelSize);
 					this.pixels[0].push(pixel);
 				}
 			}
+
 			this.currentIndex = this.pixelsLastIndex();
 			this.drawCanvas();
 
+			this.canvasElement.addEventListener('mousemove', (e) =>
+				this.updateBrushPosition(e)
+			);
+
 			this.canvasElement.addEventListener('click', (e) => this.paintPixel(e));
 			this.canvasElement.addEventListener('mousedown', (e) => {
-				console.log(pallet.currentColor);
 				this.saveState();
 				this.isDrawing = true;
 				this.paintPixel(e);
@@ -104,45 +131,64 @@ const Canvas = class {
 				this.isDrawing = false;
 			});
 		};
-
+		this.drawBrushPosition = function () {
+			this.ctx.strokeStyle = 'green';
+			this.ctx.strokeRect(
+				this.xBrushPosition - this.brushSize / 2,
+				this.yBrushPosition - this.brushSize / 2,
+				this.brushSize,
+				this.brushSize
+			);
+		};
+		this.updateBrushSize = function (value = 1) {
+			this.brushSize = Math.floor((this.pixelSize / 2) * value);
+		};
 		this.drawCanvas = function (pixels = this.pixels[this.currentIndex]) {
 			for (let pixel of pixels) {
 				this.ctx.fillStyle = pixel.color;
 				this.ctx.fillRect(pixel.xOrigin, pixel.yOrigin, pixel.size, pixel.size);
 			}
+			this.drawBrushPosition();
 		};
-
-		this.paintPixel = function (evt) {
-			const canvasLeft =
-				this.canvasElement.offsetLeft + this.canvasElement.clientLeft;
-			const canvasTop =
-				this.canvasElement.offsetTop + this.canvasElement.clientTop;
-			let x = evt.pageX - canvasLeft;
-			let y = evt.pageY - canvasTop;
+		this.updateBrushPosition = function (evt) {
+			this.xBrushPosition = evt.pageX - this.canvasLeft;
+			this.yBrushPosition = evt.pageY - this.canvasTop;
+			this.drawCanvas();
+		};
+		this.paintPixel = function () {
+			let x = this.xBrushPosition;
+			let y = this.yBrushPosition;
 			let pixels = this.pixels[this.pixelsLastIndex()];
+			let brushOffSet = this.brushSize / 2;
+
+			let q1x = x + brushOffSet;
+			let q1y = y - brushOffSet;
+			let q2x = x - brushOffSet;
+			let q2y = y - brushOffSet;
+			let q3x = x - brushOffSet;
+			let q3y = y + brushOffSet;
+			let q4x = x + brushOffSet;
+			let q4y = y + brushOffSet;
+			let quadrants = [
+				[q1x, q1y],
+				[q2x, q2y],
+				[q3x, q3y],
+				[q4x, q4y],
+			];
 
 			pixels.forEach((pixel) => {
-				if (
-					x >= pixel.xOrigin &&
-					x <= pixel.xEnd &&
-					y >= pixel.yOrigin &&
-					y <= pixel.yEnd
-				) {
-					pixel.color = pallet.currentColor;
-					this.drawCanvas();
+				for (let quadrant of quadrants) {
+					if (
+						quadrant[0] >= pixel.xOrigin &&
+						quadrant[0] <= pixel.xEnd &&
+						quadrant[1] >= pixel.yOrigin &&
+						quadrant[1] <= pixel.yEnd
+					) {
+						pixel.color = pallet.currentColor;
+						this.drawCanvas();
+					}
 				}
 			});
 		};
 	}
-};
-
-const Pixel = class {
-	constructor(ctx, color, x, y, size) {
-		this.color = color;
-		this.size = size;
-		this.xOrigin = x;
-		this.yOrigin = y;
-		this.xEnd = this.xOrigin + this.size;
-		this.yEnd = this.yOrigin + this.size;
-	}
-};
+}
