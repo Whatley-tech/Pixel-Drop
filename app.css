@@ -68,6 +68,7 @@ button {
 	background-color: rgb(241, 240, 240);
 }
 .canvas {
+	cursor: none;
 	box-sizing: border-box;
 	/* border: 1px solid black; */
 }
