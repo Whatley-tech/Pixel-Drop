@@ -105,11 +105,9 @@ class Canvas {
 			this.currentIndex = this.pixelsLastIndex();
 			this.draw();
 		};
+
 		this.drawBrushPosition = function () {
 			this.ctx.strokeStyle = 'green';
-			// console.log(brush.offset);
-			// console.log(brush.xPosition, brush.yPosition);
-
 			this.ctx.strokeRect(
 				brush.xPosition - brush.offset,
 				brush.yPosition - brush.offset,
