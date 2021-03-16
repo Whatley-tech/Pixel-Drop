@@ -42,6 +42,24 @@
 	height: 500px;
 	width: 600px;
 }
+
+#stage {
+}
+.canvas {
+	position: relative;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	cursor: none;
+	box-sizing: border-box;
+	border: 1px solid black;
+}
+.pixelCanvas {
+	z-index: 1;
+}
+.brushCanvas {
+	z-index: 2;
+}
+
 #controlsContainer {
 	/* border: 1px solid red; */
 	display: flex;
@@ -66,11 +84,6 @@ button {
 	border-radius: 50px;
 	border: 2px solid black;
 	background-color: rgb(241, 240, 240);
-}
-.canvas {
-	cursor: none;
-	box-sizing: border-box;
-	/* border: 1px solid black; */
 }
 .hidden {
 	visibility: hidden;

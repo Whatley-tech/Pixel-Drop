@@ -16,14 +16,17 @@ class Canvas {
 		this.rows = rows;
 		this.cols = cols;
 		this.scale = window.devicePixelRatio;
-		this.container = document.querySelector('#canvasContainer');
+		this.stage = document.querySelector('#stage');
+		this.canvasContainer = document.querySelector('#canvasContainer');
 		this.element = null;
 		this.ctx = null;
 		this.currentIndex = 0;
 		this.pixels = [[]];
 		this.pixelSize = null;
-		this.canvasWidth = null;
-		this.canvasHeight = null;
+		this.width = null;
+		this.height = null;
+		this.topOrigin = null;
+		this.leftOrigin = null;
 
 		this.pixelsLastIndex = () => this.pixels.length - 1;
 
@@ -51,28 +54,31 @@ class Canvas {
 			}
 		};
 
-		this.createCanvasElement = function () {
+		this.createCanvasElement = function (id) {
 			this.element = document.createElement('canvas');
 			this.ctx = this.element.getContext('2d');
 			this.findPixelSize();
 			// this.updateBrushSize();
-			this.canvasWidth = this.cols * this.pixelSize;
-			this.canvasHeight = this.rows * this.pixelSize;
-			this.element.id = 'canvas';
-			this.element.style.width = `${this.canvasWidth}px`;
-			this.element.style.height = `${this.canvasHeight}px`;
+			this.width = this.cols * this.pixelSize;
+			this.height = this.rows * this.pixelSize;
+			this.element.id = id;
+			this.element.style.width = `${this.width}px`;
+			this.element.style.height = `${this.height}px`;
 			this.element.width = Math.floor(this.cols * this.pixelSize * this.scale);
 			this.element.height = Math.floor(this.rows * this.pixelSize * this.scale);
-			this.element.classList.add('canvas');
-			canvasContainer.appendChild(this.element);
-			this.leftOrigin = this.element.offsetLeft + this.element.clientLeft;
-			this.topOrigin = this.element.offsetTop + this.element.clientTop;
+			this.element.classList.add('canvas', id);
 			this.ctx.scale(this.scale, this.scale);
+		};
+		this.appendCanvasElement = function () {
+			this.stage.appendChild(this.element);
+			let box = this.element.getBoundingClientRect();
+			this.leftOrigin = box.left;
+			this.topOrigin = box.top;
 		};
 
 		this.findPixelSize = function () {
-			const containerWidth = this.container.scrollWidth;
-			const containerHeight = this.container.scrollHeight;
+			const containerWidth = this.canvasContainer.scrollWidth;
+			const containerHeight = this.canvasContainer.scrollHeight;
 			const colSize = Math.floor(containerWidth / this.cols);
 			const rowSize = Math.floor(containerHeight / this.rows);
 			const pixelSize =
@@ -103,10 +109,12 @@ class Canvas {
 			}
 
 			this.currentIndex = this.pixelsLastIndex();
-			this.draw();
+			this.drawGrid();
 		};
 
 		this.drawBrushPosition = function () {
+			// console.log(brush.xPosition, brush.yPosition);
+			this.ctx.clearRect(0, 0, this.width, this.height);
 			this.ctx.strokeStyle = 'green';
 			this.ctx.strokeRect(
 				brush.xPosition - brush.offset,
@@ -116,15 +124,15 @@ class Canvas {
 			);
 		};
 
-		this.drawCanvas = function (pixels) {
+		this.drawGrid = function (pixels = this.pixels[this.currentIndex]) {
 			for (let pixel of pixels) {
 				this.ctx.fillStyle = pixel.color;
 				this.ctx.fillRect(pixel.xOrigin, pixel.yOrigin, pixel.size, pixel.size);
 			}
 		};
-		this.draw = function (pixels = this.pixels[this.currentIndex]) {
-			this.drawCanvas(pixels);
-			this.drawBrushPosition();
-		};
+		// this.draw = function (pixels = this.pixels[this.currentIndex]) {
+		// 	this.drawCanvas(pixels);
+		// 	this.drawBrushPosition();
+		// };
 	}
 }
