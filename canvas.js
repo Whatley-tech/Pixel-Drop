@@ -20,38 +20,17 @@ class Canvas {
 		this.canvasContainer = document.querySelector('#canvasContainer');
 		this.element = null;
 		this.ctx = null;
-		this.currentIndex = 0;
 		this.pixelSize = null;
 		this.width = null;
 		this.height = null;
 		this.topOrigin = null;
 		this.leftOrigin = null;
 
-		this.pixelsLastIndex = () => this.pixels.length - 1;
+		this.saveState = function () {};
 
-		this.saveState = function () {
-			//delete redos
-			if (this.currentIndex !== this.pixelsLastIndex()) {
-				this.pixels.splice(this.currentIndex + 1);
-			}
-			let copyState = _.cloneDeep(_.last(this.pixels));
-			this.pixels.push(copyState);
-			this.currentIndex = this.pixelsLastIndex();
-		};
+		this.undo = function () {};
 
-		this.undo = function () {
-			if (this.currentIndex > 0) {
-				this.currentIndex--;
-				this.drawAllPixels();
-			}
-		};
-
-		this.redo = function () {
-			if (this.currentIndex < this.pixelsLastIndex()) {
-				this.currentIndex++;
-				this.drawAllPixels();
-			}
-		};
+		this.redo = function () {};
 
 		this.createCanvasElement = function (id) {
 			this.element = document.createElement('canvas');
@@ -68,6 +47,7 @@ class Canvas {
 			this.element.classList.add('canvas', id);
 			this.ctx.scale(this.scale, this.scale);
 		};
+
 		this.appendCanvasElement = function () {
 			this.stage.appendChild(this.element);
 			let box = this.element.getBoundingClientRect();
@@ -80,9 +60,7 @@ class Canvas {
 			const containerHeight = this.canvasContainer.scrollHeight;
 			const colSize = Math.floor(containerWidth / this.cols);
 			const rowSize = Math.floor(containerHeight / this.rows);
-			const pixelSize =
-				colSize > rowSize || colSize === rowSize ? rowSize : colSize;
-			this.pixelSize = pixelSize;
+			this.pixelSize = colSize >= rowSize ? rowSize : colSize;
 		};
 
 		this.drawGrid = function () {
@@ -91,14 +69,14 @@ class Canvas {
 			const rows = this.rows;
 			const cols = this.cols;
 			const pixelSize = this.pixelSize;
-			let offset = 0;
+			let colorOffset = 0;
 
-			for (let x = 0; x < rows; x++) {
-				offset % 2 === 0
+			for (let x = 0; x < cols; x++) {
+				colorOffset % 2 === 0
 					? (pallet.currentColor = darkGray)
 					: (pallet.currentColor = lightGray);
-				offset++;
-				for (let y = 0; y < cols; y++) {
+				colorOffset++;
+				for (let y = 0; y < rows; y++) {
 					pallet.currentColor === lightGray
 						? (pallet.currentColor = darkGray)
 						: (pallet.currentColor = lightGray);
