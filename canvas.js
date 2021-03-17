@@ -71,6 +71,7 @@ class Canvas {
 		};
 		this.appendCanvasElement = function () {
 			this.stage.appendChild(this.element);
+
 			let box = this.element.getBoundingClientRect();
 			this.leftOrigin = box.left;
 			this.topOrigin = box.top;
@@ -109,7 +110,7 @@ class Canvas {
 			}
 
 			this.currentIndex = this.pixelsLastIndex();
-			this.drawGrid();
+			this.drawAllPixels();
 		};
 
 		this.drawBrushPosition = function () {
@@ -124,15 +125,16 @@ class Canvas {
 			);
 		};
 
-		this.drawGrid = function (pixels = this.pixels[this.currentIndex]) {
+		this.drawPixel = function (pixel) {
+			this.ctx.fillStyle = pixel.color;
+			this.ctx.fillRect(pixel.xOrigin, pixel.yOrigin, pixel.size, pixel.size);
+		};
+
+		this.drawAllPixels = function (pixels = this.pixels[this.currentIndex]) {
 			for (let pixel of pixels) {
 				this.ctx.fillStyle = pixel.color;
 				this.ctx.fillRect(pixel.xOrigin, pixel.yOrigin, pixel.size, pixel.size);
 			}
 		};
-		// this.draw = function (pixels = this.pixels[this.currentIndex]) {
-		// 	this.drawCanvas(pixels);
-		// 	this.drawBrushPosition();
-		// };
 	}
 }

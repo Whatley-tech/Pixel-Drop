@@ -1,16 +1,16 @@
 const attachListeners = () => {
-	pixelCanvas.element.addEventListener('click', (e) => {
+	brushCanvas.element.addEventListener('click', (e) => {
 		brush.paintPixel(e);
 	});
-	pixelCanvas.element.addEventListener('mousedown', (e) => {
+	brushCanvas.element.addEventListener('mousedown', (e) => {
 		pixelCanvas.saveState();
 		brush.isDrawing = true;
 		brush.paintPixel(e);
 	});
-	pixelCanvas.element.addEventListener('mousemove', (e) => {
+	brushCanvas.element.addEventListener('mousemove', (e) => {
 		if (brush.isDrawing) brush.paintPixel(e);
 	});
-	pixelCanvas.element.addEventListener('mouseup', (e) => {
+	brushCanvas.element.addEventListener('mouseup', (e) => {
 		brush.isDrawing = false;
 	});
 	brushCanvas.element.addEventListener('mousemove', (e) => {
@@ -41,7 +41,6 @@ newCanvasForm.addEventListener('submit', function (e) {
 		canvasContainer.firstChild &&
 		canvasContainer.firstChild.id != 'stage'
 	) {
-		console.log(canvasContainer.firstChild);
 		canvasContainer.removeChild(canvasContainer.firstChild);
 	}
 	//initialize pixelCanvas // Pallet //brush
@@ -49,8 +48,8 @@ newCanvasForm.addEventListener('submit', function (e) {
 	pallet.initPallet();
 	pallet.setCurrentColor();
 	pixelCanvas.createCanvasElement('pixelCanvas');
-	brushCanvas.createCanvasElement('brushCanvas');
 	pixelCanvas.appendCanvasElement();
+	brushCanvas.createCanvasElement('brushCanvas');
 	brushCanvas.appendCanvasElement();
 	pixelCanvas.initGrid();
 	brush.updateSize();

@@ -11,13 +11,13 @@ class Brush {
 		this.isDrawing = false;
 
 		this.updatePosition = function (evt) {
-			this.xPosition = evt.pageX - brushCanvas.leftOrigin;
-			this.yPosition = evt.pageY - brushCanvas.topOrigin;
+			this.xPosition = Math.floor(evt.pageX - brushCanvas.leftOrigin);
+			this.yPosition = Math.floor(evt.pageY - brushCanvas.topOrigin);
 			this.xTopLeft = this.xPosition - this.offset;
 			this.yTopLeft = this.yPosition - this.offset;
 			this.xBottomRight = this.xPosition + this.offset;
 			this.yBottomRight = this.yPosition + this.offset;
-			console.log('brush position', this.xPosition, this.yPosition);
+			// console.log('brush position', this.xTopLeft, this.yTopLeft);
 			brushCanvas.drawBrushPosition();
 		};
 
@@ -27,17 +27,21 @@ class Brush {
 		};
 
 		this.paintPixel = function () {
-			let pixels = canvas.pixels[canvas.pixelsLastIndex()];
-			_.forEach(pixels, (pixel) => {
+			let pixels = pixelCanvas.pixels[pixelCanvas.pixelsLastIndex()];
+			console.log(pixels);
+
+			pixels.forEach((pixel) => {
 				if (
+					pixel.color != pallet.currentColor &&
 					pixel.xCenter >= brush.xTopLeft &&
 					pixel.xCenter <= brush.xBottomRight &&
 					pixel.yCenter >= brush.yTopLeft &&
 					pixel.yCenter <= brush.yBottomRight
 				)
 					pixel.color = pallet.currentColor;
-				pixelCanvas.drawGrid();
+				pixelCanvas.drawPixel(pixel);
 			});
+			// if (!this.isDrawing) pixelCanvas.drawAllPixels();
 		};
 	}
 }
