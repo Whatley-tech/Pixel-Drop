@@ -21,7 +21,6 @@ class Canvas {
 		this.element = null;
 		this.ctx = null;
 		this.currentIndex = 0;
-		this.pixels = [[]];
 		this.pixelSize = null;
 		this.width = null;
 		this.height = null;
@@ -71,7 +70,6 @@ class Canvas {
 		};
 		this.appendCanvasElement = function () {
 			this.stage.appendChild(this.element);
-
 			let box = this.element.getBoundingClientRect();
 			this.leftOrigin = box.left;
 			this.topOrigin = box.top;
@@ -87,30 +85,26 @@ class Canvas {
 			this.pixelSize = pixelSize;
 		};
 
-		this.initGrid = function () {
-			const lightGray = 'rgb(215, 215, 215)';
-			const darkGray = 'rgb(250, 250, 250)';
+		this.drawGrid = function () {
+			const lightGray = '#d7d7d7';
+			const darkGray = '#fafafa';
 			const rows = this.rows;
 			const cols = this.cols;
 			const pixelSize = this.pixelSize;
-			let fillColor = lightGray;
-			let row = 0;
+			let offset = 0;
 
-			for (let y = 0; y < rows * pixelSize; y += pixelSize) {
-				row % 2 === 0 ? (fillColor = darkGray) : (fillColor = lightGray);
-				row++;
-				for (let x = 0; x < cols * pixelSize; x += pixelSize) {
-					fillColor === lightGray
-						? (fillColor = darkGray)
-						: (fillColor = lightGray);
-
-					let pixel = new Pixel(fillColor, x, y, this.pixelSize);
-					this.pixels[0].push(pixel);
+			for (let x = 0; x < rows; x++) {
+				offset % 2 === 0
+					? (pallet.currentColor = darkGray)
+					: (pallet.currentColor = lightGray);
+				offset++;
+				for (let y = 0; y < cols; y++) {
+					pallet.currentColor === lightGray
+						? (pallet.currentColor = darkGray)
+						: (pallet.currentColor = lightGray);
+					this.drawPixel(x, y);
 				}
 			}
-
-			this.currentIndex = this.pixelsLastIndex();
-			this.drawAllPixels();
 		};
 
 		this.drawBrushPosition = function () {
@@ -120,21 +114,24 @@ class Canvas {
 			this.ctx.strokeRect(
 				brush.xPosition - brush.offset,
 				brush.yPosition - brush.offset,
-				brush.size,
-				brush.size
+				brush.size * this.pixelSize,
+				brush.size * this.pixelSize
 			);
 		};
 
-		this.drawPixel = function (pixel) {
-			this.ctx.fillStyle = pixel.color;
-			this.ctx.fillRect(pixel.xOrigin, pixel.yOrigin, pixel.size, pixel.size);
-		};
-
-		this.drawAllPixels = function (pixels = this.pixels[this.currentIndex]) {
-			for (let pixel of pixels) {
-				this.ctx.fillStyle = pixel.color;
-				this.ctx.fillRect(pixel.xOrigin, pixel.yOrigin, pixel.size, pixel.size);
-			}
+		this.drawPixel = function (
+			x = brush.xPixelPosition,
+			y = brush.yPixelPosition
+		) {
+			let xOrigin = x * this.pixelSize;
+			let yOrigin = y * this.pixelSize;
+			this.ctx.fillStyle = pallet.currentColor;
+			this.ctx.fillRect(
+				xOrigin,
+				yOrigin,
+				this.pixelSize * brush.size,
+				this.pixelSize * brush.size
+			);
 		};
 	}
 }
