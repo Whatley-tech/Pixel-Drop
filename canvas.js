@@ -16,21 +16,20 @@ class Canvas {
 		this.rows = rows;
 		this.cols = cols;
 		this.scale = window.devicePixelRatio;
+		this.width = null;
+		this.height = null;
+		this.scaledWidth = null;
+		this.scaledHeight = null;
 		this.stage = document.querySelector('#stage');
 		this.canvasContainer = document.querySelector('#canvasContainer');
 		this.element = null;
 		this.ctx = null;
 		this.pixelSize = null;
-		this.width = null;
-		this.height = null;
 		this.topOrigin = null;
 		this.leftOrigin = null;
-
-		this.saveState = function () {};
-
-		this.undo = function () {};
-
-		this.redo = function () {};
+		this.undoIndex = 0;
+		this.undoStates = [];
+		this.redoStates = [];
 
 		this.createCanvasElement = function (id) {
 			this.element = document.createElement('canvas');
@@ -39,11 +38,13 @@ class Canvas {
 			// this.updateBrushSize();
 			this.width = this.cols * this.pixelSize;
 			this.height = this.rows * this.pixelSize;
+			this.scaledWidth = Math.floor(this.cols * this.pixelSize * this.scale);
+			this.scaledHeight = Math.floor(this.rows * this.pixelSize * this.scale);
 			this.element.id = id;
 			this.element.style.width = `${this.width}px`;
 			this.element.style.height = `${this.height}px`;
-			this.element.width = Math.floor(this.cols * this.pixelSize * this.scale);
-			this.element.height = Math.floor(this.rows * this.pixelSize * this.scale);
+			this.element.width = this.scaledWidth;
+			this.element.height = this.scaledHeight;
 			this.element.classList.add('canvas', id);
 			this.ctx.scale(this.scale, this.scale);
 		};
@@ -110,6 +111,41 @@ class Canvas {
 				this.pixelSize * brush.size,
 				this.pixelSize * brush.size
 			);
+		};
+
+		this.getState = () =>
+			this.ctx.getImageData(0, 0, this.scaledWidth, this.scaledHeight);
+
+		this.drawState = (img) => this.ctx.putImageData(img, 0, 0);
+
+		this.saveState = function () {
+			_.remove(this.redoStates);
+			const currentState = this.getState();
+			this.undoStates.push(currentState);
+			console.log(`undos: ${this.undoStates}, redos: ${this.redoStates}`);
+		};
+
+		this.undo = function () {
+			try {
+				let currentState = this.getState();
+				let lastState = this.undoStates.pop();
+				this.redoStates.push(currentState);
+				this.drawState(lastState);
+				console.log(`undos: ${this.undoStates}, redos: ${this.redoStates}`);
+			} catch {
+				console.log('Error: There are no more undo states!');
+			}
+		};
+
+		this.redo = function () {
+			try {
+				const state = this.redoStates.pop();
+				this.drawState(state);
+				this.undoStates.push(state);
+				console.log(`undos: ${this.undoStates}, redos: ${this.redoStates}`);
+			} catch {
+				console.log('Error: There are no more redo states!');
+			}
 		};
 	}
 }

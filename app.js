@@ -1,20 +1,15 @@
 const attachListeners = () => {
-	// brushCanvas.element.addEventListener('click', (e) => {
-	// 	// brush.paintPixel(e);
-	// });
 	brushCanvas.element.addEventListener('mousedown', (e) => {
-		// pixelCanvas.saveState();
+		pixelCanvas.saveState();
 		brush.isDrawing = true;
 		pixelCanvas.drawPixel();
 	});
 	brushCanvas.element.addEventListener('mousemove', (e) => {
+		brush.updatePosition(e);
 		if (brush.isDrawing) pixelCanvas.drawPixel();
 	});
 	brushCanvas.element.addEventListener('mouseup', (e) => {
 		brush.isDrawing = false;
-	});
-	brushCanvas.element.addEventListener('mousemove', (e) => {
-		brush.updatePosition(e);
 	});
 };
 
