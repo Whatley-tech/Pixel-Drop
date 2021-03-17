@@ -1,16 +1,3 @@
-const Pixel = class {
-	constructor(color, x, y, size) {
-		this.color = color;
-		this.size = size;
-		this.xOrigin = x;
-		this.yOrigin = y;
-		this.xEnd = this.xOrigin + this.size;
-		this.yEnd = this.yOrigin + this.size;
-		this.xCenter = x + size / 2;
-		this.yCenter = y + size / 2;
-	}
-};
-
 class Canvas {
 	constructor(rows, cols) {
 		this.rows = rows;
@@ -27,7 +14,6 @@ class Canvas {
 		this.pixelSize = null;
 		this.topOrigin = null;
 		this.leftOrigin = null;
-		this.undoIndex = 0;
 		this.undoStates = [];
 		this.redoStates = [];
 
@@ -86,24 +72,13 @@ class Canvas {
 			}
 		};
 
-		this.drawBrushPosition = function () {
-			// console.log(brush.xPosition, brush.yPosition);
-			this.ctx.clearRect(0, 0, this.width, this.height);
-			this.ctx.strokeStyle = 'green';
-			this.ctx.strokeRect(
-				brush.xPosition - brush.offset,
-				brush.yPosition - brush.offset,
-				brush.size * this.pixelSize,
-				brush.size * this.pixelSize
-			);
-		};
-
 		this.drawPixel = function (
 			x = brush.xPixelPosition,
 			y = brush.yPixelPosition
 		) {
 			let xOrigin = x * this.pixelSize;
 			let yOrigin = y * this.pixelSize;
+
 			this.ctx.fillStyle = pallet.currentColor;
 			this.ctx.fillRect(
 				xOrigin,

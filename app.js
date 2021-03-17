@@ -1,4 +1,5 @@
 const attachListeners = () => {
+	//brush listeners
 	brushCanvas.element.addEventListener('mousedown', (e) => {
 		pixelCanvas.saveState();
 		brush.isDrawing = true;
@@ -11,34 +12,19 @@ const attachListeners = () => {
 	brushCanvas.element.addEventListener('mouseup', (e) => {
 		brush.isDrawing = false;
 	});
+	//controls listeners
+	undoBtn.addEventListener('click', () => pixelCanvas.undo());
+	redoBtn.addEventListener('click', () => pixelCanvas.redo());
+	brushSizeSlide.addEventListener('input', () => {
+		brush.updateSize(brushSizeSlide.value);
+	});
 };
 
-const newCanvasForm = document.querySelector('#newCanvasForm');
-let pallet = null;
-let pixelCanvas = null;
-let brushCanvas = null;
-let brush = null;
-
-//user pixelCanvas size input
-newCanvasForm.addEventListener('submit', function (e) {
-	e.preventDefault();
-	const canvasRows = document.querySelector('#canvasRows');
-	const canvasCols = document.querySelector('#canvasCols');
-	const canvasContainer = document.querySelector('#canvasContainer');
-	const hiddenClass = document.querySelectorAll('.hidden');
+const newCanvas = function (rows, cols) {
 	pallet = new Pallet();
-	pixelCanvas = new Canvas(canvasRows.value, canvasCols.value);
-	brushCanvas = new Canvas(canvasRows.value, canvasCols.value);
+	pixelCanvas = new Canvas(rows, cols);
+	brushCanvas = new Canvas(rows, cols);
 	brush = new Brush(pixelCanvas.pixelSize);
-
-	//clear canvasContainer
-	while (
-		canvasContainer.firstChild &&
-		canvasContainer.firstChild.id != 'stage'
-	) {
-		canvasContainer.removeChild(canvasContainer.firstChild);
-	}
-	//initialize pixelCanvas // Pallet //brush
 
 	pallet.initPallet();
 	pixelCanvas.createCanvasElement('pixelCanvas');
@@ -49,21 +35,40 @@ newCanvasForm.addEventListener('submit', function (e) {
 	pallet.setCurrentColor();
 	brush.updateSize();
 	attachListeners();
+};
 
+const newCanvasForm = document.querySelector('#newCanvasForm');
+const undoBtn = document.querySelector('#undo');
+const redoBtn = document.querySelector('#redo');
+const newBtn = document.querySelector('#newCanvas');
+const saveBtn = document.querySelector('#saveCanvas');
+const loadBtn = document.querySelector('#loadCanvas');
+const brushSizeSlide = document.querySelector('#brushSize');
+const canvasRowsInput = document.querySelector('#canvasRowsInput');
+const canvasColsInput = document.querySelector('#canvasColsInput');
+const canvasContainer = document.querySelector('#canvasContainer');
+const hiddenClass = document.querySelectorAll('.hidden');
+let pallet = null;
+let pixelCanvas = null;
+let brushCanvas = null;
+let brush = null;
+
+//user input rows/cols
+newCanvasForm.addEventListener('submit', function (e) {
+	e.preventDefault();
+	const rows = canvasRowsInput.value;
+	const cols = canvasColsInput.value;
+	//clear canvasContainer
+	while (
+		canvasContainer.firstChild &&
+		canvasContainer.firstChild.id != 'stage'
+	) {
+		canvasContainer.removeChild(canvasContainer.firstChild);
+	}
+	//createCanvas
+	newCanvas(rows, cols);
 	//unhide interface
 	for (node of hiddenClass) {
 		node.classList.remove('hidden');
 	}
-
-	const undoBtn = document.querySelector('#undo');
-	const redoBtn = document.querySelector('#redo');
-	const newBtn = document.querySelector('#newCanvas');
-	const saveBtn = document.querySelector('#saveCanvas');
-	const loadBtn = document.querySelector('#loadCanvas');
-	const brushSize = document.querySelector('#brushSize');
-	undoBtn.addEventListener('click', () => pixelCanvas.undo());
-	redoBtn.addEventListener('click', () => pixelCanvas.redo());
-	brushSize.addEventListener('input', () => {
-		brush.updateSize(brushSize.value);
-	});
 });
