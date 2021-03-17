@@ -43,14 +43,14 @@ class Canvas {
 		this.undo = function () {
 			if (this.currentIndex > 0) {
 				this.currentIndex--;
-				this.draw();
+				this.drawAllPixels();
 			}
 		};
 
 		this.redo = function () {
 			if (this.currentIndex < this.pixelsLastIndex()) {
 				this.currentIndex++;
-				this.draw();
+				this.drawAllPixels();
 			}
 		};
 
