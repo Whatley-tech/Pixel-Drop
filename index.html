@@ -6,14 +6,26 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="reset.css" />
 		<link rel="stylesheet" href="app.css" />
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
 		<title>PixelPainter</title>
 	</head>
 	<body>
 		<div id="mainContainer">
-			<div id="navContainer" class="hidden">
-				<button id="newCanvas">New</button>
-				<button id="saveCanvas">Save</button>
-				<button id="loadCanvas">Load</button>
+			<div id="canvasNavContainer">
+				<div id="canvasOptions">
+					<button id="newCanvasBtn">New</button>
+					<button id="saveCanvasBtn">Save</button>
+					<button id="loadCanvasBtn">Load</button>
+				</div>
+				<div id="layersContainer">
+					<div id="bglayer"></div>
+					<div id="layer1" class="layer"></div>
+					<div id="layer2" class="layer"></div>
+					<div id="newLayerBtn"><span class="material-icons"> add </span></div>
+				</div>
 			</div>
 			<div id="midContainer">
 				<div id="colorHistoryContainer"></div>
@@ -43,8 +55,8 @@
 				</div>
 			</div>
 
-			<div id="controlsContainer" class="hidden">
-				<div id="colorPickerContainer" class="hidden">
+			<div id="controlsContainer">
+				<div id="colorPickerContainer">
 					<div id="currentColor"></div>
 					<input type="color" id="colorPicker" value="#000000" />
 				</div>
@@ -59,7 +71,7 @@
 					/>
 				</div>
 
-				<div id="stateContainer" class="hidden">
+				<div id="stateContainer">
 					<button id="undo">undo</button>
 					<button id="redo">redo</button>
 				</div>
