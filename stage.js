@@ -36,13 +36,19 @@ const stage = {
 	initStage(rows, cols) {
 		this.rows = rows;
 		this.cols = cols;
+
 		this.backgroundLayer = this.newLayer('background', 0);
 		this.brushOverlay = this.newLayer('brushOverlay', this.maxZIndex);
-		this.activeLayerCtx = this.backgroundLayer.ctx;
+		this.layers.push(this.newLayer());
+
 		this.appendLayerElement(this.backgroundLayer);
-		brush.drawCheckerGrid();
-		this.appendLayerElement(this.brushOverlay);
 		this.setBoundingBox(this.backgroundLayer.element);
+		this.activeLayerCtx = this.backgroundLayer.ctx;
+		brush.drawCheckerGrid();
+
+		this.appendLayerElement(this.brushOverlay);
+		this.appendLayerElement(...this.layers);
+		this.activeLayerCtx = _.head(this.layers).ctx;
 	},
 	setBoundingBox(element) {
 		let BoundingBox = element.getBoundingClientRect();
@@ -50,7 +56,7 @@ const stage = {
 		this.topOrigin = BoundingBox.top;
 	},
 	newLayer(id = `layer${this.layers.length}`, zIndex = this.layers.length) {
-		return new Canvas(id);
+		return new Canvas(id, zIndex);
 	},
 	appendLayerElement(layer) {
 		this.element.appendChild(layer.element);
