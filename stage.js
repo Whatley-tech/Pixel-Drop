@@ -4,7 +4,7 @@ const stage = {
 	backgroundLayer: undefined,
 	brushOverlay: undefined,
 	layers: [],
-	activeLayerCtx: undefined,
+	activeLayer: undefined,
 	rows: undefined,
 	cols: undefined,
 	leftOrigin: undefined,
@@ -37,30 +37,36 @@ const stage = {
 		this.rows = rows;
 		this.cols = cols;
 
-		this.backgroundLayer = this.newLayer('background', 0);
-		this.brushOverlay = this.newLayer('brushOverlay', this.maxZIndex);
-		this.layers.push(this.newLayer());
+		this.backgroundLayer = this.makeCanvas('background', 0);
+		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
 
 		this.appendLayerElement(this.backgroundLayer);
 		this.setBoundingBox(this.backgroundLayer.element);
-		this.activeLayerCtx = this.backgroundLayer.ctx;
+		this.activeLayer = this.backgroundLayer;
 		brush.drawCheckerGrid();
 
 		this.appendLayerElement(this.brushOverlay);
-		this.appendLayerElement(...this.layers);
-		this.activeLayerCtx = _.head(this.layers).ctx;
+		this.newLayer();
+		this.activeLayer = _.head(this.layers);
+		layerPanel.toggleActive();
 	},
 	setBoundingBox(element) {
 		let BoundingBox = element.getBoundingClientRect();
 		this.leftOrigin = BoundingBox.left;
 		this.topOrigin = BoundingBox.top;
 	},
-	newLayer(id = `layer${this.layers.length}`, zIndex = this.layers.length) {
+	makeCanvas(id = `${this.layers.length}`, zIndex = this.layers.length + 1) {
 		return new Canvas(id, zIndex);
+	},
+	newLayer() {
+		let layer = this.makeCanvas();
+		this.appendLayerElement(layer);
+		this.layers.push(layer);
 	},
 	appendLayerElement(layer) {
 		this.element.appendChild(layer.element);
 	},
+
 	deleteLayer() {},
 	clearStage() {},
 };

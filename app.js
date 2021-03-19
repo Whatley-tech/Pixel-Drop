@@ -42,9 +42,9 @@ const initApp = function () {
 
 	pallet = new Pallet();
 	brush = new Brush();
-
 	pallet.initPallet();
 	stage.initStage(rows, cols);
+	layerPanel.init();
 	pallet.setCurrentColor();
 	attachListeners();
 };

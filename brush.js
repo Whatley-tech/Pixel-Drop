@@ -9,7 +9,7 @@ class Brush {
 		return Math.floor(stage.pixelSize / 2);
 	}
 	get ctx() {
-		return stage.activeLayerCtx;
+		return stage.activeLayer.ctx;
 	}
 	updatePosition(evt) {
 		let canvas = stage.brushOverlay;

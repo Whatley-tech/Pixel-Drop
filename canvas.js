@@ -2,14 +2,23 @@ class Canvas {
 	constructor(id, zIndex) {
 		this.element = document.createElement('canvas');
 		this.ctx = this.element.getContext('2d');
-		this.element.id = id;
+		this.element.id = `canvasLayer${id}`;
 		this.element.style.width = `${stage.width}px`;
 		this.element.style.height = `${stage.height}px`;
 		this.element.width = stage.scaledWidth;
 		this.element.height = stage.scaledHeight;
-		this.element.style.zIndex = zIndex;
+		this.element.style.zIndex = zIndex || id;
 		this.element.classList.add('canvas');
 		this.ctx.scale(stage.scale, stage.scale);
+
+		this.layerTile = document.createElement('div');
+		this.layerTile.id = `tile${id}`;
+		this.layerTile.classList.add('tile');
+		this.layerTile.addEventListener('click', () => {
+			stage.activeLayer = this;
+			layerPanel.toggleActive(this.layerTile);
+			// this.layerTile.classList.add('active');
+		});
 	}
 }
 

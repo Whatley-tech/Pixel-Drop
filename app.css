@@ -21,15 +21,22 @@
 	display: flex;
 	justify-content: space-evenly;
 }
-#layersContainer {
+#layerPanelContainer {
 	display: flex;
 	flex-flow: row-reverse;
 }
-.layer {
+#tileContainer {
+	display: flex;
+	flex-flow: row;
+}
+.tile {
 	height: 50px;
 	width: 50px;
 	background-color: gainsboro;
 	border: 2px solid black;
+}
+.active {
+	border: 2px solid green;
 }
 #newLayerBtn {
 	border: 2px dotted black;
