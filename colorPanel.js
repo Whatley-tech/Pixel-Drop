@@ -1,11 +1,10 @@
-const Pallet = class {
-	constructor() {
-		this.colorHistory = [];
-		this.currentColor = '#000000';
-		this.currentColorDiv = document.querySelector('#currentColor');
-		this.colorPicker = document.querySelector('#colorPicker');
-	}
-	initPallet() {
+const colorPanel = {
+	colorHistory: [],
+	currentColor: '#000000',
+	currentColorDiv: document.querySelector('#currentColor'),
+	colorPicker: document.querySelector('#colorPicker'),
+
+	init() {
 		this.currentColorDiv.addEventListener('click', () =>
 			this.colorPicker.click()
 		);
@@ -15,12 +14,12 @@ const Pallet = class {
 		this.colorPicker.addEventListener('change', () =>
 			this.updateColorHistory(this.colorPicker.value)
 		);
-	}
+	},
 	setCurrentColor(color = '#000000') {
 		this.colorPicker.value = color;
 		this.currentColorDiv.style.background = color;
 		this.currentColor = color;
-	}
+	},
 	updateColorHistory(color) {
 		const container = document.querySelector('#colorHistoryContainer');
 		const prevColor = document.createElement('div');
@@ -37,5 +36,5 @@ const Pallet = class {
 
 		container.appendChild(prevColor);
 		this.colorHistory.push(prevColor);
-	}
+	},
 };

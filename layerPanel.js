@@ -7,8 +7,8 @@ const layerPanel = {
 		this.toggleActive();
 	},
 	removeLayer() {},
+	moveLayer() {},
 	addNewLayer() {
-		// console.log('click')
 		stage.newLayer();
 		this.updateLayerTiles();
 	},
@@ -18,11 +18,10 @@ const layerPanel = {
 		});
 
 		_.eachRight(stage.layers, (layer) => {
-			// console.log(layer);
 			this.tileContainer.appendChild(layer.layerTile);
 		});
 	},
-	toggleActive(layer) {
+	toggleActive() {
 		const currentlyActive = document.querySelector('.active');
 		if (currentlyActive) currentlyActive.classList.toggle('active');
 		stage.activeLayer.layerTile.classList.toggle('active');

@@ -33,7 +33,7 @@ class Brush {
 		let xOrigin = x * stage.pixelSize;
 		let yOrigin = y * stage.pixelSize;
 
-		this.ctx.fillStyle = pallet.currentColor;
+		this.ctx.fillStyle = colorPanel.currentColor;
 		this.ctx.fillRect(
 			xOrigin,
 			yOrigin,
@@ -50,13 +50,13 @@ class Brush {
 
 		for (let x = 0; x < cols; x++) {
 			colorOffset % 2 === 0
-				? (pallet.currentColor = darkGray)
-				: (pallet.currentColor = lightGray);
+				? (colorPanel.currentColor = darkGray)
+				: (colorPanel.currentColor = lightGray);
 			colorOffset++;
 			for (let y = 0; y < rows; y++) {
-				pallet.currentColor === lightGray
-					? (pallet.currentColor = darkGray)
-					: (pallet.currentColor = lightGray);
+				colorPanel.currentColor === lightGray
+					? (colorPanel.currentColor = darkGray)
+					: (colorPanel.currentColor = lightGray);
 				brush.drawPixel(x, y);
 			}
 		}
