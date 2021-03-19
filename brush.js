@@ -1,35 +1,64 @@
 class Brush {
 	constructor(size) {
 		this.size = 1;
-		this.offset = 0;
 		this.xPosition = 0;
 		this.yPosition = 0;
-		this.xTopLeft = 0;
-		this.yTopLeft = 0;
-		this.xBottomRight = 0;
-		this.yBottomRight = 0;
 		this.isDrawing = false;
 	}
+	get offset() {
+		return Math.floor(stage.pixelSize / 2);
+	}
+	get ctx() {
+		return stage.activeLayerCtx;
+	}
 	updatePosition(evt) {
-		let canvas = brushOverlay;
+		let canvas = stage.brushOverlay;
 		//find brushPosition
-		this.xPosition = Math.floor(evt.pageX - brushOverlay.leftOrigin);
-		this.yPosition = Math.floor(evt.pageY - brushOverlay.topOrigin);
-		this.xPixelPosition = Math.floor(this.xPosition / pixelCanvas.pixelSize);
-		this.yPixelPosition = Math.floor(this.yPosition / pixelCanvas.pixelSize);
+		this.xPosition = Math.floor(evt.pageX - stage.leftOrigin);
+		this.yPosition = Math.floor(evt.pageY - stage.topOrigin);
+		// console.log(this.xPosition);
+		this.xPixelPosition = Math.floor(this.xPosition / stage.pixelSize);
+		this.yPixelPosition = Math.floor(this.yPosition / stage.pixelSize);
 		//draw brushPosition
-		canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+		canvas.ctx.clearRect(0, 0, stage.width, stage.height);
 		canvas.ctx.strokeStyle = 'green';
 		canvas.ctx.strokeRect(
 			this.xPosition - this.offset,
 			this.yPosition - this.offset,
-			this.size * canvas.pixelSize,
-			this.size * canvas.pixelSize
+			this.size * stage.pixelSize,
+			this.size * stage.pixelSize
 		);
 	}
+	drawPixel(x = brush.xPixelPosition, y = brush.yPixelPosition) {
+		let xOrigin = x * stage.pixelSize;
+		let yOrigin = y * stage.pixelSize;
 
-	updateSize(value = 1) {
-		this.size = value;
-		this.offset = Math.floor(pixelCanvas.pixelSize / 2);
+		this.ctx.fillStyle = pallet.currentColor;
+		this.ctx.fillRect(
+			xOrigin,
+			yOrigin,
+			stage.pixelSize * brush.size,
+			stage.pixelSize * brush.size
+		);
+	}
+	drawCheckerGrid() {
+		const lightGray = '#d7d7d7';
+		const darkGray = '#fafafa';
+		const rows = stage.rows;
+		const cols = stage.cols;
+		let colorOffset = 0;
+
+		for (let x = 0; x < cols; x++) {
+			colorOffset % 2 === 0
+				? (pallet.currentColor = darkGray)
+				: (pallet.currentColor = lightGray);
+			colorOffset++;
+			for (let y = 0; y < rows; y++) {
+				pallet.currentColor === lightGray
+					? (pallet.currentColor = darkGray)
+					: (pallet.currentColor = lightGray);
+				brush.drawPixel(x, y);
+			}
+		}
 	}
 }

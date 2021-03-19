@@ -1,33 +1,30 @@
 const attachListeners = () => {
 	//brush listeners
-	brushOverlay.element.addEventListener('mousedown', (e) => {
-		pixelCanvas.saveState();
+	stage.element.addEventListener('mousedown', (e) => {
+		// pixelCanvas.saveState();
 		brush.isDrawing = true;
-		pixelCanvas.drawPixel();
+		brush.drawPixel();
 	});
-	brushOverlay.element.addEventListener('mousemove', (e) => {
+	stage.element.addEventListener('mousemove', (e) => {
 		brush.updatePosition(e);
-		if (brush.isDrawing) pixelCanvas.drawPixel();
+		if (brush.isDrawing) brush.drawPixel();
 	});
-	brushOverlay.element.addEventListener(
-		'mouseleave',
-		() => (brush.isDrawing = false)
-	);
-	brushOverlay.element.addEventListener('mouseup', (e) => {
+	stage.element.addEventListener('mouseleave', () => (brush.isDrawing = false));
+	stage.element.addEventListener('mouseup', (e) => {
 		brush.isDrawing = false;
 	});
 	//canvasNav Controls
-	newBtn.addEventListener('click', () => {
-		removeAllChildNodes(stage);
-		canvasRowsInput.value = 0;
-		canvasColsInput.value = 0;
-		toggleForm();
-	});
+	// newBtn.addEventListener('click', () => {
+	// 	removeAllChildNodes(stage);
+	// 	canvasRowsInput.value = 0;
+	// 	canvasColsInput.value = 0;
+	// 	toggleForm();
+	// });
 	//controls listeners
-	undoBtn.addEventListener('click', () => pixelCanvas.undo());
-	redoBtn.addEventListener('click', () => pixelCanvas.redo());
+	// undoBtn.addEventListener('click', () => pixelCanvas.undo());
+	// redoBtn.addEventListener('click', () => pixelCanvas.redo());
 	brushSizeSlide.addEventListener('input', () => {
-		brush.updateSize(brushSizeSlide.value);
+		brush.size = brushSizeSlide.value;
 	});
 };
 const removeAllChildNodes = function (parent) {
@@ -35,31 +32,23 @@ const removeAllChildNodes = function (parent) {
 		parent.removeChild(parent.firstChild);
 	}
 };
-const toggleForm = function () {
-	console.log('hide');
-	newCanvasForm.classList.toggle('hidden');
+const toggleHidden = function (element) {
+	element.classList.toggle('hidden');
 };
 
-const initCanvas = function () {
+const initApp = function () {
 	const rows = canvasRowsInput.value;
 	const cols = canvasColsInput.value;
 
 	pallet = new Pallet();
-	pixelCanvas = new Canvas(rows, cols);
-	brushOverlay = new Canvas(rows, cols);
-	brush = new Brush(pixelCanvas.pixelSize);
+	brush = new Brush();
 
 	pallet.initPallet();
-	pixelCanvas.createCanvasElement('pixelCanvas');
-	pixelCanvas.appendCanvasElement();
-	brushOverlay.createCanvasElement('brushOverlay');
-	brushOverlay.appendCanvasElement();
-	pixelCanvas.drawGrid();
+	stage.initStage(rows, cols);
 	pallet.setCurrentColor();
-	brush.updateSize();
 	attachListeners();
 };
-const stage = document.querySelector('#stage');
+
 const newCanvasForm = document.querySelector('#newCanvasForm');
 const undoBtn = document.querySelector('#undo');
 const redoBtn = document.querySelector('#redo');
@@ -69,7 +58,7 @@ const loadBtn = document.querySelector('#loadCanvasBtn');
 const brushSizeSlide = document.querySelector('#brushSize');
 const canvasRowsInput = document.querySelector('#canvasRowsInput');
 const canvasColsInput = document.querySelector('#canvasColsInput');
-const canvasContainer = document.querySelector('#canvasContainer');
+const stageContainer = document.querySelector('#stageContainer');
 const hiddenClass = document.querySelectorAll('.hidden');
 let pallet = null;
 let pixelCanvas = null;
@@ -78,6 +67,6 @@ let brush = null;
 
 newCanvasForm.addEventListener('submit', (e) => {
 	e.preventDefault();
-	toggleForm();
-	initCanvas();
+	toggleHidden(newCanvasForm);
+	initApp();
 });

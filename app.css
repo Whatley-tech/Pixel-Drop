@@ -60,7 +60,7 @@
 	justify-content: flex-end;
 	align-items: center;
 }
-#canvasContainer {
+#stageContainer {
 	/* border: 1px solid blue; */
 	box-sizing: border-box;
 	display: flex;
@@ -78,12 +78,6 @@
 	cursor: none;
 	box-sizing: border-box;
 	border: 1px solid black;
-}
-.pixelCanvas {
-	z-index: 1;
-}
-.brushOverlay {
-	z-index: 2;
 }
 
 #controlsContainer {
