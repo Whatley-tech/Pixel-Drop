@@ -8,6 +8,9 @@ class Brush {
 	get offset() {
 		return Math.floor(stage.pixelSize / 2);
 	}
+	get ctx() {
+		return stage.activeLayerCtx;
+	}
 	updatePosition(evt) {
 		let canvas = stage.brushOverlay;
 		//find brushPosition
@@ -19,7 +22,6 @@ class Brush {
 		//draw brushPosition
 		canvas.ctx.clearRect(0, 0, stage.width, stage.height);
 		canvas.ctx.strokeStyle = 'green';
-		console.log(this.offset);
 		canvas.ctx.strokeRect(
 			this.xPosition - this.offset,
 			this.yPosition - this.offset,
@@ -30,10 +32,9 @@ class Brush {
 	drawPixel(x = brush.xPixelPosition, y = brush.yPixelPosition) {
 		let xOrigin = x * stage.pixelSize;
 		let yOrigin = y * stage.pixelSize;
-		let ctx = stage.activeLayerCtx;
 
-		ctx.fillStyle = pallet.currentColor;
-		ctx.fillRect(
+		this.ctx.fillStyle = pallet.currentColor;
+		this.ctx.fillRect(
 			xOrigin,
 			yOrigin,
 			stage.pixelSize * brush.size,
@@ -41,12 +42,10 @@ class Brush {
 		);
 	}
 	drawCheckerGrid() {
-		console.log('asdf');
 		const lightGray = '#d7d7d7';
 		const darkGray = '#fafafa';
 		const rows = stage.rows;
 		const cols = stage.cols;
-
 		let colorOffset = 0;
 
 		for (let x = 0; x < cols; x++) {
