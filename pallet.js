@@ -1,7 +1,7 @@
 const Pallet = class {
 	constructor() {
 		this.colorHistory = [];
-		this.currentColor = 0;
+		this.currentColor = '#000000';
 		this.currentColorDiv = document.querySelector('#currentColor');
 		this.colorPicker = document.querySelector('#colorPicker');
 	}
