@@ -1,4 +1,4 @@
-class Brush {
+class Tool {
 	constructor(size) {
 		this.size = 1;
 		this.xPosition = 0;
@@ -29,7 +29,13 @@ class Brush {
 			this.size * stage.pixelSize
 		);
 	}
-	drawPixel(x = brush.xPixelPosition, y = brush.yPixelPosition) {
+}
+
+class Brush extends Tool {
+	action() {
+		this.drawPixel();
+	}
+	drawPixel(x = this.xPixelPosition, y = this.yPixelPosition) {
 		let xOrigin = x * stage.pixelSize;
 		let yOrigin = y * stage.pixelSize;
 
@@ -37,8 +43,8 @@ class Brush {
 		this.ctx.fillRect(
 			xOrigin,
 			yOrigin,
-			stage.pixelSize * brush.size,
-			stage.pixelSize * brush.size
+			stage.pixelSize * this.size,
+			stage.pixelSize * this.size
 		);
 	}
 	drawCheckerGrid() {
@@ -57,8 +63,25 @@ class Brush {
 				colorPanel.currentColor === lightGray
 					? (colorPanel.currentColor = darkGray)
 					: (colorPanel.currentColor = lightGray);
-				brush.drawPixel(x, y);
+				this.drawPixel(x, y);
 			}
 		}
+	}
+}
+class Eraser extends Tool {
+	action() {
+		this.erasePixel();
+	}
+	erasePixel(x = this.xPixelPosition, y = this.yPixelPosition) {
+		let xOrigin = x * stage.pixelSize;
+		let yOrigin = y * stage.pixelSize;
+
+		// this.ctx.fillStyle = colorPanel.currentColor;
+		this.ctx.clearRect(
+			xOrigin,
+			yOrigin,
+			stage.pixelSize * this.size,
+			stage.pixelSize * this.size
+		);
 	}
 }

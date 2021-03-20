@@ -1,0 +1,1 @@
+class Eraser extends Tool {}

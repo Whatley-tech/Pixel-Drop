@@ -33,7 +33,7 @@ const stage = {
 		const rowSize = Math.floor(containerHeight / this.rows);
 		return colSize >= rowSize ? rowSize : colSize;
 	},
-	initStage(rows, cols) {
+	init(rows, cols) {
 		this.rows = rows;
 		this.cols = cols;
 
@@ -43,11 +43,12 @@ const stage = {
 		this.appendLayerElement(this.backgroundLayer);
 		this.setBoundingBox(this.backgroundLayer.element);
 		this.activeLayer = this.backgroundLayer;
-		brush.drawCheckerGrid();
+		toolsPanel.activeTool.drawCheckerGrid();
 
 		this.appendLayerElement(this.brushOverlay);
 		this.newLayer();
 		this.activeLayer = _.head(this.layers);
+		this.attachStageListeners();
 		layerPanel.toggleActive();
 	},
 	setBoundingBox(element) {
@@ -65,6 +66,23 @@ const stage = {
 	},
 	appendLayerElement(layer) {
 		this.element.appendChild(layer.element);
+	},
+	attachStageListeners() {
+		this.element.addEventListener('mousedown', (e) => {
+			toolsPanel.activeTool.isDrawing = true;
+			toolsPanel.activeTool.action();
+		});
+		this.element.addEventListener('mousemove', (e) => {
+			toolsPanel.activeTool.updatePosition(e);
+			if (toolsPanel.activeTool.isDrawing) toolsPanel.activeTool.action();
+		});
+		this.element.addEventListener(
+			'mouseleave',
+			() => (toolsPanel.activeTool.isDrawing = false)
+		);
+		this.element.addEventListener('mouseup', (e) => {
+			toolsPanel.activeTool.isDrawing = false;
+		});
 	},
 
 	deleteLayer() {},

@@ -1,5 +1,6 @@
 class Canvas {
 	constructor(id, zIndex) {
+		//Canvas Element for stage
 		this.element = document.createElement('canvas');
 		this.ctx = this.element.getContext('2d');
 		this.element.id = `canvasLayer${id}`;
@@ -11,13 +12,13 @@ class Canvas {
 		this.element.classList.add('canvas');
 		this.ctx.scale(stage.scale, stage.scale);
 
+		//layerPanel Element
 		this.layerTile = document.createElement('div');
 		this.layerTile.id = `tile${id}`;
 		this.layerTile.classList.add('tile');
 		this.layerTile.addEventListener('click', () => {
 			stage.activeLayer = this;
 			layerPanel.toggleActive(this.layerTile);
-			// this.layerTile.classList.add('active');
 		});
 	}
 }

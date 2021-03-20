@@ -58,15 +58,25 @@
 					<div id="currentColor"></div>
 					<input type="color" id="colorPicker" value="#000000" />
 				</div>
-				<div id="brushContainer">
-					<input
-						type="range"
-						name="brushSize"
-						id="brushSize"
-						value="1"
-						min="1"
-						max="5"
-					/>
+				<div id="toolsContainer">
+					<div id="tools">
+						<div id="brush" class="toolBtn">
+							<span class="material-icons"> brush </span>
+						</div>
+						<div id="eraser" class="toolBtn">
+							<span class="material-icons"> hide_source </span>
+						</div>
+					</div>
+					<div id="toolSizeContainer">
+						<input
+							type="range"
+							name="toolSize"
+							id="toolSize"
+							value="1"
+							min="1"
+							max="5"
+						/>
+					</div>
 				</div>
 
 				<div id="stateContainer">
@@ -76,10 +86,11 @@
 			</div>
 		</div>
 		<script src="/lib/lodash.js"></script>
-		<script src="brush.js"></script>
+		<script src="tools.js"></script>
 		<script src="canvas.js"></script>
 		<script src="colorPanel.js"></script>
 		<script src="layerPanel.js"></script>
+		<script src="toolsPanel.js"></script>
 		<script src="stage.js"></script>
 		<script src="app.js"></script>
 	</body>

@@ -97,6 +97,17 @@
 	margin-top: 20px;
 	width: 640px;
 }
+#toolsContainer {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+}
+#tools {
+	/* border: 1px solid green; */
+	width: 100px;
+	display: flex;
+	justify-content: space-around;
+}
 #colorPicker {
 	visibility: hidden;
 	position: absolute;
@@ -106,6 +117,9 @@
 	width: 60px;
 	border-radius: 50px;
 	border: 2px solid black;
+}
+.toolBtn {
+	cursor: pointer;
 }
 button {
 	border-radius: 50px;
