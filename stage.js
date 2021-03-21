@@ -48,8 +48,8 @@ const stage = {
 		this.appendLayerElement(this.brushOverlay);
 		this.newLayer();
 		this.activeLayer = _.head(this.layers);
+		layerPanel.activeLayerTile = this.activeLayer.layerTile;
 		this.attachStageListeners();
-		layerPanel.toggleActive();
 	},
 	setBoundingBox(element) {
 		let BoundingBox = element.getBoundingClientRect();

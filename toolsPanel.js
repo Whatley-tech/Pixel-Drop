@@ -3,13 +3,17 @@ const toolsPanel = {
 	brushSizeSlider: document.querySelector('#toolSize'),
 	brushBtn: document.querySelector('#brush'),
 	eraserBtn: document.querySelector('#eraser'),
-	eraser: new Eraser(),
-	brush: new Brush(),
+	eraser: undefined,
+	brush: undefined,
 	activeTool: undefined,
 
 	init() {
-		this.tool = this.brush;
 		this.attachToolControlListeners();
+		this.eraser = new Eraser(this.eraserBtn);
+		this.brush = new Brush(this.brushBtn);
+		this.tool = this.brush;
+		this.toggleActive();
+		console.log(this.eraser);
 	},
 
 	set tool(type) {
@@ -22,10 +26,17 @@ const toolsPanel = {
 		this.brushBtn.addEventListener('click', () => {
 			this.tool = this.brush;
 			this.brushSizeSlider.value = this.activeTool.size;
+			this.toggleActive();
 		});
 		this.eraserBtn.addEventListener('click', () => {
 			this.tool = this.eraser;
 			this.brushSizeSlider.value = this.activeTool.size;
+			this.toggleActive();
 		});
+	},
+	toggleActive() {
+		const currentlyActive = document.querySelector('#toolsContainer .active');
+		if (currentlyActive) currentlyActive.classList.toggle('active');
+		this.activeTool.buttonElement.classList.toggle('active');
 	},
 };

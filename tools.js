@@ -1,9 +1,10 @@
 class Tool {
-	constructor(size) {
+	constructor(buttonElement) {
 		this.size = 1;
 		this.xPosition = 0;
 		this.yPosition = 0;
 		this.isDrawing = false;
+		this.buttonElement = buttonElement;
 	}
 	get offset() {
 		return Math.floor(stage.pixelSize / 2);

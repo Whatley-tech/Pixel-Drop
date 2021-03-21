@@ -1,9 +1,10 @@
 const layerPanel = {
 	newLayerBtn: document.querySelector('#newLayerBtn'),
 	tileContainer: document.querySelector('#tileContainer'),
+	activeLayerTile: undefined,
 	init() {
 		this.updateLayerTiles();
-		this.newLayerBtn.addEventListener('click', () => this.addNewLayer());
+		this.addLayerPanelListeners();
 		this.toggleActive();
 	},
 	removeLayer() {},
@@ -22,8 +23,11 @@ const layerPanel = {
 		});
 	},
 	toggleActive() {
-		const currentlyActive = document.querySelector('.active');
+		const currentlyActive = document.querySelector('#tileContainer .active');
 		if (currentlyActive) currentlyActive.classList.toggle('active');
-		stage.activeLayer.layerTile.classList.toggle('active');
+		this.activeLayerTile.classList.toggle('active');
+	},
+	addLayerPanelListeners() {
+		this.newLayerBtn.addEventListener('click', () => this.addNewLayer());
 	},
 };

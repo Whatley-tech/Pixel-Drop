@@ -18,7 +18,8 @@ class Canvas {
 		this.layerTile.classList.add('tile');
 		this.layerTile.addEventListener('click', () => {
 			stage.activeLayer = this;
-			layerPanel.toggleActive(this.layerTile);
+			layerPanel.activeLayerTile = this.layerTile;
+			layerPanel.toggleActive();
 		});
 	}
 }
