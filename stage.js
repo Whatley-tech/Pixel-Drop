@@ -1,7 +1,8 @@
 const stage = {
-	element: document.querySelector('#stage'),
-	container: document.querySelector('#stageContainer'),
-	backgroundLayer: undefined,
+	mainDiv: document.querySelector('#stage'),
+	layersDiv: document.querySelector('#stageLayers'),
+	stageContainerDiv: document.querySelector('#stageContainer'),
+	background: undefined,
 	brushOverlay: undefined,
 	layers: [],
 	activeLayer: undefined,
@@ -27,8 +28,8 @@ const stage = {
 		return Math.floor(this.rows * this.pixelSize * this.scale);
 	},
 	get pixelSize() {
-		const containerWidth = this.container.scrollWidth;
-		const containerHeight = this.container.scrollHeight;
+		const containerWidth = this.stageContainerDiv.scrollWidth;
+		const containerHeight = this.stageContainerDiv.scrollHeight;
 		const colSize = Math.floor(containerWidth / this.cols);
 		const rowSize = Math.floor(containerHeight / this.rows);
 		return colSize >= rowSize ? rowSize : colSize;
@@ -37,15 +38,15 @@ const stage = {
 		this.rows = rows;
 		this.cols = cols;
 
-		this.backgroundLayer = this.makeCanvas('background', 0);
-		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
-
-		this.appendLayerElement(this.backgroundLayer);
-		this.setBoundingBox(this.backgroundLayer.element);
-		this.activeLayer = this.backgroundLayer;
+		this.background = this.makeCanvas('background', 0);
+		this.appendToStageDiv(this.background);
+		this.setBoundingBox(this.background.element);
+		this.activeLayer = this.background;
 		toolsPanel.activeTool.drawCheckerGrid();
 
-		this.appendLayerElement(this.brushOverlay);
+		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
+		this.appendToStageDiv(this.brushOverlay);
+
 		this.newLayer();
 		this.activeLayer = _.head(this.layers);
 		layerPanel.activeLayerTile = this.activeLayer.layerTile;
@@ -61,30 +62,34 @@ const stage = {
 	},
 	newLayer() {
 		let layer = this.makeCanvas();
-		this.appendLayerElement(layer);
+		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
 	},
-	appendLayerElement(layer) {
-		this.element.appendChild(layer.element);
+	appendToStageDiv(canvas) {
+		this.mainDiv.appendChild(canvas.element);
+	},
+	appendToLayerDiv(canvas) {
+		this.layersDiv.appendChild(canvas.element);
 	},
 	attachStageListeners() {
-		this.element.addEventListener('mousedown', (e) => {
+		this.mainDiv.addEventListener('mousedown', (e) => {
+			statePanel.saveState();
 			toolsPanel.activeTool.isDrawing = true;
 			toolsPanel.activeTool.action();
 		});
-		this.element.addEventListener('mousemove', (e) => {
+		this.mainDiv.addEventListener('mousemove', (e) => {
 			toolsPanel.activeTool.updatePosition(e);
 			if (toolsPanel.activeTool.isDrawing) toolsPanel.activeTool.action();
 		});
-		this.element.addEventListener(
-			'mouseleave',
-			() => (toolsPanel.activeTool.isDrawing = false)
-		);
-		this.element.addEventListener('mouseup', (e) => {
+		this.mainDiv.addEventListener('mouseleave', () => {
+			toolsPanel.activeTool.isDrawing = false;
+		});
+		this.mainDiv.addEventListener('mouseup', (e) => {
 			toolsPanel.activeTool.isDrawing = false;
 		});
 	},
-
+	get state() {},
+	updateLayerStates() {},
 	deleteLayer() {},
 	clearStage() {},
 };

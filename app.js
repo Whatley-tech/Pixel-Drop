@@ -5,9 +5,9 @@ const toggleHidden = function (element) {
 const initApp = function () {
 	const rows = canvasRowsInput.value;
 	const cols = canvasColsInput.value;
-
 	toolsPanel.init();
 	stage.init(rows, cols);
+	statePanel.init();
 	colorPanel.init();
 	layerPanel.init();
 	colorPanel.setCurrentColor();

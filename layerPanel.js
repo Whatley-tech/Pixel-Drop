@@ -7,6 +7,12 @@ const layerPanel = {
 		this.addLayerPanelListeners();
 		this.toggleActive();
 	},
+	// updateLayerTileBG() {
+	// 	const img = stage.activeLayerImg;
+	// 	this.activeLayerTile.style.background = img;
+	// 	document.write(img);
+	// 	console.log(img);
+	// },
 	removeLayer() {},
 	moveLayer() {},
 	addNewLayer() {

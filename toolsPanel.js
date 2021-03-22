@@ -8,18 +8,17 @@ const toolsPanel = {
 	activeTool: undefined,
 
 	init() {
-		this.attachToolControlListeners();
+		this.attachToolPanelListeners();
 		this.eraser = new Eraser(this.eraserBtn);
 		this.brush = new Brush(this.brushBtn);
 		this.tool = this.brush;
 		this.toggleActive();
-		console.log(this.eraser);
 	},
 
 	set tool(type) {
 		this.activeTool = type;
 	},
-	attachToolControlListeners() {
+	attachToolPanelListeners() {
 		this.brushSizeSlider.addEventListener('input', () => {
 			this.activeTool.size = this.brushSizeSlider.value;
 		});

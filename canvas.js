@@ -16,6 +16,20 @@ class Canvas {
 		this.layerTile = document.createElement('div');
 		this.layerTile.id = `tile${id}`;
 		this.layerTile.classList.add('tile');
+
+		this.layerControlContainer = document.createElement('div');
+		this.layerControlContainer.id = '#layerControlContainer';
+
+		this.removeBtn = document.createElement('div');
+		this.removeBtn.id = '#removeBtn';
+		this.removeBtn.classList.add('layerBtn');
+		this.removeBtn.innerHTML = `<span class="material-icons md-14 white">
+		close
+		</span>`;
+
+		this.layerTile.append(this.layerControlContainer);
+		this.layerControlContainer.append(this.removeBtn);
+
 		this.layerTile.addEventListener('click', () => {
 			stage.activeLayer = this;
 			layerPanel.activeLayerTile = this.layerTile;
