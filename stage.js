@@ -64,6 +64,7 @@ const stage = {
 		let layer = this.makeCanvas();
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
+		return layer;
 	},
 	appendToStageDiv(canvas) {
 		this.mainDiv.appendChild(canvas.element);

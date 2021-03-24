@@ -16,6 +16,7 @@ class Canvas {
 		this.layerTile = document.createElement('div');
 		this.layerTile.id = `tile${id}`;
 		this.layerTile.classList.add('tile');
+		this.layerTile.draggable = 'true';
 
 		this.layerControlContainer = document.createElement('div');
 		this.layerControlContainer.id = '#layerControlContainer';

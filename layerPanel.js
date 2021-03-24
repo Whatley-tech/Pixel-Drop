@@ -6,6 +6,9 @@ const layerPanel = {
 		this.updateLayerTiles();
 		this.addLayerPanelListeners();
 		this.toggleActive();
+		$('#tileContainer').sortable({
+			stop: (e, ui) => this.updateStage(ui.item[0].id),
+		});
 	},
 	// updateLayerTileBG() {
 	// 	const img = stage.activeLayerImg;
@@ -19,6 +22,21 @@ const layerPanel = {
 		stage.newLayer();
 		this.updateLayerTiles();
 	},
+	updateStage(element) {
+		// console.log(ui.item[0].id);
+		const currentTileIndex = findCurrentIndex(element);
+		const prevTileIndex = findPrevIndex(element);
+
+		stage.moveIndex(currentTileIndex, prevTileIndex);
+		stage.updateZindex();
+
+		// const changedElement = _.findIndex(stage.layers, function (layer) {
+		// 	return layer.layerTile.id == element;
+		// });
+
+		// console.log(changedElement);
+	},
+	orderLayers() {},
 	updateLayerTiles() {
 		_.each(this.tileContainer.children, (child) => {
 			if (child) child.remove();
