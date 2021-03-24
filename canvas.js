@@ -25,7 +25,7 @@ class Canvas {
 		this.removeBtn.classList.add('layerBtn');
 		this.removeBtn.innerHTML = `<span class="material-icons md-14 white">
 		close
-		</span>`;
+		</span> ${this.layerTile.id}`;
 
 		this.layerTile.append(this.layerControlContainer);
 		this.layerControlContainer.append(this.removeBtn);
@@ -33,6 +33,7 @@ class Canvas {
 		this.layerTile.addEventListener('click', () => {
 			stage.activeLayer = this;
 			layerPanel.activeLayerTile = this.layerTile;
+			console.log(stage.activeLayer);
 			layerPanel.toggleActive();
 		});
 	}

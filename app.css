@@ -1,6 +1,8 @@
 #mainContainer {
 	box-sizing: border-box;
 	height: 100vh;
+	width: fit-content;
+	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -12,6 +14,7 @@
 	flex-flow: row;
 	justify-content: space-between;
 	align-items: center;
+	margin-bottom: 20px;
 	/* border: 1px solid blue; */
 }
 #canvasNavContainer button {
@@ -23,17 +26,18 @@
 }
 #layerPanelContainer {
 	display: flex;
-	flex-flow: row-reverse;
+	flex-flow: column;
 }
 #tileContainer {
 	display: flex;
-	flex-flow: row;
+	flex-flow: column;
 }
 .tile {
 	height: 50px;
 	width: 50px;
 	background-color: rgb(233, 233, 233);
 	border: 2px solid rgb(87, 87, 87);
+	color: #ffffff;
 }
 .active {
 	border: 2px solid green;
@@ -75,7 +79,9 @@
 	justify-content: center;
 	align-items: center;
 	height: 500px;
-	width: 600px;
+	width: 500px;
+	margin-right: 20px;
+	margin-left: 20px;
 }
 
 .canvas {
