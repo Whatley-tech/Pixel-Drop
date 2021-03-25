@@ -3,7 +3,7 @@ const layerPanel = {
 	tileContainer: document.querySelector('#tileContainer'),
 	activetile: undefined,
 	init() {
-		this.updatetiles();
+		this.updateTiles();
 		this.addLayerPanelListeners();
 		this.toggleActive();
 		$('#tileContainer').sortable({
@@ -17,10 +17,9 @@ const layerPanel = {
 	// 	console.log(img);
 	// },
 	removeLayer() {},
-	moveLayer() {},
 	addNewLayer() {
 		stage.newLayer();
-		this.updatetiles();
+		this.updateTiles();
 	},
 	updateStage(element) {
 		const currentTileIndex = this.findArrayIndex(
@@ -31,14 +30,14 @@ const layerPanel = {
 			return layer.tile == element;
 		});
 		stage.moveIndex(currentTileIndex, prevTileIndex);
-		this.updatetiles();
+		this.updateTiles();
 		stage.updateZIndexes();
 	},
 	findArrayIndex(arr, element) {
 		const index = _.findIndex(arr, element);
 		return index;
 	},
-	updatetiles() {
+	updateTiles() {
 		_.each(this.tileContainer.children, (child) => {
 			if (child) child.remove();
 		});
