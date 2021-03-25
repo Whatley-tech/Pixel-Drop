@@ -11,6 +11,7 @@ const stage = {
 	leftOrigin: undefined,
 	topOrigin: undefined,
 	maxZIndex: 12,
+	uniqueId: 0,
 
 	get scale() {
 		return window.devicePixelRatio;
@@ -49,7 +50,7 @@ const stage = {
 
 		this.newLayer();
 		this.activeLayer = _.head(this.layers);
-		layerPanel.activeLayerTile = this.activeLayer.layerTile;
+		layerPanel.activetile = this.activeLayer.tile;
 		this.attachStageListeners();
 	},
 	setBoundingBox(element) {
@@ -57,7 +58,7 @@ const stage = {
 		this.leftOrigin = BoundingBox.left;
 		this.topOrigin = BoundingBox.top;
 	},
-	makeCanvas(id = `${this.layers.length}`, zIndex = this.layers.length + 1) {
+	makeCanvas(id = `${++this.uniqueId}`, zIndex) {
 		return new Canvas(id, zIndex);
 	},
 	newLayer() {
@@ -66,11 +67,22 @@ const stage = {
 		this.layers.push(layer);
 		return layer;
 	},
+	updateZIndexes() {
+		for (let i = 0; i < this.layers.length; i++) {
+			let canvas = this.layers[i];
+			canvas.element.style.zIndex = i + 1;
+		}
+	},
 	appendToStageDiv(canvas) {
 		this.mainDiv.appendChild(canvas.element);
 	},
 	appendToLayerDiv(canvas) {
 		this.layersDiv.appendChild(canvas.element);
+	},
+	moveIndex(currentIndex, prevIndex) {
+		element = this.layers[prevIndex];
+		this.layers.splice(prevIndex, 1);
+		this.layers.splice(currentIndex, 0, element);
 	},
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {

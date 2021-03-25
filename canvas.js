@@ -13,10 +13,11 @@ class Canvas {
 		this.ctx.scale(stage.scale, stage.scale);
 
 		//layerPanel Element
-		this.layerTile = document.createElement('div');
-		this.layerTile.id = `tile${id}`;
-		this.layerTile.classList.add('tile');
-		this.layerTile.draggable = 'true';
+		this.tile = document.createElement('div');
+		this.tile.name = `tile${id}`;
+		this.tile.id = `tile${id}`;
+		this.tile.classList.add('tile');
+		// this.tile.draggable = 'true';
 
 		this.layerControlContainer = document.createElement('div');
 		this.layerControlContainer.id = '#layerControlContainer';
@@ -26,15 +27,15 @@ class Canvas {
 		this.removeBtn.classList.add('layerBtn');
 		this.removeBtn.innerHTML = `<span class="material-icons md-14 white">
 		close
-		</span> ${this.layerTile.id}`;
+		</span>Tile${id}`;
 
-		this.layerTile.append(this.layerControlContainer);
+		this.tile.append(this.layerControlContainer);
 		this.layerControlContainer.append(this.removeBtn);
 
-		this.layerTile.addEventListener('click', () => {
+		this.tile.addEventListener('click', () => {
 			stage.activeLayer = this;
-			layerPanel.activeLayerTile = this.layerTile;
-			console.log(stage.activeLayer);
+			layerPanel.activetile = this.tile;
+			// console.log(stage.activeLayer);
 			layerPanel.toggleActive();
 		});
 	}
