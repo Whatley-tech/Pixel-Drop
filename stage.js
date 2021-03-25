@@ -61,8 +61,11 @@ const stage = {
 	makeCanvas(id = `${++this.uniqueId}`, zIndex) {
 		return new Canvas(id, zIndex);
 	},
+	makeLayer(id = `${++this.uniqueId}`, zIndex) {
+		return new Layer(id, zIndex);
+	},
 	newLayer() {
-		let layer = this.makeCanvas();
+		let layer = this.makeLayer();
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
 		return layer;

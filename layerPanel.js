@@ -1,6 +1,7 @@
 const layerPanel = {
 	newLayerBtn: document.querySelector('#newLayerBtn'),
 	tileContainer: document.querySelector('#tileContainer'),
+	tileTemplate: document.querySelector('#tileTemplate'),
 	activetile: undefined,
 	init() {
 		this.updateTiles();
@@ -10,12 +11,7 @@ const layerPanel = {
 			stop: (e, ui) => this.updateStage(ui.item[0]),
 		});
 	},
-	// updatetileBG() {
-	// 	const img = stage.activeLayerImg;
-	// 	this.activetile.style.background = img;
-	// 	document.write(img);
-	// 	console.log(img);
-	// },
+
 	removeLayer() {},
 	addNewLayer() {
 		stage.newLayer();
@@ -39,7 +35,7 @@ const layerPanel = {
 	},
 	updateTiles() {
 		_.each(this.tileContainer.children, (child) => {
-			if (child) child.remove();
+			if (child && child.id != this.tileTemplate.id) child.remove();
 		});
 
 		_.eachRight(stage.layers, (layer) => {
