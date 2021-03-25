@@ -27,23 +27,26 @@ class Layer extends Canvas {
 			`#${this.tile.id} .layerTitle`
 		);
 		this.tile.layerTitle.innerHTML = `tile${id}`;
-
-		toggleHidden(this.tile);
-
 		this.tile.visibleBtn = document.querySelector(
 			`#${this.tile.id} .visibleBtn`
 		);
+		this.tile.removeBtn = document.querySelector(`#${this.tile.id} .removeBtn`);
+
+		toggleHidden(this.tile);
 
 		this.tile.addEventListener('click', () => {
 			stage.activeLayer = this;
 			layerPanel.activetile = this.tile;
-			// console.log(stage.activeLayer);
 			layerPanel.toggleActive();
 		});
-		// this.layerTitle.addEventListener('input', (e) => {
-		// 	this.tile.name = e.target.value;
-		// });
-
+		this.tile.removeBtn.addEventListener('click', () => {
+			_.find(stage.layers, (layer) => {
+				if (layer && layer.element === this.element)
+					_.remove(stage.layers, layer);
+			});
+			this.element.remove();
+			this.tile.remove();
+		});
 		this.tile.visibleBtn.addEventListener('click', () => {
 			if (this.visible) {
 				this.visible = false;
