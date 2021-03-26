@@ -130,7 +130,7 @@ class FillTool extends Tool {
 		for (let i = 0; i < stage.rows; i++) {
 			for (let j = 0; j < stage.cols; j++) {
 				let checkPixel = this.ctx.getImageData(
-					i * stage.pixelSize * stage.scale,
+					i * stage.pixelSize * stage.scale, // +1 for rounding error??
 					j * stage.pixelSize * stage.scale,
 					1,
 					1
