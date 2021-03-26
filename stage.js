@@ -94,6 +94,7 @@ const stage = {
 		this.mainDiv.addEventListener('mousedown', (e) => {
 			statePanel.saveState();
 			toolsPanel.activeTool.isDrawing = true;
+			toolsPanel.activeTool.startAction();
 			toolsPanel.activeTool.action();
 		});
 		this.mainDiv.addEventListener('mousemove', (e) => {

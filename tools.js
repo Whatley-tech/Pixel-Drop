@@ -33,6 +33,7 @@ class Tool {
 }
 
 class Brush extends Tool {
+	startAction() {}
 	action() {
 		this.drawPixel();
 	}
@@ -71,6 +72,7 @@ class Brush extends Tool {
 	}
 }
 class Eraser extends Tool {
+	startAction() {}
 	action() {
 		this.erasePixel();
 	}
@@ -93,6 +95,7 @@ class EyeDrop extends Tool {
 		super(buttonElement);
 		this.color = undefined;
 	}
+	startAction() {}
 	action() {
 		this.color = this.selectColor();
 		console.log(this.color);
@@ -119,6 +122,7 @@ class EyeDrop extends Tool {
 	}
 }
 class FillTool extends Tool {
+	startAction() {}
 	action() {}
 	releaseAction() {
 		// this.fill();
@@ -153,4 +157,52 @@ class FillTool extends Tool {
 		}
 	}
 }
-class MoveTool extends Tool {}
+class MoveTool extends Tool {
+	constructor(buttonElement) {
+		super(buttonElement);
+		this.xMoveStart = undefined;
+		this.yMoveStart = undefined;
+		this.startImg = undefined;
+	}
+	startAction() {
+		this.xMoveStart = this.xPixelPosition;
+		this.yMoveStart = this.yPixelPosition;
+		this.startImg = this.captureLayerImg();
+		// console.log(this.xMoveStart, this.yMoveStart);
+	}
+	action() {
+		this.moveCanvas();
+	}
+	releaseAction() {}
+	moveCanvas(
+		x = this.xPixelPosition,
+		y = this.yPixelPosition,
+		xpp = this.xPixelPosition,
+		ypp = this.yPixelPosition
+	) {
+		const xDistance = this.checkMoveDistance(this.xMoveStart, xpp);
+		const yDistance = this.checkMoveDistance(this.yMoveStart, ypp);
+
+		console.log(xDistance, yDistance);
+		this.ctx.translate(xDistance, yDistance);
+		this.ctx.putImageData(
+			this.startImg,
+			0,
+			0,
+			stage.scaledWidth,
+			stage.scaledHeight
+		);
+	}
+	checkMoveDistance(startPosition, currentPosition) {
+		return (currentPosition - startPosition) * stage.pixelSize;
+	}
+	captureLayerImg() {
+		let img = this.ctx.getImageData(
+			0,
+			0,
+			stage.scaledWidth,
+			stage.scaledHeight
+		);
+		return img;
+	}
+}
