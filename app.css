@@ -96,8 +96,9 @@
 	transform: translate(-50%, -50%);
 	position: absolute;
 	cursor: none;
-	box-sizing: border-box;
-	border: 1px solid black;
+	/* box-sizing: border-box; */
+	/* border: 1px solid black; */
+	object-fit: contain;
 }
 
 #controlsContainer {

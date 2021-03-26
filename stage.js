@@ -17,13 +17,15 @@ const stage = {
 		return window.devicePixelRatio;
 	},
 	get width() {
+		//width of css style (shrinks dimensions)
 		return this.cols * this.pixelSize;
-	},
-	get scaledWidth() {
-		return Math.floor(this.cols * this.pixelSize * this.scale);
 	},
 	get height() {
 		return this.rows * this.pixelSize;
+	},
+	get scaledWidth() {
+		//full res width of canvas before css style
+		return Math.floor(this.cols * this.pixelSize * this.scale);
 	},
 	get scaledHeight() {
 		return Math.floor(this.rows * this.pixelSize * this.scale);
@@ -33,7 +35,8 @@ const stage = {
 		const containerHeight = this.stageContainerDiv.scrollHeight;
 		const colSize = Math.floor(containerWidth / this.cols);
 		const rowSize = Math.floor(containerHeight / this.rows);
-		return colSize >= rowSize ? rowSize : colSize;
+		const pixelSize = colSize >= rowSize ? rowSize : colSize;
+		return pixelSize;
 	},
 	init(rows, cols) {
 		this.rows = rows;

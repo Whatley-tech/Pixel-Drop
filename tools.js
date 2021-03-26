@@ -121,20 +121,25 @@ class EyeDrop extends Tool {
 class FillTool extends Tool {
 	action() {}
 	releaseAction() {
-		this.fill();
-		console.log('fill');
+		// this.fill();
+		this.colorReplace();
 	}
-	fill(x = this.xPosition, y = this.yPosition) {
-		const sample = this.ctx.getImageData(x * stage.scale, y * stage.scale, 1, 1)
-			.data;
-		for (let i = 0; i < stage.rows; i++) {
-			for (let j = 0; j < stage.cols; j++) {
-				let checkPixel = this.ctx.getImageData(
-					i * stage.pixelSize * stage.scale, // +1 for rounding error??
-					j * stage.pixelSize * stage.scale,
-					1,
-					1
-				).data;
+	getColorSample(x = this.xPosition, y = this.yPosition) {
+		return this.ctx.getImageData(x * stage.scale, y * stage.scale, 1, 1).data;
+	}
+	checkPixelColor(xPixelPosition, yPixelPosition) {
+		return this.ctx.getImageData(
+			xPixelPosition * stage.pixelSize * stage.scale + this.offset, // +1 for rounding error??
+			yPixelPosition * stage.pixelSize * stage.scale + this.offset,
+			1,
+			1
+		).data;
+	}
+	colorReplace(x = this.xPosition, y = this.yPosition) {
+		const sample = this.getColorSample();
+		for (let i = 0; i < stage.cols; i++) {
+			for (let j = 0; j < stage.rows; j++) {
+				let checkPixel = this.checkPixelColor(i, j);
 				if (sample.join() == checkPixel.join()) {
 					this.ctx.fillStyle = colorPanel.currentColor;
 					this.ctx.fillRect(
