@@ -95,11 +95,14 @@ class EyeDrop extends Tool {
 	}
 	action() {
 		this.color = this.selectColor();
+		console.log(this.color);
 	}
 	releaseAction() {
-		colorPanel.updateColorHistory(this.color);
+		//do nothing if pixel was transparent
+		if (this.color) return colorPanel.updateColorHistory(this.color);
 	}
 	selectColor(x = this.xPosition, y = this.yPosition) {
+		//multiply x/y to account for context scale
 		let colorSample = this.ctx.getImageData(
 			x * stage.scale,
 			y * stage.scale,
@@ -107,8 +110,11 @@ class EyeDrop extends Tool {
 			1
 		).data;
 
-		let hex = colorPanel.rgbToHex(...colorSample);
-		colorPanel.setCurrentColor(hex);
-		return hex;
+		//if colorSample has full transparency do nothing
+		if (colorSample[3] != 0) {
+			let hex = colorPanel.rgbToHex(...colorSample);
+			colorPanel.setCurrentColor(hex);
+			return hex;
+		}
 	}
 }
