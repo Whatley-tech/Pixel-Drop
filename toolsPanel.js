@@ -4,6 +4,7 @@ const toolsPanel = {
 	brushBtn: document.querySelector('#brush'),
 	eraserBtn: document.querySelector('#eraser'),
 	eyeDropBtn: document.querySelector('#eyeDrop'),
+	fillToolBtn: document.querySelector('#fillTool'),
 	eraser: undefined,
 	brush: undefined,
 	eyeDrop: undefined,
@@ -14,6 +15,7 @@ const toolsPanel = {
 		this.eraser = new Eraser(this.eraserBtn);
 		this.brush = new Brush(this.brushBtn);
 		this.eyeDrop = new EyeDrop(this.eyeDropBtn);
+		this.fillTool = new FillTool(this.fillToolBtn);
 		this.tool = this.brush;
 		this.toggleActive();
 	},
@@ -37,7 +39,12 @@ const toolsPanel = {
 		});
 		this.eyeDropBtn.addEventListener('click', () => {
 			this.tool = this.eyeDrop;
-			this.brushSizeSlider.value = this.activeTool.size;
+			// this.brushSizeSlider.value = this.activeTool.size;
+			this.toggleActive();
+		});
+		this.fillToolBtn.addEventListener('click', () => {
+			this.tool = this.fillTool;
+			// this.brushSizeSlider.value = this.activeTool.size;
 			this.toggleActive();
 		});
 	},

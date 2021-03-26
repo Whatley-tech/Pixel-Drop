@@ -50,7 +50,7 @@ const stage = {
 
 		this.newLayer();
 		this.activeLayer = _.head(this.layers);
-		layerPanel.activetile = this.activeLayer.tile;
+		layerPanel.activeTile = this.activeLayer.tile;
 		this.attachStageListeners();
 	},
 	setBoundingBox(element) {

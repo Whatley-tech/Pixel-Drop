@@ -2,7 +2,7 @@ const layerPanel = {
 	newLayerBtn: document.querySelector('#newLayerBtn'),
 	tileContainer: document.querySelector('#tileContainer'),
 	tileTemplate: document.querySelector('#tileTemplate'),
-	activetile: undefined,
+	activeTile: undefined,
 	init() {
 		this.updateTiles();
 		this.addLayerPanelListeners();
@@ -45,7 +45,7 @@ const layerPanel = {
 	toggleActive() {
 		const currentlyActive = document.querySelector('#tileContainer .active');
 		if (currentlyActive) currentlyActive.classList.toggle('active');
-		this.activetile.classList.toggle('active');
+		this.activeTile.classList.toggle('active');
 	},
 	addLayerPanelListeners() {
 		this.newLayerBtn.addEventListener('click', () => this.addNewLayer());

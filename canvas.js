@@ -36,16 +36,25 @@ class Layer extends Canvas {
 
 		this.tile.addEventListener('click', () => {
 			stage.activeLayer = this;
-			layerPanel.activetile = this.tile;
+			layerPanel.activeTile = this.tile;
 			layerPanel.toggleActive();
 		});
-		this.tile.removeBtn.addEventListener('click', () => {
+		this.tile.removeBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			if (stage.layers.length <= 1) return; //alert here "must have atleast one layer"
+
 			_.find(stage.layers, (layer) => {
 				if (layer && layer.element === this.element)
 					_.remove(stage.layers, layer);
 			});
 			this.element.remove();
 			this.tile.remove();
+
+			if (this.tile === layerPanel.activeTile) {
+				stage.activeLayer = _.last(stage.layers);
+				layerPanel.activeTile = stage.activeLayer.tile;
+				layerPanel.toggleActive();
+			}
 		});
 		this.tile.visibleBtn.addEventListener('click', () => {
 			if (this.visible) {

@@ -122,9 +122,10 @@
 }
 #tools {
 	/* border: 1px solid green; */
-	width: 100px;
+	width: 150px;
 	display: flex;
 	justify-content: space-around;
+	margin: 5px;
 }
 #colorPicker {
 	visibility: hidden;

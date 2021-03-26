@@ -118,3 +118,34 @@ class EyeDrop extends Tool {
 		}
 	}
 }
+class FillTool extends Tool {
+	action() {}
+	releaseAction() {
+		this.fill();
+		console.log('fill');
+	}
+	fill(x = this.xPosition, y = this.yPosition) {
+		const sample = this.ctx.getImageData(x * stage.scale, y * stage.scale, 1, 1)
+			.data;
+		for (let i = 0; i < stage.rows; i++) {
+			for (let j = 0; j < stage.cols; j++) {
+				let checkPixel = this.ctx.getImageData(
+					i * stage.pixelSize * stage.scale,
+					j * stage.pixelSize * stage.scale,
+					1,
+					1
+				).data;
+				if (sample.join() == checkPixel.join()) {
+					this.ctx.fillStyle = colorPanel.currentColor;
+					this.ctx.fillRect(
+						i * stage.pixelSize,
+						j * stage.pixelSize,
+						stage.pixelSize,
+						stage.pixelSize
+					);
+				}
+			}
+		}
+	}
+}
+class MoveTool extends Tool {}
