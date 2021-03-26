@@ -101,6 +101,7 @@ const stage = {
 			toolsPanel.activeTool.isDrawing = false;
 		});
 		this.mainDiv.addEventListener('mouseup', (e) => {
+			toolsPanel.activeTool.releaseAction();
 			toolsPanel.activeTool.isDrawing = false;
 		});
 	},

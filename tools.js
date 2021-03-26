@@ -36,6 +36,7 @@ class Brush extends Tool {
 	action() {
 		this.drawPixel();
 	}
+	releaseAction() {}
 	drawPixel(x = this.xPixelPosition, y = this.yPixelPosition) {
 		let xOrigin = x * stage.pixelSize;
 		let yOrigin = y * stage.pixelSize;
@@ -73,6 +74,7 @@ class Eraser extends Tool {
 	action() {
 		this.erasePixel();
 	}
+	releaseAction() {}
 	erasePixel(x = this.xPixelPosition, y = this.yPixelPosition) {
 		let xOrigin = x * stage.pixelSize;
 		let yOrigin = y * stage.pixelSize;
@@ -84,5 +86,29 @@ class Eraser extends Tool {
 			stage.pixelSize * this.size,
 			stage.pixelSize * this.size
 		);
+	}
+}
+class EyeDrop extends Tool {
+	constructor(buttonElement) {
+		super(buttonElement);
+		this.color = undefined;
+	}
+	action() {
+		this.color = this.selectColor();
+	}
+	releaseAction() {
+		colorPanel.updateColorHistory(this.color);
+	}
+	selectColor(x = this.xPosition, y = this.yPosition) {
+		let colorSample = this.ctx.getImageData(
+			x * stage.scale,
+			y * stage.scale,
+			1,
+			1
+		).data;
+
+		let hex = colorPanel.rgbToHex(...colorSample);
+		colorPanel.setCurrentColor(hex);
+		return hex;
 	}
 }
