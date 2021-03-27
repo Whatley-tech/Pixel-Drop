@@ -174,23 +174,15 @@ class MoveTool extends Tool {
 		this.moveCanvas();
 	}
 	releaseAction() {}
-	moveCanvas(
-		x = this.xPixelPosition,
-		y = this.yPixelPosition,
-		xpp = this.xPixelPosition,
-		ypp = this.yPixelPosition
-	) {
+	moveCanvas(xpp = this.xPixelPosition, ypp = this.yPixelPosition) {
 		const xDistance = this.checkMoveDistance(this.xMoveStart, xpp);
 		const yDistance = this.checkMoveDistance(this.yMoveStart, ypp);
-
 		console.log(xDistance, yDistance);
-		this.ctx.translate(xDistance, yDistance);
+		this.ctx.clearRect(0, 0, stage.width, stage.height);
 		this.ctx.putImageData(
 			this.startImg,
-			0,
-			0,
-			stage.scaledWidth,
-			stage.scaledHeight
+			xDistance * stage.scale,
+			yDistance * stage.scale
 		);
 	}
 	checkMoveDistance(startPosition, currentPosition) {
