@@ -13,7 +13,9 @@ const layerPanel = {
 	},
 
 	addNewLayer() {
-		stage.newLayer();
+		const layer = stage.newLayer();
+		stage.activeLayer = layer;
+		layerPanel.activeTile = layer.tile;
 		this.updateTiles();
 	},
 	updateStage(element) {
@@ -40,6 +42,7 @@ const layerPanel = {
 		_.eachRight(stage.layers, (layer) => {
 			this.tileContainer.appendChild(layer.tile);
 		});
+		this.toggleActive();
 	},
 	toggleActive() {
 		const currentlyActive = document.querySelector('#tileContainer .active');

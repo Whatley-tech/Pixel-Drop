@@ -3,7 +3,7 @@ class Canvas {
 		//Canvas Element for stage
 		this.element = document.createElement('canvas');
 		this.ctx = this.element.getContext('2d');
-		this.element.id = `canvasLayer${id}`;
+		this.element.id = `Layer${id}`;
 		this.element.style.width = `${stage.width}px`;
 		this.element.style.height = `${stage.height}px`;
 		this.element.width = stage.scaledWidth;

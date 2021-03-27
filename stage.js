@@ -3,6 +3,7 @@ const stage = {
 	layersDiv: document.querySelector('#stageLayers'),
 	stageContainerDiv: document.querySelector('#stageContainer'),
 	background: undefined,
+	mergedView: undefined,
 	brushOverlay: undefined,
 	layers: [],
 	activeLayer: undefined,
@@ -38,6 +39,7 @@ const stage = {
 		const pixelSize = colSize >= rowSize ? rowSize : colSize;
 		return pixelSize + 1;
 	},
+
 	init(rows, cols) {
 		this.rows = rows;
 		this.cols = cols;
@@ -50,6 +52,9 @@ const stage = {
 
 		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
 		this.appendToStageDiv(this.brushOverlay);
+
+		this.mergedView = this.makeCanvas('mergedView', this.maxZIndex - 1);
+		this.appendToStageDiv(this.mergedView);
 
 		this.newLayer();
 		this.activeLayer = _.head(this.layers);
@@ -109,6 +114,26 @@ const stage = {
 			toolsPanel.activeTool.isDrawing = false;
 		});
 	},
+	copyImage(canvas) {
+		return canvas.ctx.getImageData(0, 0, stage.scaledWidth, stage.scaledHeight);
+	},
+	clearImage(canvas) {
+		canvas.ctx.clearRect(0, 0, stage.width, stage.height);
+	},
+
+	setMergedView() {
+		_.each(stage.layers, (layer) => {
+			// const img = copyImage(layer);
+			stage.mergedView.ctx.drawImage(
+				layer.element,
+				0,
+				0,
+				stage.height,
+				stage.width
+			);
+		});
+	},
+
 	get state() {},
 	updateLayerStates() {},
 	deleteLayer() {},

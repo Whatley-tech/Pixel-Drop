@@ -95,18 +95,21 @@ class EyeDrop extends Tool {
 		super(buttonElement);
 		this.color = undefined;
 	}
-	startAction() {}
+	startAction() {
+		stage.setMergedView();
+	}
 	action() {
 		this.color = this.selectColor();
 		console.log(this.color);
 	}
 	releaseAction() {
 		//do nothing if pixel was transparent
+		stage.clearImage(stage.mergedView);
 		if (this.color) return colorPanel.updateColorHistory(this.color);
 	}
 	selectColor(x = this.xPosition, y = this.yPosition) {
 		//multiply x/y to account for context scale
-		let colorSample = this.ctx.getImageData(
+		let colorSample = stage.mergedView.ctx.getImageData(
 			x * stage.scale,
 			y * stage.scale,
 			1,
@@ -167,8 +170,7 @@ class MoveTool extends Tool {
 	startAction() {
 		this.xMoveStart = this.xPixelPosition;
 		this.yMoveStart = this.yPixelPosition;
-		this.startImg = this.captureLayerImg();
-		// console.log(this.xMoveStart, this.yMoveStart);
+		this.startImg = stage.copyImage(this);
 	}
 	action() {
 		this.moveCanvas();
@@ -177,8 +179,7 @@ class MoveTool extends Tool {
 	moveCanvas(xpp = this.xPixelPosition, ypp = this.yPixelPosition) {
 		const xDistance = this.checkMoveDistance(this.xMoveStart, xpp);
 		const yDistance = this.checkMoveDistance(this.yMoveStart, ypp);
-		console.log(xDistance, yDistance);
-		this.ctx.clearRect(0, 0, stage.width, stage.height);
+		stage.clearImage(this);
 		this.ctx.putImageData(
 			this.startImg,
 			xDistance * stage.scale,
@@ -187,14 +188,5 @@ class MoveTool extends Tool {
 	}
 	checkMoveDistance(startPosition, currentPosition) {
 		return (currentPosition - startPosition) * stage.pixelSize;
-	}
-	captureLayerImg() {
-		let img = this.ctx.getImageData(
-			0,
-			0,
-			stage.scaledWidth,
-			stage.scaledHeight
-		);
-		return img;
 	}
 }
