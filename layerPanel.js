@@ -8,11 +8,10 @@ const layerPanel = {
 		this.addLayerPanelListeners();
 		this.toggleActive();
 		$('#tileContainer').sortable({
-			stop: (e, ui) => this.updateStage(ui.item[0]),
+			stop: (event, ui) => this.updateStage(ui.item[0]),
 		});
 	},
 
-	removeLayer() {},
 	addNewLayer() {
 		stage.newLayer();
 		this.updateTiles();
