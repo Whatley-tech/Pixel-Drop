@@ -36,7 +36,7 @@ const stage = {
 		const colSize = Math.floor(containerWidth / this.cols);
 		const rowSize = Math.floor(containerHeight / this.rows);
 		const pixelSize = colSize >= rowSize ? rowSize : colSize;
-		return pixelSize;
+		return pixelSize + 1;
 	},
 	init(rows, cols) {
 		this.rows = rows;
