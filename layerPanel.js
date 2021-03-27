@@ -8,7 +8,7 @@ const layerPanel = {
 		this.addLayerPanelListeners();
 		this.toggleActive();
 		$('#tileContainer').sortable({
-			stop: (event, ui) => this.updateStage(ui.item[0]),
+			stop: (event, ui) => this.moveLayer(ui.item[0]),
 		});
 	},
 
@@ -18,13 +18,12 @@ const layerPanel = {
 		layerPanel.activeTile = layer.tile;
 		this.updateTiles();
 	},
-	updateStage(element) {
-		const currentTileIndex = this.findArrayIndex(
-			_.reverse([...this.tileContainer.children]),
-			element
-		);
+	moveLayer(movedLayerTile) {
+		let tiles = [...this.tileContainer.children];
+		_.reverse(tiles);
+		const currentTileIndex = this.findArrayIndex(tiles, movedLayerTile);
 		const prevTileIndex = this.findArrayIndex(stage.layers, (layer) => {
-			return layer.tile == element;
+			return layer.tile == movedLayerTile;
 		});
 		stage.moveIndex(currentTileIndex, prevTileIndex);
 		this.updateTiles();

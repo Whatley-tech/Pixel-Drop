@@ -123,7 +123,6 @@ const stage = {
 
 	setMergedView() {
 		_.each(stage.layers, (layer) => {
-			// const img = copyImage(layer);
 			stage.mergedView.ctx.drawImage(
 				layer.element,
 				0,
