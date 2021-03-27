@@ -76,6 +76,7 @@ const stage = {
 		let layer = this.makeLayer();
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
+		this.setActiveLayer(layer);
 		return layer;
 	},
 	updateZIndexes() {
@@ -97,7 +98,8 @@ const stage = {
 	},
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
-			statePanel.saveState();
+			if (toolsPanel.activeTool.undoAble) statePanel.saveState('action');
+			statePanel.clearRedos();
 			toolsPanel.activeTool.isDrawing = true;
 			toolsPanel.activeTool.startAction();
 			toolsPanel.activeTool.action();
@@ -119,6 +121,11 @@ const stage = {
 	},
 	clearImage(canvas) {
 		canvas.ctx.clearRect(0, 0, stage.width, stage.height);
+	},
+	setActiveLayer(layer) {
+		stage.activeLayer = layer;
+		layerPanel.activeTile = layer.tile;
+		layerPanel.updateTiles();
 	},
 
 	setMergedView() {

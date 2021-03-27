@@ -5,6 +5,7 @@ class Tool {
 		this.yPosition = 0;
 		this.isDrawing = false;
 		this.buttonElement = buttonElement;
+		this.undoAble = false;
 	}
 	get offset() {
 		return Math.floor(stage.pixelSize / 2);
@@ -33,6 +34,7 @@ class Tool {
 }
 
 class Brush extends Tool {
+	undoAble = true;
 	startAction() {}
 	action() {
 		this.drawPixel();
@@ -72,6 +74,7 @@ class Brush extends Tool {
 	}
 }
 class Eraser extends Tool {
+	undoAble = true;
 	startAction() {}
 	action() {
 		this.erasePixel();
@@ -125,6 +128,7 @@ class EyeDrop extends Tool {
 	}
 }
 class FillTool extends Tool {
+	undoAble = true;
 	startAction() {}
 	action() {}
 	releaseAction() {
@@ -167,6 +171,7 @@ class MoveTool extends Tool {
 		this.yMoveStart = undefined;
 		this.startImg = undefined;
 	}
+	undoAble = true;
 	startAction() {
 		this.xMoveStart = this.xPixelPosition;
 		this.yMoveStart = this.yPixelPosition;

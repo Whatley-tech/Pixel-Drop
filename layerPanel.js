@@ -12,12 +12,6 @@ const layerPanel = {
 		});
 	},
 
-	addNewLayer() {
-		const layer = stage.newLayer();
-		stage.activeLayer = layer;
-		layerPanel.activeTile = layer.tile;
-		this.updateTiles();
-	},
 	moveLayer(movedLayerTile) {
 		let tiles = [...this.tileContainer.children];
 		_.reverse(tiles);
@@ -49,6 +43,6 @@ const layerPanel = {
 		this.activeTile.classList.toggle('active');
 	},
 	addLayerPanelListeners() {
-		this.newLayerBtn.addEventListener('click', () => this.addNewLayer());
+		this.newLayerBtn.addEventListener('click', () => stage.newLayer());
 	},
 };

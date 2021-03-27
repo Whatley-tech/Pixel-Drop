@@ -7,14 +7,46 @@ const statePanel = {
 		this.attachStateListeners();
 	},
 	attachStateListeners() {
-		// this.undoBtn.addEventListener('click', () => this.undo());
-		// this.redoBtn.addEventListener('click', () => this.redo());
+		this.undoBtn.addEventListener('click', () => this.undo());
+		this.redoBtn.addEventListener('click', () => this.redo());
 	},
-	saveState() {
-		// const state = _.cloneDeep(stage.layers);
-		// this.undoStates.push(state);
+	saveState(type, callback) {
+		//Types: action,delete,arrange
+		let state = undefined;
+		switch (type) {
+			case 'action':
+				state = new ActionState(type);
+				break;
+			case 'delete':
+				state = new DeleteState(type);
+				break;
+			case 'arrange':
+				state = new ArrangeState(type);
+				break;
+		}
+
+		if (callback) return callback(state);
+		this.undoStates.push(state);
 	},
-	undo() {},
-	redo() {},
+	undo() {
+		if (this.undoStates.length == false) return;
+		console.log('undo');
+		const prevState = this.undoStates.pop();
+		this.saveState(prevState.type, (currentState) => {
+			this.redoStates.push(currentState);
+		});
+		prevState.restore();
+	},
+	redo() {
+		if (this.redoStates.length == false) return;
+		const prevState = this.redoStates.pop();
+		this.saveState(prevState.type, (currentState) => {
+			this.undoStates.push(currentState);
+		});
+		prevState.restore();
+	},
+	clearRedos() {
+		_.remove(statePanel.redoStates);
+	},
 	parseState() {},
 };
