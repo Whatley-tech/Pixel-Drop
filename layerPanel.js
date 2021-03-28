@@ -52,8 +52,11 @@ const layerPanel = {
 		this.toggleActive();
 	},
 	toggleActive() {
-		const currentlyActive = document.querySelector('#tileContainer .active');
-		if (currentlyActive) currentlyActive.classList.toggle('active');
+		const currentlyActive = document.querySelectorAll('#tileContainer .active');
+		if (currentlyActive)
+			_.each(currentlyActive, (node) => {
+				node.classList.toggle('active');
+			});
 		this.activeTile.classList.toggle('active');
 	},
 	addLayerPanelListeners() {
