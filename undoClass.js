@@ -1,5 +1,5 @@
 class UndoState {
-	constructor(type) {
+	constructor(type, data) {
 		this.type = type;
 	}
 }
@@ -7,16 +7,18 @@ class ActionState extends UndoState {
 	constructor(type) {
 		super(type);
 		this.layer = stage.activeLayer;
-		this.data = stage.copyImage(stage.activeLayer);
+		this.img = stage.copyImage(stage.activeLayer);
 	}
 	restore() {
 		stage.setActiveLayer(this.layer);
-		stage.activeLayer.ctx.putImageData(this.data, 0, 0);
+		stage.activeLayer.ctx.putImageData(this.img, 0, 0);
 	}
 }
 class DeleteState extends UndoState {
-	constructor(type) {
-		super(type);
+	constructor(type, data) {
+		super(type, data);
+		this.deletedLayer = data;
+		this.img = stage.copyImage(deletedLayer);
 	}
 	restore() {}
 }

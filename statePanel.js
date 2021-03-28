@@ -10,7 +10,7 @@ const statePanel = {
 		this.undoBtn.addEventListener('click', () => this.undo());
 		this.redoBtn.addEventListener('click', () => this.redo());
 	},
-	saveState(type, callback) {
+	saveState(type, data, callback) {
 		//Types: action,delete,arrange
 		let state = undefined;
 		switch (type) {
@@ -18,7 +18,7 @@ const statePanel = {
 				state = new ActionState(type);
 				break;
 			case 'delete':
-				state = new DeleteState(type);
+				state = new DeleteState(type, data);
 				break;
 			case 'arrange':
 				state = new ArrangeState(type);
@@ -32,7 +32,7 @@ const statePanel = {
 		if (this.undoStates.length == false) return;
 		console.log('undo');
 		const prevState = this.undoStates.pop();
-		this.saveState(prevState.type, (currentState) => {
+		this.saveState(prevState.type, prevState.data, (currentState) => {
 			this.redoStates.push(currentState);
 		});
 		prevState.restore();
@@ -40,7 +40,7 @@ const statePanel = {
 	redo() {
 		if (this.redoStates.length == false) return;
 		const prevState = this.redoStates.pop();
-		this.saveState(prevState.type, (currentState) => {
+		this.saveState(prevState.type, prevState.data, (currentState) => {
 			this.undoStates.push(currentState);
 		});
 		prevState.restore();
