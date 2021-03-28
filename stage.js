@@ -25,10 +25,10 @@ const stage = {
 	},
 	get scaledWidth() {
 		//full res width of canvas before css style
-		return Math.floor(this.cols * this.pixelSize * this.scale);
+		return this.cols * this.pixelSize * this.scale;
 	},
 	get scaledHeight() {
-		return Math.floor(this.rows * this.pixelSize * this.scale);
+		return this.rows * this.pixelSize * this.scale;
 	},
 	get pixelSize() {
 		const containerWidth = this.stageContainerDiv.scrollWidth;
@@ -36,7 +36,7 @@ const stage = {
 		const colSize = Math.floor(containerWidth / this.cols);
 		const rowSize = Math.floor(containerHeight / this.rows);
 		const pixelSize = colSize >= rowSize ? rowSize : colSize;
-		return pixelSize + 1;
+		return pixelSize;
 	},
 	init(rows, cols) {
 		this.rows = rows;

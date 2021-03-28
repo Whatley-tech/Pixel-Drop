@@ -6,6 +6,7 @@ class Tool {
 		this.isDrawing = false;
 		this.buttonElement = buttonElement;
 		this.undoAble = false;
+		this.halfPixel = 0.5;
 	}
 	get offset() {
 		return Math.floor(stage.pixelSize / 2);
@@ -156,8 +157,8 @@ class FillTool extends Tool {
 					this.ctx.fillRect(
 						i * stage.pixelSize,
 						j * stage.pixelSize,
-						stage.pixelSize,
-						stage.pixelSize
+						stage.pixelSize + 0.5,
+						stage.pixelSize + 0.5
 					);
 				}
 			}
