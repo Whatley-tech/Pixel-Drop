@@ -3,6 +3,9 @@ const layerPanel = {
 	tileContainer: document.querySelector('#tileContainer'),
 	tileTemplate: document.querySelector('#tileTemplate'),
 	activeTile: undefined,
+	get tileCount() {
+		return this.tileContainer.children.length;
+	},
 	init() {
 		this.updateTiles();
 		this.addLayerPanelListeners();
@@ -60,6 +63,9 @@ const layerPanel = {
 		this.activeTile.classList.toggle('active');
 	},
 	addLayerPanelListeners() {
-		this.newLayerBtn.addEventListener('click', () => stage.newLayer());
+		this.newLayerBtn.addEventListener('click', () => {
+			if (this.tileCount > 8) return; //max layers
+			stage.newLayer();
+		});
 	},
 };
