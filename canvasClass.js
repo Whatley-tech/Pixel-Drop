@@ -42,17 +42,7 @@ class Layer extends Canvas {
 		this.tile.removeBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			if (stage.layers.length <= 1) return; //alert here "must have atleast one layer"
-			statePanel.saveState('delete');
-			_.find(stage.layers, (layer) => {
-				if (layer && layer.element === this.element)
-					_.remove(stage.layers, layer);
-			});
-			this.element.remove();
-			this.tile.remove();
-
-			if (this.tile === layerPanel.activeTile) {
-				stage.setActiveLayer(_.last(stage.layers));
-			}
+			layerPanel.deleteLayer(this);
 		});
 		this.tile.visibleBtn.addEventListener('click', () => {
 			if (this.visible) {

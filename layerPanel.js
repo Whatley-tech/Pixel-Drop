@@ -23,6 +23,19 @@ const layerPanel = {
 		this.updateTiles();
 		stage.updateZIndexes();
 	},
+	deleteLayer(deletedLayer) {
+		statePanel.saveState('delete', deletedLayer);
+		_.find(stage.layers, (layer) => {
+			if (layer && layer.element === deletedLayer.element)
+				_.remove(stage.layers, layer);
+		});
+		deletedLayer.element.remove();
+		deletedLayer.tile.remove();
+
+		if (deletedLayer.tile === layerPanel.activeTile) {
+			stage.setActiveLayer(_.last(stage.layers));
+		}
+	},
 	findArrayIndex(arr, element) {
 		const index = _.findIndex(arr, element);
 		return index;

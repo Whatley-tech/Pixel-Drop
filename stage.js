@@ -136,4 +136,11 @@ const stage = {
 			);
 		});
 	},
+	restoreLayer(layer, index, img) {
+		stage.layers.splice(index, 0, layer);
+		this.appendToLayerDiv(layer);
+		layer.ctx.putImageData(img, 0, 0);
+		// layerPanel.toggleActive();
+		this.setActiveLayer(layer);
+	},
 };
