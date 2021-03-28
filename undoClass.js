@@ -1,5 +1,5 @@
 class UndoState {
-	constructor(type, layer) {
+	constructor(type, data) {
 		this.type = type;
 	}
 }
@@ -15,11 +15,12 @@ class ActionState extends UndoState {
 	}
 }
 class DeleteState extends UndoState {
-	constructor(type, layer) {
-		super(type, layer);
-		this.layer = layer;
+	constructor(type, data) {
+		super(type, data);
+		this.data = data;
+		this.layer = data;
 		this.img = stage.copyImage(this.layer);
-		this.index = _.findIndex(stage.layers, layer);
+		this.index = _.findIndex(stage.layers, this.layer);
 	}
 	restore() {
 		if (_.find(stage.layers, this.layer)) return this.deleteLayer();
@@ -33,8 +34,21 @@ class DeleteState extends UndoState {
 	}
 }
 class ArrangeState extends UndoState {
-	constructor(type, layer) {
-		super(type, layer);
+	constructor(type, data) {
+		super(type, data);
+		this.data = data;
+		this.layerTile = data;
+		this.prevIndex = layerPanel.findArrayIndex(stage.layers, (layer) => {
+			return layer.tile == this.layerTile;
+		});
+		this.currentIndex = undefined;
 	}
-	restore() {}
+	restore() {
+		this.currentIndex = layerPanel.findArrayIndex(stage.layers, (layer) => {
+			return layer.tile == this.layerTile;
+		});
+		stage.moveIndex(this.currentIndex, this.prevIndex);
+		layerPanel.updateTiles();
+		stage.updateZIndexes();
+	}
 }

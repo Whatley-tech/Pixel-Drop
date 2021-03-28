@@ -13,6 +13,7 @@ const layerPanel = {
 	},
 
 	moveLayer(movedLayerTile) {
+		statePanel.saveState('arrange', movedLayerTile);
 		let tiles = [...this.tileContainer.children];
 		_.reverse(tiles);
 		const currentTileIndex = this.findArrayIndex(tiles, movedLayerTile);
