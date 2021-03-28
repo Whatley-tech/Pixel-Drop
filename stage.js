@@ -13,7 +13,6 @@ const stage = {
 	topOrigin: undefined,
 	maxZIndex: 12,
 	uniqueId: 0,
-
 	get scale() {
 		return window.devicePixelRatio;
 	},
@@ -39,7 +38,6 @@ const stage = {
 		const pixelSize = colSize >= rowSize ? rowSize : colSize;
 		return pixelSize + 1;
 	},
-
 	init(rows, cols) {
 		this.rows = rows;
 		this.cols = cols;
@@ -127,7 +125,6 @@ const stage = {
 		layerPanel.activeTile = layer.tile;
 		layerPanel.updateTiles();
 	},
-
 	setMergedView() {
 		_.each(stage.layers, (layer) => {
 			stage.mergedView.ctx.drawImage(
@@ -139,9 +136,4 @@ const stage = {
 			);
 		});
 	},
-
-	get state() {},
-	updateLayerStates() {},
-	deleteLayer() {},
-	clearStage() {},
 };
