@@ -82,47 +82,57 @@
 					<input type="color" id="colorPicker" value="#000000" />
 				</div>
 				<div id="toolsContainer">
-					<div id="tools">
-						<div
+					<div
+						id="tools"
+						class="btn-group"
+						role="toolbar"
+						aria-label="Tools Panel"
+					>
+						<button
+							type="button"
 							id="brush"
-							class="toolBtn"
+							class="btn btn-secondary toolBtn"
 							data-toggle="tooltip"
 							title="Brush Tool"
 						>
 							<span class="material-icons"> brush </span>
-						</div>
-						<div
+						</button>
+						<button
+							type="button"
 							id="eraser"
-							class="toolBtn"
+							class="btn btn-secondary toolBtn"
 							data-toggle="tooltip"
 							title="Eraser Tool"
 						>
 							<span class="material-icons"> hide_source </span>
-						</div>
-						<div
+						</button>
+						<button
+							type="button"
 							id="moveTool"
-							class="toolBtn"
+							class="btn btn-secondary toolBtn"
 							data-toggle="tooltip"
 							title="Move Tool"
 						>
 							<span class="material-icons"> open_with</span>
-						</div>
-						<div
+						</button>
+						<button
+							type="button"
 							id="eyeDrop"
-							class="toolBtn"
+							class="btn btn-secondary toolBtn"
 							data-toggle="tooltip"
 							title="Color Picker Tool"
 						>
 							<span class="material-icons"> colorize</span>
-						</div>
-						<div
+						</button>
+						<button
+							type="button"
 							id="fillTool"
-							class="toolBtn"
+							class="btn btn-secondary toolBtn"
 							data-toggle="tooltip"
 							title="Color Replace Tol"
 						>
 							<span class="material-icons"> format_color_fill</span>
-						</div>
+						</button>
 					</div>
 					<div id="toolSizeContainer">
 						<input
