@@ -1,3 +1,13 @@
+const enableToolTips = function () {
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+};
+const enablePopOvers = function () {
+	$(function () {
+		$('[data-toggle="popover"]').popover();
+	});
+};
 const toggleHidden = function (element) {
 	element.classList.toggle('hidden');
 };
@@ -11,6 +21,8 @@ const initApp = function () {
 	colorPanel.init();
 	layerPanel.init();
 	colorPanel.setCurrentColor();
+	enablePopOvers();
+	enableToolTips();
 };
 
 const newCanvasForm = document.querySelector('#newCanvasForm');

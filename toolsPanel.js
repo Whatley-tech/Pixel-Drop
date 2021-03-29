@@ -26,9 +26,11 @@ const toolsPanel = {
 	set tool(type) {
 		this.activeTool = type;
 	},
+
 	attachToolPanelListeners() {
 		this.brushSizeSlider.addEventListener('input', () => {
 			this.activeTool.size = this.brushSizeSlider.value;
+			this.brushSizeSlider.title = this.brushSizeSlider.value;
 		});
 		this.brushSizeSlider.addEventListener('click', () => {
 			this.activeTool.size = this.brushSizeSlider.value;

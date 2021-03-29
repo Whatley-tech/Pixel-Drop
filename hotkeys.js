@@ -1,5 +1,5 @@
 document.addEventListener('keyup', (e) => {
-	console.log(e);
+	// console.log(e);
 	if (e.ctrlKey == true && e.key == 'z') statePanel.undoBtn.click();
 	if (e.ctrlKey == true && e.key == 'y') statePanel.redoBtn.click();
 	if (e.key == 'f') toolsPanel.brushBtn.click();
