@@ -2,12 +2,7 @@
 	height: 100vh;
 }
 #midContainer {
-}
-#controlsContainer {
-}
-#canvasNavPanel {
-}
-#canvasOptions {
+	margin-bottom: 20px;
 }
 #layerPanel {
 	display: flex;
