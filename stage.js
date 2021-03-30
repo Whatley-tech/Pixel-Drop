@@ -1,7 +1,7 @@
 const stage = {
 	mainDiv: document.querySelector('#stage'),
 	layersDiv: document.querySelector('#stageLayers'),
-	stageContainerDiv: document.querySelector('#stageContainer'),
+	stagePanelDiv: document.querySelector('#stagePanel'),
 	background: undefined,
 	mergedView: undefined,
 	brushOverlay: undefined,
@@ -31,8 +31,8 @@ const stage = {
 		return this.rows * this.pixelSize * this.scale;
 	},
 	get pixelSize() {
-		const containerWidth = this.stageContainerDiv.scrollWidth;
-		const containerHeight = this.stageContainerDiv.scrollHeight;
+		const containerWidth = this.stagePanelDiv.scrollWidth;
+		const containerHeight = this.stagePanelDiv.scrollHeight;
 		const colSize = Math.floor(containerWidth / this.cols);
 		const rowSize = Math.floor(containerHeight / this.rows);
 		const pixelSize = colSize >= rowSize ? rowSize : colSize;

@@ -1,5 +1,5 @@
 const toolsPanel = {
-	toolsContainer: document.querySelector('#toolsContainer'),
+	toolsPanel: document.querySelector('#toolsPanel'),
 	brushSizeSlider: document.querySelector('#toolSize'),
 	brushBtn: document.querySelector('#brush'),
 	eraserBtn: document.querySelector('#eraser'),
@@ -59,7 +59,7 @@ const toolsPanel = {
 		});
 	},
 	toggleActive() {
-		const currentlyActive = document.querySelector('#toolsContainer .active');
+		const currentlyActive = document.querySelector('#toolsPanel .active');
 		if (currentlyActive) currentlyActive.classList.toggle('active');
 		this.activeTool.buttonElement.classList.toggle('active');
 	},

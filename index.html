@@ -22,17 +22,17 @@
 		<title>PixelDrop</title>
 	</head>
 	<body>
-		<div id="mainContainer">
-			<div id="canvasNavContainer">
-				<div id="canvasOptions">
+		<div id="mainContainer" class="container">
+			<div id="canvasNavPanel" class="row">
+				<div id="canvasOptions" class="">
 					<button id="newCanvasBtn">New</button>
 					<button id="saveCanvasBtn">Save</button>
 					<button id="loadCanvasBtn">Load</button>
 				</div>
 			</div>
-			<div id="midContainer">
-				<div id="colorHistoryContainer"></div>
-				<div id="stageContainer">
+			<div id="midContainer" class="row">
+				<div id="colorHistoryPanel" class="col"></div>
+				<div id="stagePanel" class="col-10">
 					<div id="formContainer">
 						<form id="newCanvasForm" action="">
 							<label for="rows">Rows:</label>
@@ -58,7 +58,7 @@
 						<div id="stageLayers"></div>
 					</div>
 				</div>
-				<div id="layerPanelContainer">
+				<div id="layerPanel" class="col">
 					<div id="tileContainer">
 						<div id="tileTemplate" class="tile hidden">
 							<div class="layerControlContainer">
@@ -76,12 +76,12 @@
 				</div>
 			</div>
 
-			<div id="controlsContainer">
-				<div id="colorPickerContainer">
+			<div id="controlsContainer" class="row">
+				<div id="colorPickerPanel" class="col">
 					<div id="currentColor"></div>
 					<input type="color" id="colorPicker" value="#000000" />
 				</div>
-				<div id="toolsContainer">
+				<div id="toolsPanel" class="col-6">
 					<div
 						id="tools"
 						class="btn-group btn-group-sm"
@@ -134,7 +134,7 @@
 							<span class="material-icons"> format_color_fill</span>
 						</button>
 					</div>
-					<div id="toolSizeContainer">
+					<div id="toolSizeContainer" class="">
 						<input
 							title="1"
 							type="range"
@@ -147,9 +147,9 @@
 					</div>
 				</div>
 
-				<div id="stateContainer">
-					<button id="undo">undo</button>
-					<button id="redo">redo</button>
+				<div id="statePanel" class="col">
+					<button id="undo" class="btn btn-sm">undo</button>
+					<button id="redo" class="btn btn-sm">redo</button>
 				</div>
 			</div>
 		</div>

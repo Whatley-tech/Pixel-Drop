@@ -1,37 +1,18 @@
 #mainContainer {
-	box-sizing: border-box;
 	height: 100vh;
-	width: fit-content;
-	margin: 0 auto;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 }
-#canvasNavContainer {
-	display: flex;
-	width: 640px;
-	flex-flow: row;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 20px;
-	/* border: 1px solid blue; */
+#midContainer {
 }
-
-#canvasNavContainer button {
-	margin-right: 5px;
+#controlsContainer {
+}
+#canvasNavPanel {
 }
 #canvasOptions {
-	display: flex;
-	justify-content: space-evenly;
 }
-#layerPanelContainer {
+#layerPanel {
 	display: flex;
 	flex-flow: column;
-}
-#tileContainer {
-	display: flex;
-	flex-flow: column;
+	justify-content: flex-start;
 }
 .tile {
 	display: flex;
@@ -65,54 +46,35 @@
 	border: 2px solid black;
 }
 
-#midContainer {
-	/* border: 1px solid green; */
-	box-sizing: border-box;
-	display: flex;
-	flex-flow: row;
-}
-#colorHistoryContainer {
-	width: 40px;
+#colorHistoryPanel {
+	/* width: 40px; */
 	display: flex;
 	flex-flow: column;
 	justify-content: flex-end;
 	align-items: center;
 }
-#stageContainer {
+#stagePanel {
 	/* border: 1px solid blue; */
-	box-sizing: border-box;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	height: 500px;
-	width: 500px;
-	margin-right: 20px;
-	margin-left: 20px;
+	height: 65vh;
 }
 
 .canvas {
 	transform: translate(-50%, -50%);
+
 	position: absolute;
 	cursor: none;
 }
 
-#controlsContainer {
-	/* border: 1px solid red; */
-	display: flex;
-	flex-flow: row;
-	justify-content: space-between;
-	align-items: center;
-	box-sizing: border-box;
-	margin-top: 20px;
-	width: 640px;
-}
 .layerTitle {
 	height: fit-content;
 	width: 100%;
 	background-color: rgb(85, 85, 85);
 }
-#toolsContainer {
+#toolsPanel {
 	display: flex;
 	flex-flow: column;
 	align-items: center;
