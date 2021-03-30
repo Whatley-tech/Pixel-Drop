@@ -50,16 +50,15 @@
 }
 #stagePanel {
 	/* border: 1px solid blue; */
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
-	height: 65vh;
+	/* position: relative; */
+	height: 600px;
 }
 
 .canvas {
-	transform: translate(-50%, -50%);
-
+	/* transform: translate(-50%, -50%); */
+	left: 0;
+	right: 0;
+	margin: auto;
 	position: absolute;
 	cursor: none;
 }
