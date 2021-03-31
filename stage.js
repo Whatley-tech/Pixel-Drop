@@ -13,26 +13,26 @@ const stage = {
 	topOrigin: undefined,
 	maxZIndex: 12,
 	uniqueId: 0,
-	get scale() {
+	get dpr() {
 		return window.devicePixelRatio;
 	},
-	get width() {
+	get styleWidth() {
 		//width of css style (shrinks dimensions)
 		return this.cols * this.pixelSize;
 	},
-	get height() {
+	get styleHeight() {
 		return this.rows * this.pixelSize;
 	},
 	get scaledWidth() {
 		//full res width of canvas before css style
-		return this.cols * this.pixelSize * this.scale;
+		return this.cols * this.pixelSize * this.dpr;
 	},
 	get scaledHeight() {
-		return this.rows * this.pixelSize * this.scale;
+		return this.rows * this.pixelSize * this.dpr;
 	},
 	get pixelSize() {
 		const containerWidth = this.stagePanelDiv.scrollWidth;
-		const containerHeight = this.stagePanelDiv.scrollHeight;
+		const containerHeight = this.stagePanelDiv.clientHeight;
 		const colSize = Math.floor(containerWidth / this.cols);
 		const rowSize = Math.floor(containerHeight / this.rows);
 		const pixelSize = colSize >= rowSize ? rowSize : colSize;
@@ -58,6 +58,18 @@ const stage = {
 		this.activeLayer = _.head(this.layers);
 		layerPanel.activeTile = this.activeLayer.tile;
 		this.attachStageListeners();
+	},
+	resizeCanvas(canvas) {
+		let img = this.copyImage(canvas);
+		canvas.element.style.width = `${this.styleWidth}px`;
+		canvas.element.style.height = `${this.styleHeight}px`;
+		canvas.ctx.putImageData(img, 0, 0);
+		canvas.ctx.scale(this.dpr, this.dpr);
+	},
+	resizeWindow() {
+		this.resizeCanvas(...this.layers);
+		this.resizeCanvas(this.background);
+		this.resizeCanvas(this.brushOverlay);
 	},
 	setBoundingBox(element) {
 		let BoundingBox = element.getBoundingClientRect();
@@ -113,12 +125,15 @@ const stage = {
 			toolsPanel.activeTool.releaseAction();
 			toolsPanel.activeTool.isDrawing = false;
 		});
+		window.addEventListener('resize', () => {
+			this.resizeWindow();
+		});
 	},
 	copyImage(canvas) {
-		return canvas.ctx.getImageData(0, 0, stage.scaledWidth, stage.scaledHeight);
+		return canvas.ctx.getImageData(0, 0, this.scaledWidth, this.scaledHeight);
 	},
 	clearImage(canvas) {
-		canvas.ctx.clearRect(0, 0, stage.width, stage.height);
+		canvas.ctx.clearRect(0, 0, this.styleWidth, this.styleHeight);
 	},
 	setActiveLayer(layer) {
 		stage.activeLayer = layer;
@@ -131,8 +146,8 @@ const stage = {
 				layer.element,
 				0,
 				0,
-				stage.height,
-				stage.width
+				this.styleHeight,
+				this.styleWidth
 			);
 		});
 	},

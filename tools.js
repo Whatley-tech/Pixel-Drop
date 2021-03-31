@@ -23,7 +23,7 @@ class Tool {
 		this.xPixelPosition = Math.floor(this.xPosition / stage.pixelSize);
 		this.yPixelPosition = Math.floor(this.yPosition / stage.pixelSize);
 		//draw brushPosition
-		canvas.ctx.clearRect(0, 0, stage.width, stage.height);
+		canvas.ctx.clearRect(0, 0, stage.styleWidth, stage.styleHeight);
 		canvas.ctx.strokeStyle = 'green';
 		canvas.ctx.strokeRect(
 			this.xPosition - this.offset,
@@ -114,8 +114,8 @@ class EyeDrop extends Tool {
 	selectColor(x = this.xPosition, y = this.yPosition) {
 		//multiply x/y to account for context scale
 		let colorSample = stage.mergedView.ctx.getImageData(
-			x * stage.scale,
-			y * stage.scale,
+			x * stage.dpr,
+			y * stage.dpr,
 			1,
 			1
 		).data;
@@ -137,12 +137,12 @@ class FillTool extends Tool {
 		this.colorReplace();
 	}
 	getColorSample(x = this.xPosition, y = this.yPosition) {
-		return this.ctx.getImageData(x * stage.scale, y * stage.scale, 1, 1).data;
+		return this.ctx.getImageData(x * stage.dpr, y * stage.dpr, 1, 1).data;
 	}
 	checkPixelColor(xPixelPosition, yPixelPosition) {
 		return this.ctx.getImageData(
-			xPixelPosition * stage.pixelSize * stage.scale + this.offset, // +1 for rounding error??
-			yPixelPosition * stage.pixelSize * stage.scale + this.offset,
+			xPixelPosition * stage.pixelSize * stage.dpr + this.offset, // +1 for rounding error??
+			yPixelPosition * stage.pixelSize * stage.dpr + this.offset,
 			1,
 			1
 		).data;
@@ -188,8 +188,8 @@ class MoveTool extends Tool {
 		stage.clearImage(this);
 		this.ctx.putImageData(
 			this.startImg,
-			xDistance * stage.scale,
-			yDistance * stage.scale
+			xDistance * stage.dpr,
+			yDistance * stage.dpr
 		);
 	}
 	checkMoveDistance(startPosition, currentPosition) {

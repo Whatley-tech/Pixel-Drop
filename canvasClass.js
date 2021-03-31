@@ -4,13 +4,13 @@ class Canvas {
 		this.element = document.createElement('canvas');
 		this.ctx = this.element.getContext('2d');
 		this.element.id = `Layer${id}`;
-		this.element.style.width = `${stage.width}px`;
-		this.element.style.height = `${stage.height}px`;
+		this.element.style.width = `${stage.styleWidth}px`;
+		this.element.style.height = `${stage.styleHeight}px`;
 		this.element.width = stage.scaledWidth;
 		this.element.height = stage.scaledHeight;
 		this.element.style.zIndex = zIndex || id;
 		this.element.classList.add('canvas');
-		this.ctx.scale(stage.scale, stage.scale);
+		this.ctx.scale(stage.dpr, stage.dpr);
 		this.visible = true;
 	}
 }

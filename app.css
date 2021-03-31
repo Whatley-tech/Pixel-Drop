@@ -51,7 +51,8 @@
 #stagePanel {
 	/* border: 1px solid blue; */
 	/* position: relative; */
-	height: 600px;
+	/* height: 600px; */
+	height: 75vh;
 }
 
 .canvas {
