@@ -9,8 +9,6 @@ const stage = {
 	activeLayer: undefined,
 	rows: undefined,
 	cols: undefined,
-	leftOrigin: undefined,
-	topOrigin: undefined,
 	maxZIndex: 12,
 	uniqueId: 0,
 	get dpr() {
@@ -31,20 +29,27 @@ const stage = {
 		return this.rows * this.pixelSize * this.dpr;
 	},
 	get pixelSize() {
-		const containerWidth = this.stagePanelDiv.scrollWidth;
+		const containerWidth = this.stagePanelDiv.clientWidth;
 		const containerHeight = this.stagePanelDiv.clientHeight;
 		const colSize = Math.floor(containerWidth / this.cols);
 		const rowSize = Math.floor(containerHeight / this.rows);
 		const pixelSize = colSize >= rowSize ? rowSize : colSize;
 		return pixelSize;
 	},
+	get leftOrigin() {
+		return this.background.element.getBoundingClientRect().left;
+	},
+	get topOrigin() {
+		return this.background.element.getBoundingClientRect().top;
+	},
+
 	init(rows, cols) {
 		this.rows = rows;
 		this.cols = cols;
 
 		this.background = this.makeCanvas('background', 0);
 		this.appendToStageDiv(this.background);
-		this.setBoundingBox(this.background.element);
+
 		this.activeLayer = this.background;
 		toolsPanel.activeTool.drawCheckerGrid();
 
@@ -60,21 +65,24 @@ const stage = {
 		this.attachStageListeners();
 	},
 	resizeCanvas(canvas) {
+		// console.log(this.pixelSize);
+
 		let img = this.copyImage(canvas);
+		canvas.element.width = stage.scaledWidth;
+		canvas.element.height = stage.scaledHeight;
 		canvas.element.style.width = `${this.styleWidth}px`;
 		canvas.element.style.height = `${this.styleHeight}px`;
+		// this.clearImage(canvas);
+
 		canvas.ctx.putImageData(img, 0, 0);
+		canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
 		canvas.ctx.scale(this.dpr, this.dpr);
 	},
 	resizeWindow() {
 		this.resizeCanvas(...this.layers);
 		this.resizeCanvas(this.background);
 		this.resizeCanvas(this.brushOverlay);
-	},
-	setBoundingBox(element) {
-		let BoundingBox = element.getBoundingClientRect();
-		this.leftOrigin = BoundingBox.left;
-		this.topOrigin = BoundingBox.top;
+		this.resizeCanvas(this.mergedView);
 	},
 	makeCanvas(id = `${++this.uniqueId}`, zIndex) {
 		return new Canvas(id, zIndex);
