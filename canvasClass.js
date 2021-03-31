@@ -12,6 +12,7 @@ class Canvas {
 		this.element.classList.add('canvas');
 		this.ctx.scale(stage.dpr, stage.dpr);
 		this.visible = true;
+		this.img = undefined;
 	}
 }
 class Layer extends Canvas {

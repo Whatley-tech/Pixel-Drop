@@ -59,10 +59,10 @@
 	/* transform: translate(-50%, -50%); */
 	left: 0;
 	right: 0;
-	/* margin: auto; */
+	margin: auto;
 	position: absolute;
 	cursor: none;
-	border: 1px solid blue;
+	/* border: 1px solid blue; */
 }
 
 .layerTitle {

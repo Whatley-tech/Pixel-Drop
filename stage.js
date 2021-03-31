@@ -52,6 +52,7 @@ const stage = {
 
 		this.activeLayer = this.background;
 		toolsPanel.activeTool.drawCheckerGrid();
+		stage.updateCanvasImg(this.background);
 
 		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
 		this.appendToStageDiv(this.brushOverlay);
@@ -65,21 +66,31 @@ const stage = {
 		this.attachStageListeners();
 	},
 	resizeCanvas(canvas) {
-		// console.log(this.pixelSize);
-
-		let img = this.copyImage(canvas);
 		canvas.element.width = stage.scaledWidth;
 		canvas.element.height = stage.scaledHeight;
 		canvas.element.style.width = `${this.styleWidth}px`;
 		canvas.element.style.height = `${this.styleHeight}px`;
-		// this.clearImage(canvas);
-
-		canvas.ctx.putImageData(img, 0, 0);
+	},
+	redrawCanvas(canvas) {
+		this.clearImage(canvas);
 		canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
 		canvas.ctx.scale(this.dpr, this.dpr);
+		if (canvas.img) {
+			canvas.ctx.drawImage(
+				canvas.img,
+				0,
+				0,
+				stage.styleWidth,
+				stage.styleHeight
+			);
+		}
+	},
+	updateCanvasImg(canvas) {
+		let imgData = stage.copyImageURL(canvas);
+		canvas.img = imgData;
 	},
 	resizeWindow() {
-		this.resizeCanvas(...this.layers);
+		_.each(this.layers, (layer) => this.resizeCanvas(layer));
 		this.resizeCanvas(this.background);
 		this.resizeCanvas(this.brushOverlay);
 		this.resizeCanvas(this.mergedView);
@@ -132,13 +143,22 @@ const stage = {
 		this.mainDiv.addEventListener('mouseup', (e) => {
 			toolsPanel.activeTool.releaseAction();
 			toolsPanel.activeTool.isDrawing = false;
+			this.updateCanvasImg(this.activeLayer);
 		});
 		window.addEventListener('resize', () => {
 			this.resizeWindow();
+			_.each(this.layers, (layer) => this.redrawCanvas(layer));
+			this.redrawCanvas(this.background);
+			this.redrawCanvas(this.brushOverlay);
 		});
 	},
 	copyImage(canvas) {
 		return canvas.ctx.getImageData(0, 0, this.scaledWidth, this.scaledHeight);
+	},
+	copyImageURL(canvas) {
+		let img = new Image();
+		img.src = canvas.element.toDataURL();
+		return img;
 	},
 	clearImage(canvas) {
 		canvas.ctx.clearRect(0, 0, this.styleWidth, this.styleHeight);
