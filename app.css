@@ -18,9 +18,7 @@
 	border: 2px solid rgb(87, 87, 87);
 	color: #ffffff;
 }
-.active {
-	border: 2px solid green;
-}
+
 #newLayerBtn {
 	border: 2px dotted black;
 	height: 50px;
@@ -33,14 +31,12 @@
 .layerBtn {
 	cursor: pointer;
 }
-
 #bglayer {
 	height: 50px;
 	width: 50px;
 	background-color: ghostwhite;
 	border: 2px solid black;
 }
-
 #colorHistoryPanel {
 	/* width: 40px; */
 	display: flex;
@@ -49,14 +45,9 @@
 	align-items: center;
 }
 #stagePanel {
-	/* border: 1px solid blue; */
-	/* position: relative; */
-	/* height: 600px; */
 	height: 75vh;
 }
-
 .canvas {
-	/* transform: translate(-50%, -50%); */
 	left: 0;
 	right: 0;
 	margin: auto;
@@ -64,7 +55,6 @@
 	cursor: none;
 	/* border: 1px solid blue; */
 }
-
 .layerTitle {
 	height: fit-content;
 	width: 100%;
