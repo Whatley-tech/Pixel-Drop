@@ -38,4 +38,6 @@ newCanvasForm.addEventListener('submit', (e) => {
 	// toggleHidden(newCanvasForm);
 	stage.reset();
 	initApp();
+	canvasRowsInput.value = null;
+	canvasColsInput.value = null;
 });
