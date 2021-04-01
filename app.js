@@ -11,6 +11,9 @@ const enablePopOvers = function () {
 const toggleHidden = function (element) {
 	element.classList.toggle('hidden');
 };
+$('#newCanvasModal').on('shown.bs.modal', function () {
+	$('#newCanvasBtn').trigger('focus');
+});
 
 const initApp = function () {
 	const rows = canvasRowsInput.value;

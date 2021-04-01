@@ -25,7 +25,14 @@
 		<div id="mainContainer" class="container">
 			<div id="canvasNavPanel" class="row">
 				<div id="canvasOptions" class="">
-					<button id="newCanvasBtn" class="btn btn-sm">New</button>
+					<button
+						id="newCanvasBtn"
+						class="btn btn-sm"
+						data-toggle="modal"
+						data-target="#newCanvasModal"
+					>
+						New
+					</button>
 					<button id="saveCanvasBtn" class="btn btn-sm">Save</button>
 					<button id="loadCanvasBtn" class="btn btn-sm">Load</button>
 				</div>
@@ -33,25 +40,56 @@
 			<div id="midContainer" class="row">
 				<div id="colorHistoryPanel" class="col"></div>
 				<div id="stagePanel" class="col-10">
-					<div id="formContainer">
-						<form id="newCanvasForm" action="">
-							<label for="rows">Rows:</label>
-							<input
-								type="text"
-								name="rows"
-								id="canvasRowsInput"
-								placeholder="Input rows"
-							/>
+					<div id="newCanvasModal" class="modal" tabindex="-1" role="dialog">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Modal title</h5>
+									<button
+										type="button"
+										class="close"
+										data-dismiss="modal"
+										aria-label="Close"
+									>
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div id="formContainer">
+										<form id="newCanvasForm" action="">
+											<label for="rows">Rows:</label>
+											<input
+												type="text"
+												name="rows"
+												id="canvasRowsInput"
+												placeholder="Input rows"
+											/>
 
-							<label for="width">Cols:</label>
-							<input
-								type="text"
-								name="cols"
-								id="canvasColsInput"
-								placeholder="Input cols"
-							/>
-							<button type="submit" id="submit">Submit</button>
-						</form>
+											<label for="width">Cols:</label>
+											<input
+												type="text"
+												name="cols"
+												id="canvasColsInput"
+												placeholder="Input cols"
+											/>
+											<button type="submit" id="submit">Submit</button>
+										</form>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary">
+										Save changes
+									</button>
+									<button
+										type="button"
+										class="btn btn-secondary"
+										data-dismiss="modal"
+									>
+										Close
+									</button>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div id="stage">
