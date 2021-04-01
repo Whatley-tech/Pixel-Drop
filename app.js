@@ -34,6 +34,8 @@ const canvasColsInput = document.querySelector('#canvasColsInput');
 
 newCanvasForm.addEventListener('submit', (e) => {
 	e.preventDefault();
-	toggleHidden(newCanvasForm);
+	$('#newCanvasModal').modal('toggle');
+	// toggleHidden(newCanvasForm);
+	stage.reset();
 	initApp();
 });

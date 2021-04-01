@@ -91,6 +91,17 @@ const stage = {
 		layerPanel.activeTile = this.activeLayer.tile;
 		this.attachStageListeners();
 	},
+	reset() {
+		if (this.background) this.background.element.remove();
+		if (this.brushOverlay) this.brushOverlay.element.remove();
+		if (this.mergedView) this.mergedView.element.remove();
+		_.each(this.layers, (layer) => {
+			layer.element.remove();
+			layer.tile.remove();
+		});
+		_.remove(this.layers);
+		_.remove(statePanel.undoStates);
+	},
 	makeCanvas(id = `${++this.uniqueId}`, zIndex) {
 		return new Canvas(id, zIndex);
 	},

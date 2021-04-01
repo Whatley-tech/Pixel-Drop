@@ -44,7 +44,7 @@
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title">Modal title</h5>
+									<h5 class="modal-title">Create new canvas.</h5>
 									<button
 										type="button"
 										class="close"
@@ -54,39 +54,44 @@
 										<span aria-hidden="true">&times;</span>
 									</button>
 								</div>
-								<div class="modal-body">
-									<div id="formContainer">
-										<form id="newCanvasForm" action="">
-											<label for="rows">Rows:</label>
-											<input
-												type="text"
-												name="rows"
-												id="canvasRowsInput"
-												placeholder="Input rows"
-											/>
 
-											<label for="width">Cols:</label>
+								<div class="modal-body">
+									<form id="newCanvasForm" action="">
+										<div class="form-group">
+											<label for="rows">Height:</label>
 											<input
-												type="text"
-												name="cols"
-												id="canvasColsInput"
-												placeholder="Input cols"
+												id="canvasRowsInput"
+												class="form-control"
+												type="number"
+												name="rows"
+												placeholder="Pixels"
+												aria-describedby="canvasHeight"
 											/>
-											<button type="submit" id="submit">Submit</button>
-										</form>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-primary">
-										Save changes
-									</button>
-									<button
-										type="button"
-										class="btn btn-secondary"
-										data-dismiss="modal"
-									>
-										Close
-									</button>
+										</div>
+										<div class="form-group">
+											<label for="cols">Width:</label>
+											<input
+												id="canvasColsInput"
+												class="form-control"
+												type="number"
+												name="cols"
+												placeholder="Pixels"
+												aria-describedby="canvasWidth"
+											/>
+										</div>
+										<div class="modal-footer">
+											<button id="submit" type="submit" class="btn btn-primary">
+												Create
+											</button>
+											<button
+												type="button"
+												class="btn btn-secondary"
+												data-dismiss="modal"
+											>
+												Close
+											</button>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>
