@@ -156,7 +156,6 @@ const stage = {
 	},
 	redrawCanvas(canvas) {
 		this.clearImage(canvas);
-		canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
 		canvas.ctx.scale(this.dpr, this.dpr);
 		if (canvas.img) {
 			canvas.ctx.drawImage(
