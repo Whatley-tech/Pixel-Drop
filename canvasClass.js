@@ -41,6 +41,9 @@ class Layer extends Canvas {
 			layerPanel.activeTile = this.tile;
 			layerPanel.toggleActive();
 		});
+		$('#renameTileModal').on('shown.bs.modal', function () {
+			$(`'#${this.tile.id} .layerTitle'`).trigger('focus');
+		});
 		this.tile.removeBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			if (stage.layers.length <= 1) return; //alert here "must have atleast one layer"
