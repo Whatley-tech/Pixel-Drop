@@ -18,7 +18,6 @@
 	border: 2px solid rgb(87, 87, 87);
 	color: #ffffff;
 }
-
 #newLayerBtn {
 	border: 2px dotted black;
 	height: 50px;
@@ -54,6 +53,9 @@
 	position: absolute;
 	cursor: none;
 	/* border: 1px solid blue; */
+}
+.active {
+	border: 2px solid green;
 }
 .layerTitle {
 	height: fit-content;
