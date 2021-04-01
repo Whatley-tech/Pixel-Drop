@@ -41,3 +41,7 @@ newCanvasForm.addEventListener('submit', (e) => {
 	canvasRowsInput.value = null;
 	canvasColsInput.value = null;
 });
+
+window.onload = () => {
+	document.querySelector('#newCanvasBtn').click();
+};
