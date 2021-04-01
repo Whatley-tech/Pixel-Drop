@@ -22,7 +22,7 @@ class Tool {
 		// console.log(this.xPosition);
 		this.xPixelPosition = Math.floor(this.xPosition / stage.pixelSize);
 		this.yPixelPosition = Math.floor(this.yPosition / stage.pixelSize);
-		//draw brushPosition
+		//draw brushPosition outline
 		canvas.ctx.clearRect(0, 0, stage.styleWidth, stage.styleHeight);
 		canvas.ctx.strokeStyle = 'green';
 		canvas.ctx.strokeRect(
