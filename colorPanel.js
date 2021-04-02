@@ -1,23 +1,26 @@
 const colorPanel = {
 	colorHistory: [],
 	currentColor: '#000000',
+	colorSelectorDiv: document.querySelector('#colorSelector'),
+	newColorDiv: document.querySelector('#newColor'),
 	currentColorDiv: document.querySelector('#currentColor'),
 	colorPicker: document.querySelector('#colorPicker'),
 
 	init() {
-		this.currentColorDiv.addEventListener('click', () =>
+		this.colorSelectorDiv.addEventListener('click', () =>
 			this.colorPicker.click()
 		);
 		this.colorPicker.addEventListener('input', () =>
 			this.setCurrentColor(this.colorPicker.value)
 		);
-		this.colorPicker.addEventListener('change', () =>
-			this.updateColorHistory(this.colorPicker.value)
-		);
+		this.colorPicker.addEventListener('change', () => {
+			this.updateColorHistory(this.colorPicker.value);
+			this.currentColorDiv.style.background = this.colorPicker.value;
+		});
 	},
 	setCurrentColor(color = '#000000') {
 		this.colorPicker.value = color;
-		this.currentColorDiv.style.background = color;
+		this.newColorDiv.style.background = color;
 		this.currentColor = color;
 	},
 	updateColorHistory(color) {

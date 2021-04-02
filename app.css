@@ -66,11 +66,20 @@
 	visibility: hidden;
 	position: absolute;
 }
-#currentColor {
+#colorSelector {
 	height: 40px;
-	width: 75px;
+	width: 74px;
 	border-radius: 5px;
 	border: 2px solid black;
+}
+#currentColor {
+	background-color: black;
+	width: 50%;
+	height: 100%;
+}
+#newColor {
+	width: 50%;
+	height: 100%;
 }
 .material-icons.md-14 {
 	font-size: 14px;
