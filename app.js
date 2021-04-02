@@ -23,7 +23,7 @@ const initApp = function () {
 	statePanel.init();
 	colorPanel.init();
 	layerPanel.init();
-	colorPanel.setCurrentColor();
+	colorPanel.selectNewColor();
 	enablePopOvers();
 	enableToolTips();
 };

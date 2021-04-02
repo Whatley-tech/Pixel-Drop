@@ -67,6 +67,7 @@ const stage = {
 			_.each(this.layers, (layer) => this.redrawCanvas(layer));
 			this.redrawCanvas(this.background);
 			this.redrawCanvas(this.brushOverlay);
+			this.redrawCanvas(this.mergedView);
 		});
 	},
 	init(rows, cols) {
@@ -184,8 +185,8 @@ const stage = {
 				layer.element,
 				0,
 				0,
-				this.styleHeight,
-				this.styleWidth
+				this.styleWidth,
+				this.styleHeight
 			);
 		});
 	},

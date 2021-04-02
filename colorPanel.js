@@ -11,17 +11,20 @@ const colorPanel = {
 			this.colorPicker.click()
 		);
 		this.colorPicker.addEventListener('input', () =>
-			this.setCurrentColor(this.colorPicker.value)
+			this.selectNewColor(this.colorPicker.value)
 		);
 		this.colorPicker.addEventListener('change', () => {
 			this.updateColorHistory(this.colorPicker.value);
-			this.currentColorDiv.style.background = this.colorPicker.value;
+			this.setColor(this.colorPicker.value);
 		});
 	},
-	setCurrentColor(color = '#000000') {
+	selectNewColor(color = '#000000') {
 		this.colorPicker.value = color;
-		this.newColorDiv.style.background = color;
 		this.currentColor = color;
+		this.newColorDiv.style.background = color;
+	},
+	setColor(color = this.currentColor) {
+		this.currentColorDiv.style.background = color;
 	},
 	updateColorHistory(color) {
 		const container = document.querySelector('#colorHistoryPanel');
@@ -30,7 +33,7 @@ const colorPanel = {
 		prevColor.style.background = color;
 		prevColor.classList.add('prevColor');
 		prevColor.addEventListener('click', () => {
-			this.setCurrentColor(color);
+			this.selectNewColor(color);
 		});
 
 		if (container.childNodes.length >= 12) {

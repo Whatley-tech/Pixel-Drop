@@ -109,6 +109,7 @@ class EyeDrop extends Tool {
 	releaseAction() {
 		//do nothing if pixel was transparent
 		stage.clearImage(stage.mergedView);
+		colorPanel.setColor();
 		if (this.color) return colorPanel.updateColorHistory(this.color);
 	}
 	selectColor(x = this.xPosition, y = this.yPosition) {
@@ -123,7 +124,7 @@ class EyeDrop extends Tool {
 		//if colorSample has full transparency do nothing
 		if (colorSample[3] != 0) {
 			let hex = colorPanel.rgbToHex(...colorSample);
-			colorPanel.setCurrentColor(hex);
+			colorPanel.selectNewColor(hex);
 			return hex;
 		}
 	}
