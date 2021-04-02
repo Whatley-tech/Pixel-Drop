@@ -38,7 +38,6 @@
 				</div>
 			</div>
 			<div id="midContainer" class="row">
-				<div id="colorHistoryPanel" class="col"></div>
 				<div id="stagePanel" class="col-10">
 					<div id="newCanvasModal" class="modal" tabindex="-1" role="dialog">
 						<div class="modal-dialog" role="document">
@@ -121,89 +120,102 @@
 
 			<div
 				id="controlsContainer"
-				class="d-flex justify-content-center align-items-center"
+				class="container d-flex flex-column align-items-center"
 			>
-				<div id="colorPickerPanel" class="">
-					<div id="colorSelector" class="d-inline-flex">
-						<div id="currentColor"></div>
-						<div id="newColor"></div>
-					</div>
-					<input type="color" id="colorPicker" value="#000000" />
-				</div>
-				<div id="toolsPanel" class="">
+				<div id="controlsPanel">
 					<div
-						id="tools"
-						class="btn-group btn-group-sm"
-						role="toolbar"
-						aria-label="Tools Panel"
+						id="colorHistoryRow"
+						class="d-flex flex-row justify-content-start"
 					>
-						<button
-							type="button"
-							id="brush"
-							class="btn btn-secondary toolBtn"
-							data-toggle="tooltip"
-							title="Brush Tool"
-						>
-							<span class="material-icons"> brush </span>
-						</button>
-						<button
-							type="button"
-							id="eraser"
-							class="btn btn-secondary toolBtn"
-							data-toggle="tooltip"
-							title="Eraser Tool"
-						>
-							<span class="material-icons"> hide_source </span>
-						</button>
-						<button
-							type="button"
-							id="moveTool"
-							class="btn btn-secondary toolBtn"
-							data-toggle="tooltip"
-							title="Move Tool"
-						>
-							<span class="material-icons"> open_with</span>
-						</button>
-						<button
-							type="button"
-							id="eyeDrop"
-							class="btn btn-secondary toolBtn"
-							data-toggle="tooltip"
-							title="Color Picker Tool"
-						>
-							<span class="material-icons"> colorize</span>
-						</button>
-						<button
-							type="button"
-							id="fillTool"
-							class="btn btn-secondary toolBtn"
-							data-toggle="tooltip"
-							title="Color Replace Tol"
-						>
-							<span class="material-icons"> format_color_fill</span>
-						</button>
+						<div id="colorHistoryPanel" class="d-flex flex-row"></div>
 					</div>
-					<div id="toolSizeContainer" class="">
-						<input
-							title="1"
-							type="range"
-							name="toolSize"
-							id="toolSize"
-							value="1"
-							min="1"
-							max="5"
-						/>
-					</div>
-				</div>
+					<div id="controlsRow" class="d-flex flex-row">
+						<div id="colorPickerPanel" class="d-flex flex-row">
+							<div id="colorSelector" class="d-inline-flex">
+								<div id="currentColor"></div>
+								<div id="newColor"></div>
+							</div>
+							<input type="color" id="colorPicker" value="#000000" />
+						</div>
+						<div
+							id="toolsPanel"
+							class="d-flex flex-column justify-content-center"
+						>
+							<div
+								id="tools"
+								class="btn-group btn-group-sm"
+								role="toolbar"
+								aria-label="Tools Panel"
+							>
+								<button
+									type="button"
+									id="brush"
+									class="btn btn-secondary toolBtn"
+									data-toggle="tooltip"
+									title="Brush Tool"
+								>
+									<span class="material-icons"> brush </span>
+								</button>
+								<button
+									type="button"
+									id="eraser"
+									class="btn btn-secondary toolBtn"
+									data-toggle="tooltip"
+									title="Eraser Tool"
+								>
+									<span class="material-icons"> hide_source </span>
+								</button>
+								<button
+									type="button"
+									id="moveTool"
+									class="btn btn-secondary toolBtn"
+									data-toggle="tooltip"
+									title="Move Tool"
+								>
+									<span class="material-icons"> open_with</span>
+								</button>
+								<button
+									type="button"
+									id="eyeDrop"
+									class="btn btn-secondary toolBtn"
+									data-toggle="tooltip"
+									title="Color Picker Tool"
+								>
+									<span class="material-icons"> colorize</span>
+								</button>
+								<button
+									type="button"
+									id="fillTool"
+									class="btn btn-secondary toolBtn"
+									data-toggle="tooltip"
+									title="Color Replace Tol"
+								>
+									<span class="material-icons"> format_color_fill</span>
+								</button>
+							</div>
+							<div id="toolSizeContainer" class="d-flex justify-content-center">
+								<input
+									title="1"
+									type="range"
+									name="toolSize"
+									id="toolSize"
+									value="1"
+									min="1"
+									max="5"
+								/>
+							</div>
+						</div>
 
-				<div id="statePanel" class="">
-					<div class="btn btn-group" role="group" aria-label="undoRedo">
-						<button id="undo" class="btn btn-sm btn-secondary">
-							<span class="material-icons"> undo </span>
-						</button>
-						<button id="redo" class="btn btn-sm btn-secondary">
-							<span class="material-icons"> redo </span>
-						</button>
+						<div id="statePanel" class="">
+							<div class="btn-group" role="group" aria-label="undoRedo">
+								<button id="undo" class="btn btn-sm btn-secondary">
+									<span class="material-icons"> undo </span>
+								</button>
+								<button id="redo" class="btn btn-sm btn-secondary">
+									<span class="material-icons"> redo </span>
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

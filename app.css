@@ -36,13 +36,7 @@
 	background-color: ghostwhite;
 	border: 2px solid black;
 }
-#colorHistoryPanel {
-	/* width: 40px; */
-	display: flex;
-	flex-flow: column;
-	justify-content: flex-end;
-	align-items: center;
-}
+
 #stagePanel {
 	height: 75vh;
 }
@@ -70,16 +64,20 @@
 	height: 40px;
 	width: 74px;
 	border-radius: 5px;
-	border: 2px solid black;
+	/* border: 2px solid black; */
 }
 #currentColor {
 	background-color: black;
 	width: 50%;
 	height: 100%;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
 }
 #newColor {
 	width: 50%;
 	height: 100%;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 .material-icons.md-14 {
 	font-size: 14px;
@@ -98,12 +96,19 @@ button {
 	border: 2px solid black;
 	background-color: rgb(241, 240, 240);
 }
-
+#controlsPanel {
+	width: fit-content;
+}
+#colorHistoryPanel {
+	width: 100%;
+	min-height: 15px;
+	min-width: 15px;
+}
 .prevColor {
-	height: 35px;
-	width: 35px;
+	height: 15px;
+	width: 15px;
 	border: 2px solid black;
-	border-radius: 50px;
+	border-radius: 5px;
 }
 .hidden {
 	display: none;
