@@ -62,26 +62,14 @@
 	width: 100%;
 	background-color: rgb(85, 85, 85);
 }
-#toolsPanel {
-	display: flex;
-	flex-flow: column;
-	align-items: center;
-}
-#tools {
-	/* border: 1px solid green; */
-	width: 150px;
-	display: flex;
-	justify-content: space-around;
-	margin: 5px;
-}
 #colorPicker {
 	visibility: hidden;
 	position: absolute;
 }
 #currentColor {
 	height: 40px;
-	width: 60px;
-	border-radius: 50px;
+	width: 75px;
+	border-radius: 5px;
 	border: 2px solid black;
 }
 .material-icons.md-14 {
