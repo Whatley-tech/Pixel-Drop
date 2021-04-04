@@ -1,7 +1,5 @@
 const newCanvasModal = document.querySelector('#newCanvasModal');
 const newCanvasForm = document.querySelector('#newCanvasForm');
-const layersDropDownBtn = document.getElementById('layersDropDownBtn');
-const layersDropDownMenu = document.getElementById('layersDropDownMenu');
 const canvasRowsInput = document.querySelector('#canvasRowsInput');
 const canvasColsInput = document.querySelector('#canvasColsInput');
 
@@ -21,10 +19,6 @@ const toggleHidden = function (element) {
 
 newCanvasModal.addEventListener('shown.bs.modal', function () {
 	canvasRowsInput.focus();
-});
-
-document.addEventListener('mousedown', (e) => {
-	if (layersDropDownMenu.classList.contains('show')) layersDropDownBtn.click();
 });
 
 const initApp = function () {

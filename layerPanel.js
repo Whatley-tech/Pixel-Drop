@@ -1,8 +1,11 @@
+//logic for the layerPanel functionality
 const layerPanel = {
 	newLayerBtn: document.querySelector('#newLayerBtn'),
 	tileContainer: document.querySelector('#tileContainer'),
 	tileTemplate: document.querySelector('#tileTemplate'),
 	activeLayerPreview: document.querySelector('#activeLayerPreview'),
+	layersDropDownBtn: document.getElementById('layersDropDownBtn'),
+	layersDropDownMenu: document.getElementById('layersDropDownMenu'),
 	activeTile: undefined,
 	get tileCount() {
 		return this.tileContainer.children.length;
@@ -15,7 +18,6 @@ const layerPanel = {
 			stop: (event, ui) => this.moveLayer(ui.item[0]),
 		});
 	},
-
 	moveLayer(movedLayerTile) {
 		statePanel.saveState('arrange', movedLayerTile);
 		let tiles = [...this.tileContainer.children];
@@ -55,7 +57,6 @@ const layerPanel = {
 			this.tileContainer.appendChild(layer.tile);
 		});
 	},
-
 	toggleActive() {
 		const currentlyActive = document.querySelectorAll('#tileContainer .active');
 		if (currentlyActive)
@@ -69,6 +70,11 @@ const layerPanel = {
 			e.stopPropagation();
 			if (this.tileCount > 8) return; //max layers
 			stage.newLayer();
+		});
+		//collapse layerpanel on outside click
+		document.addEventListener('mousedown', (e) => {
+			if (layersDropDownMenu.classList.contains('show'))
+				layersDropDownBtn.click();
 		});
 	},
 };
