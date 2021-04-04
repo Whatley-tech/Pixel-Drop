@@ -22,6 +22,7 @@ class Layer extends Canvas {
 		//layerPanel Element
 		this.tileContainer = document.querySelector('#tileContainer');
 		this.tile = document.querySelector('#tileTemplate').cloneNode(true);
+		this.tile.classList.toggle('template');
 		this.tileContainer.append(this.tile);
 		this.tile.name = `tile${id}`;
 		this.tile.id = `tile${id}`;
@@ -34,9 +35,10 @@ class Layer extends Canvas {
 		);
 		this.tile.removeBtn = document.querySelector(`#${this.tile.id} .removeBtn`);
 
-		toggleHidden(this.tile);
+		// toggleHidden(this.tile);
 
-		this.tile.addEventListener('click', () => {
+		this.tile.addEventListener('click', (e) => {
+			e.stopPropagation();
 			stage.activeLayer = this;
 			layerPanel.activeTile = this.tile;
 			layerPanel.toggleActive();
@@ -49,16 +51,17 @@ class Layer extends Canvas {
 			if (stage.layers.length <= 1) return; //alert here "must have atleast one layer"
 			layerPanel.deleteLayer(this);
 		});
-		this.tile.visibleBtn.addEventListener('click', () => {
+		this.tile.visibleBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
 			if (this.visible) {
 				this.visible = false;
-				this.tile.visibleBtn.innerHTML = `<span class="material-icons md-14 white">
+				this.tile.visibleBtn.innerHTML = `<span class="material-icons md-14">
 		visibility_off
 		</span>`;
 				toggleHidden(this.element);
 			} else {
 				this.visible = true;
-				this.tile.visibleBtn.innerHTML = `<span class="material-icons md-14 white">
+				this.tile.visibleBtn.innerHTML = `<span class="material-icons md-14">
 		visibility
 		</span>`;
 				toggleHidden(this.element);

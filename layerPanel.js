@@ -2,6 +2,7 @@ const layerPanel = {
 	newLayerBtn: document.querySelector('#newLayerBtn'),
 	tileContainer: document.querySelector('#tileContainer'),
 	tileTemplate: document.querySelector('#tileTemplate'),
+	activeLayerPreview: document.querySelector('#activeLayerPreview'),
 	activeTile: undefined,
 	get tileCount() {
 		return this.tileContainer.children.length;
@@ -39,6 +40,7 @@ const layerPanel = {
 		if (deletedLayer.tile === layerPanel.activeTile) {
 			stage.setActiveLayer(_.last(stage.layers));
 		}
+		this.updateTiles();
 	},
 	findArrayIndex(arr, element) {
 		const index = _.findIndex(arr, element);
@@ -52,8 +54,8 @@ const layerPanel = {
 		_.eachRight(stage.layers, (layer) => {
 			this.tileContainer.appendChild(layer.tile);
 		});
-		this.toggleActive();
 	},
+
 	toggleActive() {
 		const currentlyActive = document.querySelectorAll('#tileContainer .active');
 		if (currentlyActive)
@@ -63,7 +65,8 @@ const layerPanel = {
 		this.activeTile.classList.toggle('active');
 	},
 	addLayerPanelListeners() {
-		this.newLayerBtn.addEventListener('click', () => {
+		this.newLayerBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
 			if (this.tileCount > 8) return; //max layers
 			stage.newLayer();
 		});

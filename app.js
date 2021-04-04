@@ -1,3 +1,10 @@
+const newCanvasModal = document.querySelector('#newCanvasModal');
+const newCanvasForm = document.querySelector('#newCanvasForm');
+const layersDropDownBtn = document.getElementById('layersDropDownBtn');
+const layersDropDownMenu = document.getElementById('layersDropDownMenu');
+const canvasRowsInput = document.querySelector('#canvasRowsInput');
+const canvasColsInput = document.querySelector('#canvasColsInput');
+
 const enableToolTips = function () {
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip();
@@ -11,8 +18,13 @@ const enablePopOvers = function () {
 const toggleHidden = function (element) {
 	element.classList.toggle('hidden');
 };
-$('#newCanvasModal').on('shown.bs.modal', function () {
-	$('#newCanvasBtn').trigger('focus');
+
+newCanvasModal.addEventListener('shown.bs.modal', function () {
+	canvasRowsInput.focus();
+});
+
+document.addEventListener('mousedown', (e) => {
+	if (layersDropDownMenu.classList.contains('show')) layersDropDownBtn.click();
 });
 
 const initApp = function () {
@@ -28,14 +40,9 @@ const initApp = function () {
 	enableToolTips();
 };
 
-const newCanvasForm = document.querySelector('#newCanvasForm');
-const canvasRowsInput = document.querySelector('#canvasRowsInput');
-const canvasColsInput = document.querySelector('#canvasColsInput');
-
 newCanvasForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	$('#newCanvasModal').modal('toggle');
-	// toggleHidden(newCanvasForm);
 	stage.reset();
 	initApp();
 	canvasRowsInput.value = null;
