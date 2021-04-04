@@ -20,6 +20,12 @@ const toggleHidden = function (element) {
 newCanvasModal.addEventListener('shown.bs.modal', function () {
 	canvasRowsInput.focus();
 });
+const tooltipTriggerList = [].slice.call(
+	document.querySelectorAll('[data-bs-toggle="tooltip"]')
+);
+const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+	return new bootstrap.Tooltip(tooltipTriggerEl);
+});
 
 const initApp = function () {
 	const rows = canvasRowsInput.value;

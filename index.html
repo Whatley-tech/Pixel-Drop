@@ -59,7 +59,12 @@
 						<div id="colorHistoryPanel" class="d-flex flex-row"></div>
 					</div>
 					<div id="controlsRow" class="d-flex flex-row">
-						<div id="colorPickerPanel" class="d-flex flex-row">
+						<div
+							id="colorPickerPanel"
+							class="d-flex flex-row"
+							data-bs-toggle="tooltip"
+							title="Color Select"
+						>
 							<div id="colorSelector" class="d-inline-flex">
 								<div id="currentColor"></div>
 								<div id="newColor"></div>
@@ -117,7 +122,7 @@
 									id="fillTool"
 									class="btn btn-secondary toolBtn"
 									data-bs-toggle="tooltip"
-									title="Color Replace Tol"
+									title="Color Replace Tool"
 								>
 									<span class="material-icons"> format_color_fill</span>
 								</button>
@@ -137,10 +142,20 @@
 
 						<div id="statePanel">
 							<div class="btn-group" role="group" aria-label="undoRedo">
-								<button id="undo" class="btn btn-sm btn-secondary">
+								<button
+									id="undo"
+									class="btn btn-sm btn-secondary"
+									data-bs-toggle="tooltip"
+									title="Undo"
+								>
 									<span class="material-icons"> undo </span>
 								</button>
-								<button id="redo" class="btn btn-sm btn-secondary">
+								<button
+									id="redo"
+									class="btn btn-sm btn-secondary"
+									data-bs-toggle="tooltip"
+									title="Redo"
+								>
 									<span class="material-icons"> redo </span>
 								</button>
 							</div>
