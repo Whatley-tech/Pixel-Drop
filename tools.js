@@ -4,8 +4,9 @@ class Tool {
 		this.xPosition = 0;
 		this.yPosition = 0;
 		this.isDrawing = false;
+		this.pixelBuffer = [];
 		this.buttonElement = buttonElement;
-		this.undoAble = false;
+		this.undoAble = true;
 		this.halfPixel = 0.5;
 	}
 	get offset() {
@@ -13,6 +14,9 @@ class Tool {
 	}
 	get ctx() {
 		return stage.activeLayer.ctx;
+	}
+	get canvas() {
+		return stage.activeLayer;
 	}
 	updatePosition(evt) {
 		let canvas = stage.brushOverlay;
@@ -32,25 +36,55 @@ class Tool {
 			this.size * stage.pixelSize
 		);
 	}
+	bufferPixels(x, y, color, size) {
+		this.pixelBuffer.push(new Pixel(x, y, color, size));
+	}
+	storePixels() {
+		this.removeDuplicates();
+		const newPixels = _.differenceWith(
+			this.pixelBuffer,
+			this.canvas.pixels,
+			_.isEqual
+		);
+		if (newPixels) this.canvas.pixels.push(...newPixels);
+		this.clearBuffer();
+	}
+	removeDuplicates() {
+		_.each(this.pixelBuffer, (pixel) => {
+			_.remove(this.pixelBuffer, (p) => {
+				return _.isEqual(pixel, p) && pixel !== p;
+			});
+		});
+	}
+	clearBuffer() {
+		_.remove(this.pixelBuffer);
+	}
 }
 
 class Brush extends Tool {
-	undoAble = true;
 	startAction() {}
 	action() {
 		this.drawPixel();
 	}
-	releaseAction() {}
-	drawPixel(x = this.xPixelPosition, y = this.yPixelPosition) {
+	releaseAction() {
+		this.storePixels();
+	}
+	drawPixel(
+		x = this.xPixelPosition,
+		y = this.yPixelPosition,
+		color = colorPanel.currentColor,
+		size = this.size
+	) {
 		let xOrigin = x * stage.pixelSize;
 		let yOrigin = y * stage.pixelSize;
 
-		this.ctx.fillStyle = colorPanel.currentColor;
+		this.bufferPixels(x, y, color, size);
+		this.ctx.fillStyle = color;
 		this.ctx.fillRect(
 			xOrigin,
 			yOrigin,
-			stage.pixelSize * this.size,
-			stage.pixelSize * this.size
+			stage.pixelSize * size,
+			stage.pixelSize * size
 		);
 	}
 	drawCheckerGrid() {
@@ -72,10 +106,10 @@ class Brush extends Tool {
 				this.drawPixel(x, y);
 			}
 		}
+		this.storePixels();
 	}
 }
 class Eraser extends Tool {
-	undoAble = true;
 	startAction() {}
 	action() {
 		this.erasePixel();
@@ -85,7 +119,7 @@ class Eraser extends Tool {
 		let xOrigin = x * stage.pixelSize;
 		let yOrigin = y * stage.pixelSize;
 
-		// this.ctx.fillStyle = colorPanel.currentColor;
+		this.bufferPixels(x, y);
 		this.ctx.clearRect(
 			xOrigin,
 			yOrigin,
@@ -98,6 +132,7 @@ class EyeDrop extends Tool {
 	constructor(buttonElement) {
 		super(buttonElement);
 		this.color = undefined;
+		this.undoAble = false;
 	}
 	startAction() {
 		stage.setMergedView();
@@ -108,7 +143,7 @@ class EyeDrop extends Tool {
 	}
 	releaseAction() {
 		//do nothing if pixel was transparent
-		stage.clearImage(stage.mergedView);
+		stage.clearCanvas(stage.mergedView);
 		colorPanel.setColor();
 		if (this.color) return colorPanel.updateColorHistory(this.color);
 	}
@@ -130,7 +165,6 @@ class EyeDrop extends Tool {
 	}
 }
 class FillTool extends Tool {
-	undoAble = true;
 	startAction() {}
 	action() {}
 	releaseAction() {
@@ -173,7 +207,7 @@ class MoveTool extends Tool {
 		this.yMoveStart = undefined;
 		this.startImg = undefined;
 	}
-	undoAble = true;
+
 	startAction() {
 		this.xMoveStart = this.xPixelPosition;
 		this.yMoveStart = this.yPixelPosition;
@@ -186,7 +220,7 @@ class MoveTool extends Tool {
 	moveCanvas(xpp = this.xPixelPosition, ypp = this.yPixelPosition) {
 		const xDistance = this.checkMoveDistance(this.xMoveStart, xpp);
 		const yDistance = this.checkMoveDistance(this.yMoveStart, ypp);
-		stage.clearImage(this);
+		stage.clearCanvas(this);
 		this.ctx.putImageData(
 			this.startImg,
 			xDistance * stage.dpr,

@@ -44,7 +44,8 @@ const stage = {
 	},
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
-			if (toolsPanel.activeTool.undoAble) statePanel.saveState('action');
+			if (toolsPanel.activeTool.undoAble)
+				statePanel.saveState('action', stage.activeLayer);
 			statePanel.clearRedos();
 			toolsPanel.activeTool.isDrawing = true;
 			toolsPanel.activeTool.startAction();
@@ -60,14 +61,13 @@ const stage = {
 		this.mainDiv.addEventListener('mouseup', (e) => {
 			toolsPanel.activeTool.releaseAction();
 			toolsPanel.activeTool.isDrawing = false;
-			this.updateCanvasImg(this.activeLayer);
 		});
 		window.addEventListener('resize', () => {
 			this.resizeWindow();
-			_.each(this.layers, (layer) => this.redrawCanvas(layer));
-			this.redrawCanvas(this.background);
-			this.redrawCanvas(this.brushOverlay);
-			this.redrawCanvas(this.mergedView);
+			this.renderCanvas(this.background);
+			this.renderCanvas(this.brushOverlay);
+			this.renderCanvas(this.mergedView);
+			_.each(this.layers, (layer) => this.renderCanvas(layer));
 		});
 	},
 	init(rows, cols) {
@@ -78,8 +78,7 @@ const stage = {
 		this.appendToStageDiv(this.background);
 
 		this.activeLayer = this.background;
-		toolsPanel.activeTool.drawCheckerGrid();
-		stage.updateCanvasImg(this.background);
+		toolsPanel.activeTool.drawCheckerGrid(this.background);
 
 		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
 		this.appendToStageDiv(this.brushOverlay);
@@ -139,26 +138,16 @@ const stage = {
 		this.layers.splice(prevIndex, 1);
 		this.layers.splice(currentIndex, 0, element);
 	},
-	copyImage(canvas) {
-		return canvas.ctx.getImageData(0, 0, this.scaledWidth, this.scaledHeight);
-	},
-	copyImageURL(canvas) {
-		let img = new Image();
-		img.src = canvas.element.toDataURL();
-		return img;
-	},
-	clearImage(canvas) {
+	clearCanvas(canvas) {
 		canvas.ctx.clearRect(0, 0, this.styleWidth, this.styleHeight);
-	},
-	updateCanvasImg(canvas) {
-		let imgData = stage.copyImageURL(canvas);
-		canvas.img = imgData;
 	},
 	resizeCanvas(canvas) {
 		canvas.element.width = stage.scaledWidth;
 		canvas.element.height = stage.scaledHeight;
 		canvas.element.style.width = `${this.styleWidth}px`;
 		canvas.element.style.height = `${this.styleHeight}px`;
+		canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
+		canvas.ctx.scale(this.dpr, this.dpr);
 	},
 	resizeWindow() {
 		_.each(this.layers, (layer) => this.resizeCanvas(layer));
@@ -166,18 +155,14 @@ const stage = {
 		this.resizeCanvas(this.brushOverlay);
 		this.resizeCanvas(this.mergedView);
 	},
-	redrawCanvas(canvas) {
-		this.clearImage(canvas);
-		canvas.ctx.scale(this.dpr, this.dpr);
-		if (canvas.img) {
-			canvas.ctx.drawImage(
-				canvas.img,
-				0,
-				0,
-				stage.styleWidth,
-				stage.styleHeight
-			);
-		}
+	renderCanvas(canvas) {
+		this.clearCanvas(canvas);
+		if (!canvas.pixels) return;
+		this.setActiveLayer(canvas);
+		_.each(canvas.pixels, (pixel) => {
+			toolsPanel.brush.drawPixel(pixel.x, pixel.y, pixel.color, pixel.size);
+		});
+		toolsPanel.brush.clearBuffer();
 	},
 	setMergedView() {
 		_.each(stage.layers, (layer) => {
@@ -193,7 +178,7 @@ const stage = {
 	restoreLayer(layer, index, img) {
 		stage.layers.splice(index, 0, layer);
 		this.appendToLayerDiv(layer);
-		layer.ctx.putImageData(img, 0, 0);
 		this.setActiveLayer(layer);
+		this.renderCanvas(layer);
 	},
 };

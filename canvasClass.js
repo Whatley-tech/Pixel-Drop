@@ -3,7 +3,7 @@ class Canvas {
 		//Canvas Element for stage
 		this.element = document.createElement('canvas');
 		this.ctx = this.element.getContext('2d');
-		this.svgCtx = new C2S(stage.styleHeight, stage.styleWidth);
+		this.pixels = [];
 		this.element.id = `Layer${id}`;
 		this.element.style.width = `${stage.styleWidth}px`;
 		this.element.style.height = `${stage.styleHeight}px`;

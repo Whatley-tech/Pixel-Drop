@@ -1,25 +1,27 @@
 class UndoState {
-	constructor(type, data) {
+	constructor(type, layer) {
 		this.type = type;
+		this.layer = layer;
 	}
 }
 class ActionState extends UndoState {
-	constructor(type) {
-		super(type);
-		this.layer = stage.activeLayer;
-		this.img = stage.copyImage(stage.activeLayer);
+	constructor(type, layer) {
+		super(type, layer);
+
+		this.pixels = _.cloneDeep(layer.pixels);
 	}
 	restore() {
 		stage.setActiveLayer(this.layer);
-		stage.activeLayer.ctx.putImageData(this.img, 0, 0);
+		_.remove(stage.activeLayer.pixels);
+		console.log(this.pixels);
+		stage.activeLayer.pixels.push(...this.pixels);
+		stage.renderCanvas(stage.activeLayer);
 	}
 }
 class DeleteState extends UndoState {
-	constructor(type, data) {
-		super(type, data);
-		this.data = data;
-		this.layer = data;
-		this.img = stage.copyImage(this.layer);
+	constructor(type, layer) {
+		super(type, layer);
+
 		this.index = _.findIndex(stage.layers, this.layer);
 	}
 	restore() {
@@ -30,14 +32,13 @@ class DeleteState extends UndoState {
 		layerPanel.deleteLayer(this.layer);
 	}
 	unDeleteLayer() {
-		stage.restoreLayer(this.layer, this.index, this.img);
+		stage.restoreLayer(this.layer, this.index);
 	}
 }
 class ArrangeState extends UndoState {
-	constructor(type, data) {
-		super(type, data);
-		this.data = data;
-		this.layerTile = data;
+	constructor(type, layer) {
+		super(type, layer);
+		this.layerTile = layer.tile;
 		this.prevIndex = layerPanel.findArrayIndex(stage.layers, (layer) => {
 			return layer.tile == this.layerTile;
 		});

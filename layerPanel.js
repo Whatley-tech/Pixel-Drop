@@ -19,7 +19,8 @@ const layerPanel = {
 		});
 	},
 	moveLayer(movedLayerTile) {
-		statePanel.saveState('arrange', movedLayerTile);
+		const layer = _.find(stage.layers, (layer) => layer.tile == movedLayerTile);
+		statePanel.saveState('arrange', layer);
 		let tiles = [...this.tileContainer.children];
 		_.reverse(tiles);
 		const currentTileIndex = this.findArrayIndex(tiles, movedLayerTile);
@@ -72,9 +73,9 @@ const layerPanel = {
 			stage.newLayer();
 		});
 		//collapse layerpanel on outside click
-		document.addEventListener('mousedown', (e) => {
-			if (layersDropDownMenu.classList.contains('show'))
-				layersDropDownBtn.click();
-		});
+		// document.addEventListener('mousedown', (e) => {
+		// 	if (layersDropDownMenu.classList.contains('show'))
+		// 		layersDropDownBtn.click();
+		// });
 	},
 };
