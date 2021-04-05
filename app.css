@@ -1,9 +1,7 @@
 #mainContainer {
 	height: 100vh;
 }
-#midContainer {
-	margin-bottom: 20px;
-}
+
 #newLayerBtn {
 	cursor: pointer;
 }
@@ -15,7 +13,7 @@
 	right: 0;
 	margin: auto;
 	position: absolute;
-	cursor: none;
+	/* cursor: none; */
 	/* border: 1px solid blue; */
 }
 .layerBtn {

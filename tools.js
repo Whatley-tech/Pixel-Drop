@@ -8,9 +8,11 @@ class Tool {
 		this.buttonElement = buttonElement;
 		this.undoAble = true;
 		this.halfPixel = 0.5;
+		this.xPixelPosition = undefined;
+		this.yPixelPosition = undefined;
 	}
 	get offset() {
-		return Math.floor(stage.pixelSize / 2);
+		return Math.floor((stage.pixelSize * this.size) / 2);
 	}
 	get ctx() {
 		return stage.activeLayer.ctx;
@@ -24,8 +26,10 @@ class Tool {
 		this.xPosition = Math.floor(evt.pageX - stage.leftOrigin);
 		this.yPosition = Math.floor(evt.pageY - stage.topOrigin);
 		// console.log(this.xPosition);
-		this.xPixelPosition = Math.floor(this.xPosition / stage.pixelSize);
-		this.yPixelPosition = Math.floor(this.yPosition / stage.pixelSize);
+		this.xPixelPosition =
+			Math.floor(this.xPosition / stage.pixelSize) + this.halfPixel;
+		this.yPixelPosition =
+			Math.floor(this.yPosition / stage.pixelSize) + this.halfPixel;
 		//draw brushPosition outline
 		canvas.ctx.clearRect(0, 0, stage.styleWidth, stage.styleHeight);
 		canvas.ctx.strokeStyle = 'green';
@@ -35,6 +39,8 @@ class Tool {
 			this.size * stage.pixelSize,
 			this.size * stage.pixelSize
 		);
+		canvas.ctx.strokeStyle = 'purple';
+		canvas.ctx.strokeRect(this.xPosition, this.yPosition, 10, 10);
 	}
 	bufferPixels(x, y, color, size) {
 		this.pixelBuffer.push(new Pixel(x, y, color, size));
@@ -66,6 +72,7 @@ class Brush extends Tool {
 	action() {
 		this.drawPixel();
 	}
+<<<<<<< HEAD
 	releaseAction() {
 		this.storePixels();
 	}
@@ -85,6 +92,25 @@ class Brush extends Tool {
 			yOrigin,
 			stage.pixelSize * size,
 			stage.pixelSize * size
+=======
+	releaseAction() {}
+	drawPixel(x = this.xPixelPosition, y = this.yPixelPosition) {
+		if (this.size % 2 == 0) {
+			x -= this.halfPixel;
+			y -= this.halfPixel;
+		}
+
+		let xOrigin = x * stage.pixelSize;
+		let yOrigin = y * stage.pixelSize;
+
+		this.ctx.fillStyle = colorPanel.currentColor;
+
+		this.ctx.fillRect(
+			xOrigin - this.offset,
+			yOrigin - this.offset,
+			stage.pixelSize * this.size,
+			stage.pixelSize * this.size
+>>>>>>> 58546bd46a2abad21dcb2a6f3b83063fc635de37
 		);
 	}
 	drawCheckerGrid() {
@@ -103,7 +129,14 @@ class Brush extends Tool {
 				colorPanel.currentColor === lightGray
 					? (colorPanel.currentColor = darkGray)
 					: (colorPanel.currentColor = lightGray);
-				this.drawPixel(x, y);
+
+				this.ctx.fillStyle = colorPanel.currentColor;
+				this.ctx.fillRect(
+					x * stage.pixelSize,
+					y * stage.pixelSize,
+					stage.pixelSize * this.size,
+					stage.pixelSize * this.size
+				);
 			}
 		}
 		this.storePixels();
