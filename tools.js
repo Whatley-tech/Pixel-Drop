@@ -48,6 +48,7 @@ class Tool {
 		this.pixelBuffer.push(new Pixel(x, y, color, size));
 	}
 	storePixels() {
+		this.breakUpPixels();
 		this.removeDuplicates();
 		const newPixels = _.differenceWith(
 			this.pixelBuffer,
@@ -62,6 +63,21 @@ class Tool {
 			_.remove(this.pixelBuffer, (p) => {
 				return _.isEqual(pixel, p) && pixel !== p;
 			});
+		});
+	}
+	breakUpPixels() {
+		_.each(this.pixelBuffer, (pixel) => {
+			if (pixel.size == 1) return;
+
+			for (let i = 0; i < pixel.size; i++) {
+				let originY = pixel.y + i;
+
+				for (let j = 0; j < pixel.size; j++) {
+					let originX = pixel.x + j;
+					this.pixelBuffer.push(new Pixel(originY, originX, pixel.color, 1));
+				}
+			}
+			_.remove(this.pixelBuffer, pixel);
 		});
 	}
 	clearBuffer() {
