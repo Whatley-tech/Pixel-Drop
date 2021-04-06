@@ -52,7 +52,7 @@ class Tool {
 		this.removeDuplicates();
 		const newPixels = _.differenceWith(
 			this.pixelBuffer,
-			this.canvas.pixels,
+			this.canvas.pixels, //fix this to remove pixels with same x/y position,
 			_.isEqual
 		);
 		if (newPixels) this.canvas.pixels.push(...newPixels);
