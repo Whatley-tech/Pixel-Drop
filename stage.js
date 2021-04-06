@@ -160,7 +160,13 @@ const stage = {
 		if (!canvas.pixels) return;
 		this.setActiveLayer(canvas);
 		_.each(canvas.pixels, (pixel) => {
-			toolsPanel.brush.drawPixel(pixel.x, pixel.y, pixel.color, pixel.size);
+			toolsPanel.brush.drawPixel(
+				pixel.x,
+				pixel.y,
+				pixel.color,
+				pixel.size * stage.pixelSize,
+				false
+			);
 		});
 		toolsPanel.brush.clearBuffer();
 	},

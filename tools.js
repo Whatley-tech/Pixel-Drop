@@ -1,15 +1,17 @@
 class Tool {
 	constructor(buttonElement) {
+		this.buttonElement = buttonElement;
 		this.size = 1;
-		this.xPosition = 0;
-		this.yPosition = 0;
+		this.undoAble = true;
 		this.isDrawing = false;
 		this.pixelBuffer = [];
-		this.buttonElement = buttonElement;
-		this.undoAble = true;
 		this.halfPixel = 0.5;
+		this.xPosition = 0;
+		this.yPosition = 0;
 		this.xPixelPosition = undefined;
 		this.yPixelPosition = undefined;
+		this.xPixelOrigin = undefined;
+		this.yPixelOrigin = undefined;
 	}
 	get offset() {
 		return Math.floor((stage.pixelSize * this.size) / 2);
@@ -28,18 +30,16 @@ class Tool {
 		//find brushPosition
 		this.xPosition = Math.floor(evt.pageX - stage.leftOrigin);
 		this.yPosition = Math.floor(evt.pageY - stage.topOrigin);
-		// console.log(this.xPosition);
-		this.xPixelPosition =
-			Math.floor(this.xPosition / stage.pixelSize) * stage.pixelSize;
-		this.yPixelPosition =
-			Math.floor(this.yPosition / stage.pixelSize) * stage.pixelSize;
-
+		this.xPixelPosition = Math.floor(this.xPosition / stage.pixelSize);
+		this.yPixelPosition = Math.floor(this.yPosition / stage.pixelSize);
+		this.xPixelOrigin = this.xPixelPosition * stage.pixelSize;
+		this.yPixelOrigin = this.yPixelPosition * stage.pixelSize;
 		//draw brushPosition outline
 		canvas.ctx.clearRect(0, 0, stage.styleWidth, stage.styleHeight);
 		canvas.ctx.fillStyle = 'rgb(130, 130, 130, 0.5)';
 		canvas.ctx.fillRect(
-			this.xPixelPosition,
-			this.yPixelPosition,
+			this.xPixelOrigin,
+			this.yPixelOrigin,
 			this.brushSize,
 			this.brushSize
 		);
@@ -81,11 +81,12 @@ class Brush extends Tool {
 		x = this.xPixelPosition,
 		y = this.yPixelPosition,
 		color = colorPanel.currentColor,
-		size = this.brushSize
+		size = this.brushSize,
+		buffer = true
 	) {
-		this.bufferPixels(x, y, color, this.size);
+		if (buffer) this.bufferPixels(x, y, color, this.size);
 		this.ctx.fillStyle = color;
-		this.ctx.fillRect(x, y, size, size);
+		this.ctx.fillRect(x * stage.pixelSize, y * stage.pixelSize, size, size);
 	}
 	drawCheckerGrid() {
 		const lightGray = '#d7d7d7';
@@ -104,6 +105,7 @@ class Brush extends Tool {
 					? (colorPanel.currentColor = darkGray)
 					: (colorPanel.currentColor = lightGray);
 
+				this.bufferPixels(x, y, colorPanel.currentColor, this.size);
 				this.ctx.fillStyle = colorPanel.currentColor;
 				this.ctx.fillRect(
 					x * stage.pixelSize,
