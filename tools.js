@@ -45,10 +45,19 @@ class Tool {
 		);
 	}
 	bufferPixels(x, y, color, size) {
-		this.pixelBuffer.push(new Pixel(x, y, color, size));
+		if (size == 1) return this.pixelBuffer.push(new Pixel(x, y, color, size));
+
+		for (let i = 0; i < size; i++) {
+			let originY = y + i;
+
+			for (let j = 0; j < size; j++) {
+				let originX = x + j;
+				this.pixelBuffer.push(new Pixel(originY, originX, color, 1));
+			}
+		}
 	}
 	storePixels() {
-		this.breakUpPixels();
+		// this.breakUpPixels();
 		this.removeDuplicates();
 		const newPixels = _.differenceWith(
 			this.pixelBuffer,
@@ -65,21 +74,21 @@ class Tool {
 			});
 		});
 	}
-	breakUpPixels() {
-		_.each(this.pixelBuffer, (pixel) => {
-			if (pixel.size == 1) return;
+	// breakUpPixels() {
+	// 	_.each(this.pixelBuffer, (pixel) => {
+	// 		if (pixel.size == 1) return;
 
-			for (let i = 0; i < pixel.size; i++) {
-				let originY = pixel.y + i;
+	// 		for (let i = 0; i < pixel.size; i++) {
+	// 			let originY = pixel.y + i;
 
-				for (let j = 0; j < pixel.size; j++) {
-					let originX = pixel.x + j;
-					this.pixelBuffer.push(new Pixel(originY, originX, pixel.color, 1));
-				}
-			}
-			_.remove(this.pixelBuffer, pixel);
-		});
-	}
+	// 			for (let j = 0; j < pixel.size; j++) {
+	// 				let originX = pixel.x + j;
+	// 				this.pixelBuffer.push(new Pixel(originY, originX, pixel.color, 1));
+	// 			}
+	// 		}
+	// 		_.remove(this.pixelBuffer, pixel);
+	// 	});
+	// }
 	clearBuffer() {
 		_.remove(this.pixelBuffer);
 	}
@@ -104,34 +113,34 @@ class Brush extends Tool {
 		this.ctx.fillStyle = color;
 		this.ctx.fillRect(x * stage.pixelSize, y * stage.pixelSize, size, size);
 	}
-	drawCheckerGrid() {
+	drawCheckerGrid(canvas) {
 		const lightGray = '#d7d7d7';
 		const darkGray = '#fafafa';
 		const rows = stage.rows;
 		const cols = stage.cols;
+		let currentColor = undefined;
 		let colorOffset = 0;
 
+		stage.clearCanvas(stage.background);
 		for (let x = 0; x < cols; x++) {
 			colorOffset % 2 === 0
-				? (colorPanel.currentColor = darkGray)
-				: (colorPanel.currentColor = lightGray);
+				? (currentColor = darkGray)
+				: (currentColor = lightGray);
 			colorOffset++;
 			for (let y = 0; y < rows; y++) {
-				colorPanel.currentColor === lightGray
-					? (colorPanel.currentColor = darkGray)
-					: (colorPanel.currentColor = lightGray);
+				currentColor === lightGray
+					? (currentColor = darkGray)
+					: (currentColor = lightGray);
 
-				this.bufferPixels(x, y, colorPanel.currentColor, this.size);
-				this.ctx.fillStyle = colorPanel.currentColor;
-				this.ctx.fillRect(
+				canvas.ctx.fillStyle = currentColor;
+				canvas.ctx.fillRect(
 					x * stage.pixelSize,
 					y * stage.pixelSize,
-					this.brushSize,
-					this.brushSize
+					1 * stage.pixelSize,
+					1 * stage.pixelSize
 				);
 			}
 		}
-		this.storePixels();
 	}
 }
 class Eraser extends Tool {

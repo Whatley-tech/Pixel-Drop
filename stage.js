@@ -64,7 +64,7 @@ const stage = {
 		});
 		window.addEventListener('resize', () => {
 			this.resizeWindow();
-			this.renderCanvas(this.background);
+			toolsPanel.brush.drawCheckerGrid(this.background);
 			this.renderCanvas(this.brushOverlay);
 			this.renderCanvas(this.mergedView);
 			_.each(this.layers, (layer) => this.renderCanvas(layer));
@@ -77,8 +77,7 @@ const stage = {
 		this.background = this.makeCanvas('background', 0);
 		this.appendToStageDiv(this.background);
 
-		this.activeLayer = this.background;
-		toolsPanel.activeTool.drawCheckerGrid(this.background);
+		toolsPanel.brush.drawCheckerGrid(this.background);
 
 		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
 		this.appendToStageDiv(this.brushOverlay);
