@@ -59,12 +59,18 @@ class Tool {
 	storePixels() {
 		// this.breakUpPixels();
 		this.removeDuplicates();
-		const newPixels = _.differenceWith(
-			this.pixelBuffer,
-			this.canvas.pixels, //fix this to remove pixels with same x/y position,
-			_.isEqual
-		);
-		if (newPixels) this.canvas.pixels.push(...newPixels);
+		// const newPixels = _.differenceWith(
+		// 	this.pixelBuffer,
+		// 	this.canvas.pixels,
+		// 	_.isEqual
+		// );
+		_.each(this.pixelBuffer, (newPixel) => {
+			_.remove(this.canvas.pixels, (pixel) => {
+				return pixel.x == newPixel.x && pixel.y == newPixel.y;
+			});
+		});
+
+		if (this.pixelBuffer) this.canvas.pixels.push(...this.pixelBuffer);
 		this.clearBuffer();
 	}
 	removeDuplicates() {
