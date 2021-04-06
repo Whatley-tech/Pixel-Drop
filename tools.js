@@ -20,6 +20,9 @@ class Tool {
 	get canvas() {
 		return stage.activeLayer;
 	}
+	get brushSize() {
+		return this.size * stage.pixelSize;
+	}
 	updatePosition(evt) {
 		let canvas = stage.brushOverlay;
 		//find brushPosition
@@ -27,20 +30,19 @@ class Tool {
 		this.yPosition = Math.floor(evt.pageY - stage.topOrigin);
 		// console.log(this.xPosition);
 		this.xPixelPosition =
-			Math.floor(this.xPosition / stage.pixelSize) + this.halfPixel;
+			Math.floor(this.xPosition / stage.pixelSize) * stage.pixelSize;
 		this.yPixelPosition =
-			Math.floor(this.yPosition / stage.pixelSize) + this.halfPixel;
+			Math.floor(this.yPosition / stage.pixelSize) * stage.pixelSize;
+
 		//draw brushPosition outline
 		canvas.ctx.clearRect(0, 0, stage.styleWidth, stage.styleHeight);
-		canvas.ctx.strokeStyle = 'green';
-		canvas.ctx.strokeRect(
-			this.xPosition - this.offset,
-			this.yPosition - this.offset,
-			this.size * stage.pixelSize,
-			this.size * stage.pixelSize
+		canvas.ctx.fillStyle = 'rgb(130, 130, 130, 0.5)';
+		canvas.ctx.fillRect(
+			this.xPixelPosition,
+			this.yPixelPosition,
+			this.brushSize,
+			this.brushSize
 		);
-		canvas.ctx.strokeStyle = 'purple';
-		canvas.ctx.strokeRect(this.xPosition, this.yPosition, 10, 10);
 	}
 	bufferPixels(x, y, color, size) {
 		this.pixelBuffer.push(new Pixel(x, y, color, size));
@@ -79,19 +81,11 @@ class Brush extends Tool {
 		x = this.xPixelPosition,
 		y = this.yPixelPosition,
 		color = colorPanel.currentColor,
-		size = this.size
+		size = this.brushSize
 	) {
-		let xOrigin = x * stage.pixelSize;
-		let yOrigin = y * stage.pixelSize;
-
-		this.bufferPixels(x, y, color, size);
+		this.bufferPixels(x, y, color, this.size);
 		this.ctx.fillStyle = color;
-		this.ctx.fillRect(
-			xOrigin,
-			yOrigin,
-			stage.pixelSize * size,
-			stage.pixelSize * size
-		);
+		this.ctx.fillRect(x, y, size, size);
 	}
 	drawCheckerGrid() {
 		const lightGray = '#d7d7d7';
@@ -114,8 +108,8 @@ class Brush extends Tool {
 				this.ctx.fillRect(
 					x * stage.pixelSize,
 					y * stage.pixelSize,
-					stage.pixelSize * this.size,
-					stage.pixelSize * this.size
+					this.brushSize,
+					this.brushSize
 				);
 			}
 		}
@@ -129,16 +123,8 @@ class Eraser extends Tool {
 	}
 	releaseAction() {}
 	erasePixel(x = this.xPixelPosition, y = this.yPixelPosition) {
-		let xOrigin = x * stage.pixelSize;
-		let yOrigin = y * stage.pixelSize;
-
 		this.bufferPixels(x, y);
-		this.ctx.clearRect(
-			xOrigin,
-			yOrigin,
-			stage.pixelSize * this.size,
-			stage.pixelSize * this.size
-		);
+		this.ctx.clearRect(x, y, this.brushSize, this.brushSize);
 	}
 }
 class EyeDrop extends Tool {
