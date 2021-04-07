@@ -13,8 +13,8 @@ class Tool {
 		this.xPixelOrigin = undefined;
 		this.yPixelOrigin = undefined;
 	}
-	get offset() {
-		return Math.floor((stage.pixelSize * this.size) / 2);
+	get brushSize() {
+		this.size * stage.pixelSize;
 	}
 	get ctx() {
 		return stage.activeLayer.ctx;
@@ -22,9 +22,7 @@ class Tool {
 	get canvas() {
 		return stage.activeLayer;
 	}
-	get brushSize() {
-		return this.size * stage.pixelSize;
-	}
+
 	updatePosition(evt) {
 		let canvas = stage.brushOverlay;
 		//find brushPosition
@@ -35,68 +33,26 @@ class Tool {
 		this.xPixelOrigin = this.xPixelPosition * stage.pixelSize;
 		this.yPixelOrigin = this.yPixelPosition * stage.pixelSize;
 		//draw brushPosition outline
-		canvas.ctx.clearRect(0, 0, stage.styleWidth, stage.styleHeight);
+		canvas.ctx.clearRect(0, 0, stage.width, stage.height);
 		canvas.ctx.fillStyle = 'rgb(130, 130, 130, 0.5)';
+		console.log(this.xPosition, this.yPosition);
 		canvas.ctx.fillRect(
-			this.xPixelOrigin,
-			this.yPixelOrigin,
+			this.xPosition,
+			this.yPosition,
 			this.brushSize,
 			this.brushSize
 		);
-	}
-	bufferPixels(x, y, color, size) {
-		if (size == 1) return this.pixelBuffer.push(new Pixel(x, y, color, size));
-
-		for (let i = 0; i < size; i++) {
-			let originY = y + i;
-
-			for (let j = 0; j < size; j++) {
-				let originX = x + j;
-				this.pixelBuffer.push(new Pixel(originY, originX, color, 1));
-			}
-		}
-	}
-	storePixels() {
-		// this.breakUpPixels();
-		this.removeDuplicates();
-		// const newPixels = _.differenceWith(
-		// 	this.pixelBuffer,
-		// 	this.canvas.pixels,
-		// 	_.isEqual
+		// canvas.ctx.fillRect(
+		// 	this.xPixelOrigin,
+		// 	this.yPixelOrigin,
+		// 	this.brushSize,
+		// 	this.brushSize
 		// );
-		_.each(this.pixelBuffer, (newPixel) => {
-			_.remove(this.canvas.pixels, (pixel) => {
-				return pixel.x == newPixel.x && pixel.y == newPixel.y;
-			});
-		});
-
-		if (this.pixelBuffer) this.canvas.pixels.push(...this.pixelBuffer);
-		this.clearBuffer();
+		this.render(canvas);
 	}
-	removeDuplicates() {
-		_.each(this.pixelBuffer, (pixel) => {
-			_.remove(this.pixelBuffer, (p) => {
-				return _.isEqual(pixel, p) && pixel !== p;
-			});
-		});
-	}
-	// breakUpPixels() {
-	// 	_.each(this.pixelBuffer, (pixel) => {
-	// 		if (pixel.size == 1) return;
-
-	// 		for (let i = 0; i < pixel.size; i++) {
-	// 			let originY = pixel.y + i;
-
-	// 			for (let j = 0; j < pixel.size; j++) {
-	// 				let originX = pixel.x + j;
-	// 				this.pixelBuffer.push(new Pixel(originY, originX, pixel.color, 1));
-	// 			}
-	// 		}
-	// 		_.remove(this.pixelBuffer, pixel);
-	// 	});
-	// }
-	clearBuffer() {
-		_.remove(this.pixelBuffer);
+	render(canvas = stage.activeLayer) {
+		// console.log(canvas);
+		stage.mainCanvas.ctx.drawImage(canvas.element, 0, 0);
 	}
 }
 
@@ -115,38 +71,33 @@ class Brush extends Tool {
 		size = this.brushSize,
 		buffer = true
 	) {
-		if (buffer) this.bufferPixels(x, y, color, this.size);
 		this.ctx.fillStyle = color;
-		this.ctx.fillRect(x * stage.pixelSize, y * stage.pixelSize, size, size);
+		this.ctx.fillRect(x, y, size, size);
 	}
 	drawCheckerGrid(canvas) {
 		const lightGray = '#d7d7d7';
 		const darkGray = '#fafafa';
-		const rows = stage.rows;
-		const cols = stage.cols;
+		const height = stage.height;
+		const width = stage.width;
 		let currentColor = undefined;
 		let colorOffset = 0;
 
-		stage.clearCanvas(stage.background);
-		for (let x = 0; x < cols; x++) {
+		stage.clearCanvas(canvas);
+		for (let x = 0; x < width; x++) {
 			colorOffset % 2 === 0
 				? (currentColor = darkGray)
 				: (currentColor = lightGray);
 			colorOffset++;
-			for (let y = 0; y < rows; y++) {
+			for (let y = 0; y < height; y++) {
 				currentColor === lightGray
 					? (currentColor = darkGray)
 					: (currentColor = lightGray);
 
 				canvas.ctx.fillStyle = currentColor;
-				canvas.ctx.fillRect(
-					x * stage.pixelSize,
-					y * stage.pixelSize,
-					1 * stage.pixelSize,
-					1 * stage.pixelSize
-				);
+				canvas.ctx.fillRect(x, y, 1, 1);
 			}
 		}
+		this.render(canvas);
 	}
 }
 class Eraser extends Tool {
@@ -216,8 +167,8 @@ class FillTool extends Tool {
 	}
 	colorReplace(x = this.xPosition, y = this.yPosition) {
 		const sample = this.getColorSample();
-		for (let i = 0; i < stage.cols; i++) {
-			for (let j = 0; j < stage.rows; j++) {
+		for (let i = 0; i < stage.width; i++) {
+			for (let j = 0; j < stage.height; j++) {
 				let checkPixel = this.checkPixelColor(i, j);
 				if (sample.join() == checkPixel.join()) {
 					this.ctx.fillStyle = colorPanel.currentColor;

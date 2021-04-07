@@ -5,15 +5,11 @@ class Canvas {
 		this.ctx = this.element.getContext('2d');
 		this.pixels = [];
 		this.element.id = `Layer${id}`;
-		this.element.style.width = `${stage.styleWidth}px`;
-		this.element.style.height = `${stage.styleHeight}px`;
-		this.element.width = stage.scaledWidth;
-		this.element.height = stage.scaledHeight;
+		this.element.width = stage.width;
+		this.element.height = stage.height;
 		this.element.style.zIndex = zIndex || id;
-		this.element.classList.add('canvas');
-		this.ctx.scale(stage.dpr, stage.dpr);
+		this.element.classList.add('canvas', 'hidden');
 		this.visible = true;
-		this.img = undefined;
 	}
 }
 class Layer extends Canvas {

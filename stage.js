@@ -2,46 +2,51 @@ const stage = {
 	mainDiv: document.querySelector('#stage'),
 	layersDiv: document.querySelector('#stageLayers'),
 	stagePanelDiv: document.querySelector('#stagePanel'),
+	mainCanvas: document.querySelector('#mainCanvas'),
+	stageDiv: document.querySelector('#stage'),
 	background: undefined,
 	mergedView: undefined,
 	brushOverlay: undefined,
 	layers: [],
 	activeLayer: undefined,
-	rows: undefined,
-	cols: undefined,
+	height: undefined,
+	width: undefined,
 	maxZIndex: 12,
 	uniqueId: 0,
-	get dpr() {
-		return window.devicePixelRatio;
+
+	// get stageWidth() {
+	// 	return this.pixelSize * this.width;
+	// },
+	// get stageHeight() {
+	// 	return this.pixelSize * this.height;
+	// },
+	get canvasWidth() {
+		return this.mainCanvas.element.getBoundingClientRect().width;
 	},
-	get styleWidth() {
-		//width of css style (shrinks dimensions)
-		return this.cols * this.pixelSize;
-	},
-	get styleHeight() {
-		return this.rows * this.pixelSize;
-	},
-	get scaledWidth() {
-		//full res width of canvas before css style
-		return this.cols * this.pixelSize * this.dpr;
-	},
-	get scaledHeight() {
-		return this.rows * this.pixelSize * this.dpr;
-	},
-	get pixelSize() {
-		const containerWidth = this.stagePanelDiv.clientWidth;
-		const containerHeight = this.stagePanelDiv.clientHeight;
-		const colSize = Math.floor(containerWidth / this.cols);
-		const rowSize = Math.floor(containerHeight / this.rows);
-		const pixelSize = colSize >= rowSize ? rowSize : colSize;
-		return pixelSize;
+	get canvasHeight() {
+		return this.mainCanvas.element.getBoundingClientRect().height;
 	},
 	get leftOrigin() {
-		return this.background.element.getBoundingClientRect().left;
+		return this.mainCanvas.element.getBoundingClientRect().left;
 	},
 	get topOrigin() {
-		return this.background.element.getBoundingClientRect().top;
+		return this.mainCanvas.element.getBoundingClientRect().top;
 	},
+	// get pixelSize() {
+	// 	let containerWidth = this.stageDiv.offsetWidth;
+	// 	let containerHeight = this.stageDiv.offsetHeight;
+	// 	let rows = this.height;
+	// 	let cols = this.width;
+	// },
+	get pixelSize() {
+		const containerWidth = this.stageDiv.offsetWidth;
+		const containerHeight = this.stageDiv.offsetHeight;
+		const colSize = containerWidth / this.width;
+		const rowSize = containerHeight / this.height;
+		const pixelSize = colSize >= rowSize ? rowSize : colSize;
+		return Math.floor(pixelSize);
+	},
+
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
 			if (toolsPanel.activeTool.undoAble)
@@ -70,9 +75,20 @@ const stage = {
 			_.each(this.layers, (layer) => this.renderCanvas(layer));
 		});
 	},
-	init(rows, cols) {
-		this.rows = rows;
-		this.cols = cols;
+	init(height, width) {
+		this.height = height;
+		this.width = width;
+
+		this.mainCanvas = this.makeCanvas('mainCanvas', 0);
+		this.mainCanvas.element.classList.add('main-canvas');
+		this.mainCanvas.element.classList.remove('hidden');
+		this.mainCanvas.element.classList.remove('canvas');
+		this.mainCanvas.element.style.height = '100%';
+		this.mainCanvas.element.style.width = '100%';
+		this.appendToStageDiv(this.mainCanvas);
+
+		this.stageDiv.style.width = `${this.pixelSize * this.width}px`;
+		this.stageDiv.style.height = `${this.pixelSize * this.height}px`;
 
 		this.background = this.makeCanvas('background', 0);
 		this.appendToStageDiv(this.background);
@@ -138,7 +154,7 @@ const stage = {
 		this.layers.splice(currentIndex, 0, element);
 	},
 	clearCanvas(canvas) {
-		canvas.ctx.clearRect(0, 0, this.styleWidth, this.styleHeight);
+		canvas.ctx.clearRect(0, 0, this.width, this.height);
 	},
 	resizeCanvas(canvas) {
 		canvas.element.width = stage.scaledWidth;

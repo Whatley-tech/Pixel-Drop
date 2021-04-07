@@ -1,20 +1,25 @@
 #mainContainer {
-	height: 100vh;
+	height: 85vh;
 }
 
 #newLayerBtn {
 	cursor: pointer;
 }
-#stagePanel {
+#stage {
 	height: 75vh;
+	width: 80vw;
+	margin: 0 auto;
 }
-.canvas {
-	left: 0;
-	right: 0;
-	margin: auto;
-	position: absolute;
+.main-canvas,
+canvas {
+	border: 1px solid blue;
+
 	/* cursor: none; */
-	/* border: 1px solid blue; */
+	object-fit: contain;
+	height: 100%;
+	width: 100%;
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
 }
 .layerBtn {
 	cursor: pointer;

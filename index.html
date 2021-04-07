@@ -43,9 +43,10 @@
 					</button>
 				</div>
 			</div>
-			<div id="midContainer" class="row">
+			<div id="midContainer" class="">
 				<div id="stagePanel" class="">
 					<div id="stage">
+						<!-- <canvas height="" width="" class="main-canvas"></canvas> -->
 						<div id="stageLayers"></div>
 					</div>
 				</div>
@@ -228,27 +229,28 @@
 					<div class="modal-body">
 						<form id="newCanvasForm" action="">
 							<div class="form-group">
-								<label for="rows">Height:</label>
+								<label for="width">Width:</label>
 								<input
-									id="canvasRowsInput"
+									id="canvasWidthInput"
 									class="form-control"
 									type="number"
-									name="rows"
-									placeholder="Pixels"
-									aria-describedby="canvasHeight"
-								/>
-							</div>
-							<div class="form-group">
-								<label for="cols">Width:</label>
-								<input
-									id="canvasColsInput"
-									class="form-control"
-									type="number"
-									name="cols"
+									name="width"
 									placeholder="Pixels"
 									aria-describedby="canvasWidth"
 								/>
 							</div>
+							<div class="form-group">
+								<label for="height">Height:</label>
+								<input
+									id="canvasHeightInput"
+									class="form-control"
+									type="number"
+									name="height"
+									placeholder="Pixels"
+									aria-describedby="canvasHeight"
+								/>
+							</div>
+
 							<div class="modal-footer">
 								<button id="submit" type="submit" class="btn btn-primary">
 									Create

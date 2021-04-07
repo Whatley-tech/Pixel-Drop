@@ -1,7 +1,7 @@
 const newCanvasModal = document.querySelector('#newCanvasModal');
 const newCanvasForm = document.querySelector('#newCanvasForm');
-const canvasRowsInput = document.querySelector('#canvasRowsInput');
-const canvasColsInput = document.querySelector('#canvasColsInput');
+const canvasHeightInput = document.querySelector('#canvasHeightInput');
+const canvasWidthInput = document.querySelector('#canvasWidthInput');
 
 const enableToolTips = function () {
 	$(function () {
@@ -16,9 +16,12 @@ const enablePopOvers = function () {
 const toggleHidden = function (element) {
 	element.classList.toggle('hidden');
 };
+const percentage = function (num, per) {
+	return (num / 100) * per;
+};
 
 newCanvasModal.addEventListener('shown.bs.modal', function () {
-	canvasRowsInput.focus();
+	canvasWidthInput.focus();
 });
 const tooltipTriggerList = [].slice.call(
 	document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -28,10 +31,10 @@ const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 });
 
 const initApp = function () {
-	const rows = canvasRowsInput.value;
-	const cols = canvasColsInput.value;
+	const height = canvasHeightInput.value;
+	const width = canvasWidthInput.value;
 	toolsPanel.init();
-	stage.init(rows, cols);
+	stage.init(height, width);
 	statePanel.init();
 	colorPanel.init();
 	layerPanel.init();
@@ -45,8 +48,8 @@ newCanvasForm.addEventListener('submit', (e) => {
 	$('#newCanvasModal').modal('toggle');
 	stage.reset();
 	initApp();
-	canvasRowsInput.value = null;
-	canvasColsInput.value = null;
+	canvasHeightInput.value = null;
+	canvasWidthInput.value = null;
 });
 
 //start new canvas on load
