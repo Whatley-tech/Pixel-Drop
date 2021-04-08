@@ -11,7 +11,7 @@ class ActionState extends UndoState {
 	}
 	restore() {
 		this.layer.clearCanvas();
-		this.layer.ctx.drawImage(this.img, 0, 0);
+		this.layer.renderCanvas(this.img);
 	}
 }
 class DeleteState extends UndoState {

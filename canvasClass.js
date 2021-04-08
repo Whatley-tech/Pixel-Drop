@@ -19,6 +19,9 @@ class Canvas {
 	clearCanvas() {
 		this.ctx.clearRect(0, 0, stage.width, stage.height);
 	}
+	renderCanvas(img = this.img) {
+		this.ctx.drawImage(img, 0, 0);
+	}
 }
 class Layer extends Canvas {
 	constructor(id, zIndex) {

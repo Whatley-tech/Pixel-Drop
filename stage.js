@@ -136,10 +136,10 @@ const stage = {
 			stage.mergedView.ctx.drawImage(layer.img, 0, 0);
 		});
 	},
-	restoreLayer(layer, index, img) {
+	restoreLayer(layer, index) {
 		stage.layers.splice(index, 0, layer);
 		this.appendToLayerDiv(layer);
 		this.setActiveLayer(layer);
-		this.renderCanvas(layer);
+		layer.renderCanvas();
 	},
 };
