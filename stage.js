@@ -1,7 +1,7 @@
 const stage = {
 	mainDiv: document.querySelector('#stage'),
 	layersDiv: document.querySelector('#stageLayers'),
-	stagePanelDiv: document.querySelector('#stagePanel'),
+
 	mainCanvas: document.querySelector('#mainCanvas'),
 	stageDiv: document.querySelector('#stage'),
 	background: undefined,
@@ -32,20 +32,6 @@ const stage = {
 	get topOrigin() {
 		return this.mainCanvas.element.getBoundingClientRect().top;
 	},
-	// get pixelSize() {
-	// 	let containerWidth = this.stageDiv.offsetWidth;
-	// 	let containerHeight = this.stageDiv.offsetHeight;
-	// 	let rows = this.height;
-	// 	let cols = this.width;
-	// },
-	get pixelSize() {
-		const containerWidth = this.stageDiv.offsetWidth;
-		const containerHeight = this.stageDiv.offsetHeight;
-		const colSize = containerWidth / this.width;
-		const rowSize = containerHeight / this.height;
-		const pixelSize = colSize >= rowSize ? rowSize : colSize;
-		return Math.floor(pixelSize);
-	},
 
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
@@ -68,11 +54,7 @@ const stage = {
 			toolsPanel.activeTool.isDrawing = false;
 		});
 		window.addEventListener('resize', () => {
-			this.resizeWindow();
-			toolsPanel.brush.drawCheckerGrid(this.background);
-			this.renderCanvas(this.brushOverlay);
-			this.renderCanvas(this.mergedView);
-			_.each(this.layers, (layer) => this.renderCanvas(layer));
+			this.resizeStage();
 		});
 	},
 	init(height, width) {
@@ -87,8 +69,7 @@ const stage = {
 		this.mainCanvas.element.style.width = '100%';
 		this.appendToStageDiv(this.mainCanvas);
 
-		this.stageDiv.style.width = `${this.pixelSize * this.width}px`;
-		this.stageDiv.style.height = `${this.pixelSize * this.height}px`;
+		this.resizeStage();
 
 		this.background = this.makeCanvas('background', 0);
 		this.appendToStageDiv(this.background);
@@ -116,6 +97,23 @@ const stage = {
 		});
 		_.remove(this.layers);
 		_.remove(statePanel.undoStates);
+	},
+	resizeStage() {
+		const maxW = Math.floor(percentage(window.innerWidth, 80));
+		const maxH = Math.floor(percentage(window.innerHeight, 75));
+		const wr = maxW / this.width;
+		const hr = maxH / this.height;
+
+		if (wr > hr) {
+			console.log('w', wr);
+			this.stageDiv.style.height = `${Math.floor(this.height * hr)}px`;
+			this.stageDiv.style.width = `${Math.floor(this.width * hr)}px`;
+		}
+		if (hr > wr) {
+			console.log('h', hr);
+			this.stageDiv.style.height = `${Math.floor(this.height * wr)}px`;
+			this.stageDiv.style.width = `${Math.floor(this.width * wr)}px`;
+		}
 	},
 	makeCanvas(id = `${++this.uniqueId}`, zIndex) {
 		return new Canvas(id, zIndex);
@@ -156,35 +154,7 @@ const stage = {
 	clearCanvas(canvas) {
 		canvas.ctx.clearRect(0, 0, this.width, this.height);
 	},
-	resizeCanvas(canvas) {
-		canvas.element.width = stage.scaledWidth;
-		canvas.element.height = stage.scaledHeight;
-		canvas.element.style.width = `${this.styleWidth}px`;
-		canvas.element.style.height = `${this.styleHeight}px`;
-		canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
-		canvas.ctx.scale(this.dpr, this.dpr);
-	},
-	resizeWindow() {
-		_.each(this.layers, (layer) => this.resizeCanvas(layer));
-		this.resizeCanvas(this.background);
-		this.resizeCanvas(this.brushOverlay);
-		this.resizeCanvas(this.mergedView);
-	},
-	renderCanvas(canvas) {
-		this.clearCanvas(canvas);
-		if (!canvas.pixels) return;
-		this.setActiveLayer(canvas);
-		_.each(canvas.pixels, (pixel) => {
-			toolsPanel.brush.drawPixel(
-				pixel.x,
-				pixel.y,
-				pixel.color,
-				pixel.size * stage.pixelSize,
-				false
-			);
-		});
-		toolsPanel.brush.clearBuffer();
-	},
+
 	setMergedView() {
 		_.each(stage.layers, (layer) => {
 			stage.mergedView.ctx.drawImage(

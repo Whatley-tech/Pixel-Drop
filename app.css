@@ -5,9 +5,9 @@
 #newLayerBtn {
 	cursor: pointer;
 }
+#stagePanel {
+}
 #stage {
-	height: 75vh;
-	width: 80vw;
 	margin: 0 auto;
 }
 .main-canvas,
