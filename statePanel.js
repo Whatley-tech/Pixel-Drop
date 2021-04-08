@@ -29,7 +29,7 @@ const statePanel = {
 		this.undoStates.push(state);
 	},
 	undo() {
-		if (this.undoStates.length == false) return;
+		if (!this.undoStates.length) return;
 
 		const prevState = this.undoStates.pop();
 		this.saveState(prevState.type, prevState.layer, (currentState) => {
@@ -38,7 +38,7 @@ const statePanel = {
 		prevState.restore();
 	},
 	redo() {
-		if (this.redoStates.length == false) return;
+		if (!this.redoStates.length) return;
 
 		const prevState = this.redoStates.pop();
 		this.saveState(prevState.type, prevState.layer, (currentState) => {
