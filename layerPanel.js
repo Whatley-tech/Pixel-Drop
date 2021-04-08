@@ -7,6 +7,7 @@ const layerPanel = {
 	layersDropDownBtn: document.getElementById('layersDropDownBtn'),
 	layerPanel: document.querySelector('#layerPanel'),
 	layersDropDownMenu: document.getElementById('layersDropDownMenu'),
+	renameTileModal: document.getElementById('renameTileModal'),
 	activeTile: undefined,
 	get tileCount() {
 		return this.tileContainer.children.length;
@@ -74,6 +75,9 @@ const layerPanel = {
 			stage.newLayer();
 		});
 		this.layerPanel.addEventListener('shown.bs.dropdown', () => {
+			_.each(stage.layers, (layer) => layer.updateTilePreview());
+		});
+		this.layerPanel.addEventListener('hide.bs.dropdown', () => {
 			_.each(stage.layers, (layer) => layer.updateTilePreview());
 		});
 
