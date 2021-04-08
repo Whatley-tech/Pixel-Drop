@@ -1,8 +1,6 @@
 const stage = {
 	mainDiv: document.querySelector('#stage'),
 	layersDiv: document.querySelector('#stageLayers'),
-
-	mainCanvas: document.querySelector('#mainCanvas'),
 	stageDiv: document.querySelector('#stage'),
 	background: undefined,
 	mergedView: undefined,
@@ -14,23 +12,14 @@ const stage = {
 	maxZIndex: 12,
 	uniqueId: 0,
 
-	// get stageWidth() {
-	// 	return this.pixelSize * this.width;
-	// },
-	// get stageHeight() {
-	// 	return this.pixelSize * this.height;
-	// },
-	get canvasWidth() {
-		return this.mainCanvas.element.getBoundingClientRect().width;
-	},
-	get canvasHeight() {
-		return this.mainCanvas.element.getBoundingClientRect().height;
+	get pixelSize() {
+		return parseInt(this.stageDiv.style.height) / stage.height;
 	},
 	get leftOrigin() {
-		return this.mainCanvas.element.getBoundingClientRect().left;
+		return this.stageDiv.getBoundingClientRect().left;
 	},
 	get topOrigin() {
-		return this.mainCanvas.element.getBoundingClientRect().top;
+		return this.stageDiv.getBoundingClientRect().top;
 	},
 
 	attachStageListeners() {
@@ -60,14 +49,6 @@ const stage = {
 	init(height, width) {
 		this.height = height;
 		this.width = width;
-
-		this.mainCanvas = this.makeCanvas('mainCanvas', 0);
-		this.mainCanvas.element.classList.add('main-canvas');
-		this.mainCanvas.element.classList.remove('hidden');
-		this.mainCanvas.element.classList.remove('canvas');
-		this.mainCanvas.element.style.height = '100%';
-		this.mainCanvas.element.style.width = '100%';
-		this.appendToStageDiv(this.mainCanvas);
 
 		this.resizeStage();
 
@@ -133,7 +114,6 @@ const stage = {
 		layerPanel.activeTile = layer.tile;
 		layerPanel.updateTiles();
 	},
-
 	appendToStageDiv(canvas) {
 		this.mainDiv.appendChild(canvas.element);
 	},
@@ -151,19 +131,9 @@ const stage = {
 		this.layers.splice(prevIndex, 1);
 		this.layers.splice(currentIndex, 0, element);
 	},
-	clearCanvas(canvas) {
-		canvas.ctx.clearRect(0, 0, this.width, this.height);
-	},
-
 	setMergedView() {
 		_.each(stage.layers, (layer) => {
-			stage.mergedView.ctx.drawImage(
-				layer.element,
-				0,
-				0,
-				this.styleWidth,
-				this.styleHeight
-			);
+			stage.mergedView.ctx.drawImage(layer.img, 0, 0);
 		});
 	},
 	restoreLayer(layer, index, img) {

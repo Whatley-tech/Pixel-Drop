@@ -34,6 +34,7 @@ const colorPanel = {
 		prevColor.classList.add('prevColor');
 		prevColor.addEventListener('click', () => {
 			this.selectNewColor(color);
+			this.setColor(color);
 		});
 
 		if (container.childNodes.length >= 12) {

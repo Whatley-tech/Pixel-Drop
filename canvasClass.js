@@ -8,8 +8,16 @@ class Canvas {
 		this.element.width = stage.width;
 		this.element.height = stage.height;
 		this.element.style.zIndex = zIndex || id;
-		this.element.classList.add('canvas', 'hidden');
+		this.element.classList.add('canvas');
 		this.visible = true;
+	}
+	get img() {
+		let img = new Image();
+		img.src = this.element.toDataURL();
+		return img;
+	}
+	clearCanvas() {
+		this.ctx.clearRect(0, 0, stage.width, stage.height);
 	}
 }
 class Layer extends Canvas {
