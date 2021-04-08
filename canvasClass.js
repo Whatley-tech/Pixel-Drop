@@ -36,22 +36,22 @@ class Layer extends Canvas {
 		this.tile.layerTitle = document.querySelector(
 			`#${this.tile.id} .layerTitle`
 		);
-		this.tile.layerTitle.innerHTML = `tile${id}`;
+		this.tile.layerTitle.textContent = `Layer-${id}`;
 		this.tile.visibleBtn = document.querySelector(
 			`#${this.tile.id} .visibleBtn`
 		);
+		this.tilePreviewCanvas = document.querySelector(`#${this.tile.id} canvas`);
+		this.tilePreviewCanvas.height = stage.height;
+		this.tilePreviewCanvas.width = stage.width;
+		this.tilePreviewCtx = this.tilePreviewCanvas.getContext('2d');
+
+		//tile controls
 		this.tile.removeBtn = document.querySelector(`#${this.tile.id} .removeBtn`);
-
-		// toggleHidden(this.tile);
-
 		this.tile.addEventListener('click', (e) => {
 			e.stopPropagation();
 			stage.activeLayer = this;
 			layerPanel.activeTile = this.tile;
 			layerPanel.toggleActive();
-		});
-		$('#renameTileModal').on('shown.bs.modal', function () {
-			$(`'#${this.tile.id} .layerTitle'`).trigger('focus');
 		});
 		this.tile.removeBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
@@ -74,5 +74,12 @@ class Layer extends Canvas {
 				toggleHidden(this.element);
 			}
 		});
+
+		$('#renameTileModal').on('shown.bs.modal', function () {
+			$(`'#${this.tile.id} .layerTitle'`).trigger('focus');
+		});
+	}
+	updateTilePreview(img = this.img) {
+		this.tilePreviewCtx.drawImage(img, 0, 0);
 	}
 }

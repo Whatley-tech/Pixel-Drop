@@ -34,7 +34,8 @@ canvas {
 	width: 100%;
 	/* background-color: rgb(211, 211, 211); */
 }
-.layerPreview {
+.tilePreview {
+	position: relative;
 	background-color: rgb(185, 185, 185);
 	height: 3rem;
 	width: 3rem;
