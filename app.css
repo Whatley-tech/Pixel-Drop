@@ -34,13 +34,11 @@ canvas {
 	width: 100%;
 	/* background-color: rgb(211, 211, 211); */
 }
-
 .layerPreview {
 	background-color: rgb(185, 185, 185);
 	height: 3rem;
 	width: 3rem;
 }
-
 #colorPicker {
 	visibility: hidden;
 	position: absolute;
@@ -70,7 +68,6 @@ canvas {
 .material-icons.white {
 	color: #ffffff;
 }
-
 .toolBtn {
 	cursor: pointer;
 }

@@ -7,21 +7,16 @@ class UndoState {
 class ActionState extends UndoState {
 	constructor(type, layer) {
 		super(type, layer);
-
-		this.pixels = _.cloneDeep(layer.pixels);
+		this.img = layer.img;
 	}
 	restore() {
-		stage.setActiveLayer(this.layer);
-		_.remove(stage.activeLayer.pixels);
-		console.log(this.pixels);
-		stage.activeLayer.pixels.push(...this.pixels);
-		stage.renderCanvas(stage.activeLayer);
+		this.layer.clearCanvas();
+		this.layer.ctx.drawImage(this.img, 0, 0);
 	}
 }
 class DeleteState extends UndoState {
 	constructor(type, layer) {
 		super(type, layer);
-
 		this.index = _.findIndex(stage.layers, this.layer);
 	}
 	restore() {
