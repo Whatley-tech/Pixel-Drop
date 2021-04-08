@@ -5,6 +5,7 @@ const layerPanel = {
 	tileTemplate: document.querySelector('#tileTemplate'),
 	activeLayerPreview: document.querySelector('#activeLayerPreview'),
 	layersDropDownBtn: document.getElementById('layersDropDownBtn'),
+	layerPanel: document.querySelector('#layerPanel'),
 	layersDropDownMenu: document.getElementById('layersDropDownMenu'),
 	activeTile: undefined,
 	get tileCount() {
@@ -72,6 +73,10 @@ const layerPanel = {
 			if (this.tileCount > 8) return; //max layers
 			stage.newLayer();
 		});
+		this.layerPanel.addEventListener('shown.bs.dropdown', () => {
+			_.each(stage.layers, (layer) => layer.updateTilePreview());
+		});
+
 		//collapse layerpanel on outside click
 		// document.addEventListener('mousedown', (e) => {
 		// 	if (layersDropDownMenu.classList.contains('show'))
