@@ -45,10 +45,9 @@
 			</div>
 			<div id="midContainer" class="">
 				<div id="stagePanel" class=""></div>
-					<div id="stage">
-						<!-- <canvas height="" width="" class="main-canvas"></canvas> -->
-						<div id="stageLayers"></div>
-					</div>
+				<div id="stage">
+					<!-- <canvas height="" width="" class="main-canvas"></canvas> -->
+					<div id="stageLayers"></div>
 				</div>
 			</div>
 
@@ -172,9 +171,9 @@
 								id="layersDropDownBtn"
 								data-bs-toggle="dropdown"
 							>
-								<div id="activeLayerPreview"></div>
 								Layers
 							</button>
+
 							<div
 								id="layersDropDownMenu"
 								class="dropdown-menu"
@@ -195,7 +194,13 @@
 												</div>
 											</div>
 											<div class="d-flex flex-column">
-												<div class="layerTitle" data-bs-toggle='modal' data-bs-target="#renameTileModal">temp</div>
+												<div
+													class="layerTitle"
+													data-bs-toggle="modal"
+													data-bs-target="#renameTileModal"
+												>
+													temp
+												</div>
 												<div class="tilePreview">
 													<canvas height="10" width="10"></canvas>
 												</div>
@@ -223,8 +228,7 @@
 							class="btn-close"
 							data-bs-dismiss="modal"
 							aria-label="Close"
-						>				
-						</button>
+						></button>
 					</div>
 
 					<div class="modal-body">
@@ -269,7 +273,13 @@
 				</div>
 			</div>
 		</div>
-		<div id="renameTileModal" class="modal fade" tabindex="-1" aria-labelledby="Rename Layer" aria-hidden="true">
+		<div
+			id="renameTileModal"
+			class="modal fade"
+			tabindex="-1"
+			aria-labelledby="Rename Layer"
+			aria-hidden="true"
+		>
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -279,8 +289,7 @@
 							class="btn-close"
 							data-bs-dismiss="modal"
 							aria-label="Close"
-						>				
-						</button>
+						></button>
 					</div>
 					<div class="modal-body">
 						<form action="">
@@ -305,6 +314,7 @@
 						>
 							Close
 						</button>
+					</div>
 				</div>
 			</div>
 		</div>
