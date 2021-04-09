@@ -14,7 +14,7 @@ class ActionState extends UndoState {
 		this.layer.renderCanvas(this.img);
 	}
 }
-class DeleteState extends UndoState {
+class LayerState extends UndoState {
 	constructor(type, layer) {
 		super(type, layer);
 		this.index = _.findIndex(stage.layers, this.layer);

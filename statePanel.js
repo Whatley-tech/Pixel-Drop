@@ -11,14 +11,14 @@ const statePanel = {
 		this.redoBtn.addEventListener('click', () => this.redo());
 	},
 	saveState(type, layer, callback) {
-		//Types: action,delete,arrange, new?
+		//Types: action,layer,arrange, new?
 		let state = undefined;
 		switch (type) {
 			case 'action':
 				state = new ActionState(type, layer);
 				break;
-			case 'delete':
-				state = new DeleteState(type, layer);
+			case 'layer':
+				state = new LayerState(type, layer);
 				break;
 			case 'arrange':
 				state = new ArrangeState(type, layer);

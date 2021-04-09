@@ -35,7 +35,7 @@ const layerPanel = {
 		stage.updateZIndexes();
 	},
 	deleteLayer(deletedLayer) {
-		statePanel.saveState('delete', deletedLayer);
+		statePanel.saveState('layer', deletedLayer);
 		_.find(stage.layers, (layer) => {
 			if (layer && layer.element === deletedLayer.element)
 				_.remove(stage.layers, layer);
@@ -60,7 +60,7 @@ const layerPanel = {
 		_.eachRight(stage.layers, (layer) => {
 			this.tileContainer.appendChild(layer.tile);
 		});
-		_.each(stage.layers, (layer) => layer.updateTilePreview());
+		this.toggleActive();
 	},
 
 	toggleActive() {
@@ -75,7 +75,9 @@ const layerPanel = {
 		this.newLayerBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			if (this.tileCount > 8) return; //max layers
-			stage.newLayer();
+			const newLayer = stage.newLayer();
+			statePanel.saveState('layer', newLayer);
+			this.toggleActive();
 		});
 		this.layersDropDownBtn.addEventListener('shown.bs.dropdown', (e) => {
 			_.each(stage.layers, (layer) => layer.updateTilePreview());
