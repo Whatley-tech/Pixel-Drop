@@ -36,7 +36,9 @@ class Tool {
 	}
 }
 class Brush extends Tool {
-	startAction() {}
+	startAction() {
+		this.drawPixel();
+	}
 	action() {
 		this.drawPixel();
 	}
@@ -76,7 +78,9 @@ class Brush extends Tool {
 	}
 }
 class Eraser extends Tool {
-	startAction() {}
+	startAction() {
+		this.erasePixel();
+	}
 	action() {
 		this.erasePixel();
 	}
@@ -153,7 +157,7 @@ class MoveTool extends Tool {
 		super(buttonElement);
 		this.xMoveStart = 0;
 		this.yMoveStart = 0;
-		this.startImg = undefined;
+		this.startImg = {};
 	}
 	startAction() {
 		this.xMoveStart = this.xPixelPosition;

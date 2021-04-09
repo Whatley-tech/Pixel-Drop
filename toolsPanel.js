@@ -6,11 +6,11 @@ const toolsPanel = {
 	eyeDropBtn: document.querySelector('#eyeDrop'),
 	fillToolBtn: document.querySelector('#fillTool'),
 	moveToolBtn: document.querySelector('#moveTool'),
-	eraser: undefined,
-	brush: undefined,
-	eyeDrop: undefined,
-	moveTool: undefined,
-	activeTool: undefined,
+	eraser: {},
+	brush: {},
+	eyeDrop: {},
+	moveTool: {},
+	activeTool: {},
 
 	init() {
 		this.attachToolPanelListeners();
