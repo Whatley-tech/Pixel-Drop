@@ -7,7 +7,8 @@ const layerPanel = {
 	layersDropDownBtn: document.getElementById('layersDropDownBtn'),
 	layerPanel: document.querySelector('#layerPanel'),
 	layersDropDownMenu: document.getElementById('layersDropDownMenu'),
-	renameTileModal: document.getElementById('renameTileModal'),
+	tileRenameForm: document.getElementById('tileRenameForm'),
+	tileRenameInput: document.getElementById('tileRenameInput'),
 
 	activeTile: undefined,
 	get tileCount() {
@@ -81,6 +82,19 @@ const layerPanel = {
 		});
 		this.layersDropDownBtn.addEventListener('shown.bs.dropdown', (e) => {
 			_.each(stage.layers, (layer) => layer.updateTilePreview());
+		});
+
+		tileRenameForm.addEventListener('submit', (e) => {
+			e.preventDefault();
+			let currentTileName = renameTileModal.dataset.tileName;
+			let newName = tileRenameInput.value;
+			let renameLayer = _.each(stage.layers, (l) => {
+				l.tile.name == currentTileName;
+			});
+			console.log(currentTileName);
+			console.log(layer);
+			renameLayer.tile.name = newName;
+			this.updateTiles();
 		});
 
 		//collapse layerpanel on outside click

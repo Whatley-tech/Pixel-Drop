@@ -292,8 +292,9 @@
 						></button>
 					</div>
 					<div class="modal-body">
-						<form action="">
+						<form id="tileRenameForm" action="">
 							<div class="form-group">
+								<label for="tileRenameInput">Enter layer name:</label>
 								<input
 									type="text"
 									name="tileRenameInput"
@@ -301,19 +302,20 @@
 									placeholder=""
 								/>
 							</div>
+
+							<div class="modal-footer">
+								<button
+									type="button"
+									class="btn btn-secondary"
+									data-bs-dismiss="modal"
+								>
+									Close
+								</button>
+								<button id="renameBtn" type="submit" class="btn btn-primary">
+									Rename
+								</button>
+							</div>
 						</form>
-					</div>
-					<div class="modal-footer">
-						<button id="rename" type="submit" class="btn btn-primary">
-							Rename
-						</button>
-						<button
-							type="button"
-							class="btn btn-secondary"
-							data-bs-dismiss="modal"
-						>
-							Close
-						</button>
 					</div>
 				</div>
 			</div>

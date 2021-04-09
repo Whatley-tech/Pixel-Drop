@@ -17,7 +17,7 @@ class Canvas {
 		return img;
 	}
 	clearCanvas() {
-		this.ctx.clearRect(0, 0, stage.width, stage.height);
+		this.ctx.clearRect(0, 0, stage.width, rename.height);
 	}
 	renderCanvas(img = this.img) {
 		this.ctx.drawImage(img, 0, 0);
@@ -31,12 +31,12 @@ class Layer extends Canvas {
 		this.tile = document.querySelector('#tileTemplate').cloneNode(true);
 		this.tile.classList.toggle('template');
 		this.tileContainer.append(this.tile);
-		this.tile.name = `tile${id}`;
+		this.tile.name = `Layer-${id}`;
 		this.tile.id = `tile${id}`;
 		this.tile.layerTitle = document.querySelector(
 			`#${this.tile.id} .layerTitle`
 		);
-		this.tile.layerTitle.textContent = `Layer-${id}`;
+		this.tile.layerTitle.textContent = `${this.tile.name}`;
 		this.tile.visibleBtn = document.querySelector(
 			`#${this.tile.id} .visibleBtn`
 		);
@@ -75,10 +75,15 @@ class Layer extends Canvas {
 			}
 		});
 
-		$('#renameTileModal').on('shown.bs.modal', function () {
-			$(`'#${this.tile.id} .layerTitle'`).trigger('focus');
+		this.renameTileModal = document.getElementById('renameTileModal');
+		this.tileRenameInput = document.getElementById('tileRenameInput');
+
+		this.tile.layerTitle.addEventListener('click', () => {
+			this.tileRenameInput.placeholder = this.tile.name;
+			this.renameTileModal.dataset.tileName = `${this.tile.name}`;
 		});
 	}
+
 	updateTilePreview() {
 		this.tilePreviewCtx.clearRect(0, 0, stage.height, stage.width);
 		this.tilePreviewCtx.drawImage(this.element, 0, 0);
