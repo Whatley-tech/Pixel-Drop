@@ -14,6 +14,7 @@ class Canvas {
 	get img() {
 		let img = new Image();
 		img.src = this.element.toDataURL();
+
 		return img;
 	}
 	clearCanvas() {

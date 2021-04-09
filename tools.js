@@ -171,8 +171,9 @@ class MoveTool extends Tool {
 	moveCanvas(xpp = this.xPixelPosition, ypp = this.yPixelPosition) {
 		const xDistance = this.checkMoveDistance(this.xMoveStart, xpp);
 		const yDistance = this.checkMoveDistance(this.yMoveStart, ypp);
+		if (xDistance == 0 && yDistance == 0) return;
 		this.canvas.clearCanvas();
-		this.ctx.drawImage(this.startImg, xDistance, yDistance);
+		this.canvas.ctx.drawImage(this.startImg, xDistance, yDistance);
 	}
 	checkMoveDistance(startPosition, currentPosition) {
 		return Math.floor(currentPosition - startPosition);
