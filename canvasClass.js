@@ -11,13 +11,10 @@ class Canvas {
 		this.element.classList.add('canvas');
 		this.visible = true;
 	}
-	get img(callback) {
-		let src = this.element.toDataURL();
+	get img() {
 		let img = new Image();
-		img.addEventListener('load', () => {
-			img.src = src;
-			callback(img);
-		});
+		img.src = this.element.toDataURL();
+		return img;
 	}
 	clearCanvas() {
 		this.ctx.clearRect(0, 0, stage.width, stage.height);

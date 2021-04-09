@@ -24,8 +24,8 @@ const stage = {
 
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
-			// if (toolsPanel.activeTool.undoAble)
-			// 	statePanel.saveState('action', stage.activeLayer);
+			if (toolsPanel.activeTool.undoAble)
+				statePanel.saveState('action', stage.activeLayer);
 			statePanel.clearRedos();
 			toolsPanel.activeTool.isDrawing = true;
 			toolsPanel.activeTool.startAction();
