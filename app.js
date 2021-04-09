@@ -19,7 +19,6 @@ const toggleHidden = function (element) {
 const percentage = function (num, per) {
 	return (num / 100) * per;
 };
-
 newCanvasModal.addEventListener('shown.bs.modal', function () {
 	canvasWidthInput.focus();
 });

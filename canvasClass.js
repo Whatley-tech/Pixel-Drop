@@ -14,7 +14,6 @@ class Canvas {
 	get img() {
 		let img = new Image();
 		img.src = this.element.toDataURL();
-
 		return img;
 	}
 	clearCanvas() {
@@ -80,7 +79,8 @@ class Layer extends Canvas {
 			$(`'#${this.tile.id} .layerTitle'`).trigger('focus');
 		});
 	}
-	updateTilePreview(img = this.img) {
-		this.tilePreviewCtx.drawImage(img, 0, 0);
+	updateTilePreview() {
+		this.tilePreviewCtx.clearRect(0, 0, stage.height, stage.width);
+		this.tilePreviewCtx.drawImage(this.element, 0, 0);
 	}
 }

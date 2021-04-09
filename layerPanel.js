@@ -8,6 +8,7 @@ const layerPanel = {
 	layerPanel: document.querySelector('#layerPanel'),
 	layersDropDownMenu: document.getElementById('layersDropDownMenu'),
 	renameTileModal: document.getElementById('renameTileModal'),
+
 	activeTile: undefined,
 	get tileCount() {
 		return this.tileContainer.children.length;
@@ -59,7 +60,9 @@ const layerPanel = {
 		_.eachRight(stage.layers, (layer) => {
 			this.tileContainer.appendChild(layer.tile);
 		});
+		_.each(stage.layers, (layer) => layer.updateTilePreview());
 	},
+
 	toggleActive() {
 		const currentlyActive = document.querySelectorAll('#tileContainer .active');
 		if (currentlyActive)
@@ -74,10 +77,7 @@ const layerPanel = {
 			if (this.tileCount > 8) return; //max layers
 			stage.newLayer();
 		});
-		this.layerPanel.addEventListener('shown.bs.dropdown', () => {
-			_.each(stage.layers, (layer) => layer.updateTilePreview());
-		});
-		this.layerPanel.addEventListener('hide.bs.dropdown', () => {
+		this.layersDropDownBtn.addEventListener('shown.bs.dropdown', (e) => {
 			_.each(stage.layers, (layer) => layer.updateTilePreview());
 		});
 
