@@ -97,7 +97,12 @@ class EyeDrop extends Tool {
 	}
 	startAction() {
 		stage.setMergedView();
-		this.imgData = stage.mergedView.ctx.getImageData();
+		this.imgData = stage.mergedView.ctx.getImageData(
+			0,
+			0,
+			stage.width,
+			stage.height
+		);
 	}
 	action() {
 		this.color = this.selectColor();

@@ -17,7 +17,7 @@ class Canvas {
 		return img;
 	}
 	clearCanvas() {
-		this.ctx.clearRect(0, 0, stage.width, rename.height);
+		this.ctx.clearRect(0, 0, stage.width, stage.height);
 	}
 	renderCanvas(img = this.img) {
 		this.ctx.drawImage(img, 0, 0);
