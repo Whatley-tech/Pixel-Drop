@@ -86,12 +86,10 @@ const stage = {
 		const hr = maxH / this.height;
 
 		if (wr > hr) {
-			console.log('w', wr);
 			this.stageDiv.style.height = `${Math.floor(this.height * hr)}px`;
 			this.stageDiv.style.width = `${Math.floor(this.width * hr)}px`;
 		}
 		if (hr > wr) {
-			console.log('h', hr);
 			this.stageDiv.style.height = `${Math.floor(this.height * wr)}px`;
 			this.stageDiv.style.width = `${Math.floor(this.width * wr)}px`;
 		}

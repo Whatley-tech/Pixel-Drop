@@ -26,7 +26,6 @@ class Tool {
 		//draw brushPosition outline
 		canvas.ctx.clearRect(0, 0, stage.width, stage.height);
 		canvas.ctx.fillStyle = 'rgb(130, 130, 130, 0.5)';
-		// console.log(this.xPixelPosition, this.yPixelPosition);
 		canvas.ctx.fillRect(
 			this.xPixelPosition,
 			this.yPixelPosition,
@@ -102,7 +101,6 @@ class EyeDrop extends Tool {
 	}
 	action() {
 		this.color = this.selectColor();
-		console.log(this.color);
 	}
 	releaseAction() {
 		//do nothing if pixel was transparent
@@ -112,7 +110,6 @@ class EyeDrop extends Tool {
 	}
 	selectColor(x = this.xPixelPosition, y = this.yPixelPosition) {
 		let colorSample = stage.mergedView.ctx.getImageData(x, y, 1, 1).data;
-		console.log(colorSample);
 		//if colorSample has full transparency do nothing
 		if (colorSample[3] != 0) {
 			let hex = colorPanel.rgbToHex(...colorSample);

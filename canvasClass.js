@@ -44,6 +44,11 @@ class Layer extends Canvas {
 		this.tilePreviewCanvas.height = stage.height;
 		this.tilePreviewCanvas.width = stage.width;
 		this.tilePreviewCtx = this.tilePreviewCanvas.getContext('2d');
+		this.tileRenameInput = document.getElementById('tileRenameInput');
+		this.renameModal = new bootstrap.Modal(
+			document.getElementById('renameTileModal')
+		);
+		this.renameModalElement = document.getElementById('renameTileModal');
 
 		//tile controls
 		this.tile.removeBtn = document.querySelector(`#${this.tile.id} .removeBtn`);
@@ -75,13 +80,14 @@ class Layer extends Canvas {
 			}
 		});
 
-		this.renameTileModal = document.getElementById('renameTileModal');
-		this.tileRenameInput = document.getElementById('tileRenameInput');
-
 		this.tile.layerTitle.addEventListener('click', () => {
 			this.tileRenameInput.placeholder = this.tile.name;
-			this.renameTileModal.dataset.tileName = `${this.tile.name}`;
+			this.renameModalElement.dataset.tileName = `${this.tile.name}`;
 		});
+	}
+	renameTile(newName) {
+		this.tile.name = newName;
+		this.tile.layerTitle.textContent = `${this.tile.name}`;
 	}
 
 	updateTilePreview() {

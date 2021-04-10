@@ -88,12 +88,11 @@ const layerPanel = {
 			e.preventDefault();
 			let currentTileName = renameTileModal.dataset.tileName;
 			let newName = tileRenameInput.value;
-			let renameLayer = _.each(stage.layers, (l) => {
-				l.tile.name == currentTileName;
+			let layer = _.find(stage.layers, (l) => {
+				return l.tile.name == currentTileName;
 			});
-			console.log(currentTileName);
-			console.log(layer);
-			renameLayer.tile.name = newName;
+			layer.renameModal.toggle();
+			layer.renameTile(newName);
 			this.updateTiles();
 		});
 
