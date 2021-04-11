@@ -83,23 +83,26 @@ const stage = {
 
 	resizeStage() {
 		this.checkWindowSize();
-		const maxW = stagePanel.width;
-		const maxH = stagePanel.height;
+		const maxW = this.stagePanel.clientWidth;
+		const maxH = this.stagePanel.clientHeight;
+		console.log(maxW, maxH);
 		const wr = maxW / this.width;
 		const hr = maxH / this.height;
 
 		if (wr > hr) {
 			this.stageDiv.style.height = `${Math.floor(this.height * hr)}px`;
 			this.stageDiv.style.width = `${Math.floor(this.width * hr)}px`;
+			// console.log('asdf');
 		}
 		if (hr > wr) {
 			this.stageDiv.style.height = `${Math.floor(this.height * wr)}px`;
 			this.stageDiv.style.width = `${Math.floor(this.width * wr)}px`;
+			// console.log('asdf');
 		}
 	},
 	checkWindowSize() {
 		const windowWidth = window.innerWidth;
-		const bsLrgGridmin = 992; //bootstrap large grid size minimum
+		const bsLrgGridmin = 992; //bootstrap large grid, minimum pixel size
 		const setVertical = () => {
 			if (this.stagePanel.classList.contains('stagePanel-vert')) return;
 			this.stagePanel.classList.replace('stagePanel-wide', 'stagePanel-vert');
