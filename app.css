@@ -1,22 +1,29 @@
 body {
-	overflow-x: hidden;
+	overflow: hidden;
 }
 #mainContainer {
-	height: 85vh;
+	height: 100vh;
 }
 
 #newLayerBtn {
 	cursor: pointer;
 }
 #stage {
-	margin: auto;
+	height: 100%;
+	width: 100%;
 	position: relative;
+}
+#stagePanel {
+}
+.stagePanel-vert {
+	height: 65vh;
+}
+.stagePanel-wide {
+	height: 85vh;
 }
 .main-canvas,
 canvas {
-	/* border: 1px solid blue; */
 	position: absolute;
-	/* cursor: none; */
 	object-fit: contain;
 	height: 100%;
 	width: 100%;
@@ -72,8 +79,17 @@ canvas {
 .toolBtn {
 	cursor: pointer;
 }
+#controlsContainer {
+	max-width: min-content;
+}
 #controlsPanel {
 	width: fit-content;
+}
+#colorHistoryRow {
+	max-width: min-content;
+}
+#toolSlider {
+	width: 100%;
 }
 #colorHistoryPanel {
 	width: 100%;

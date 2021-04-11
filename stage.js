@@ -2,6 +2,7 @@ const stage = {
 	mainDiv: document.querySelector('#stage'),
 	layersDiv: document.querySelector('#stageLayers'),
 	stageDiv: document.querySelector('#stage'),
+	stagePanel: document.querySelector('#stagePanel'),
 	background: undefined,
 	mergedView: undefined,
 	brushOverlay: undefined,
@@ -79,9 +80,11 @@ const stage = {
 		_.remove(this.layers);
 		_.remove(statePanel.undoStates);
 	},
+
 	resizeStage() {
-		const maxW = Math.floor(percentage(window.innerWidth, 80));
-		const maxH = Math.floor(percentage(window.innerHeight, 75));
+		this.checkWindowSize();
+		const maxW = stagePanel.width;
+		const maxH = stagePanel.height;
 		const wr = maxW / this.width;
 		const hr = maxH / this.height;
 
@@ -94,6 +97,23 @@ const stage = {
 			this.stageDiv.style.width = `${Math.floor(this.width * wr)}px`;
 		}
 	},
+	checkWindowSize() {
+		const windowWidth = window.innerWidth;
+		const bsLrgGridmin = 992; //bootstrap large grid size minimum
+		const setVertical = () => {
+			if (this.stagePanel.classList.contains('stagePanel-vert')) return;
+			this.stagePanel.classList.replace('stagePanel-wide', 'stagePanel-vert');
+		};
+		const setWide = () => {
+			if (this.stagePanel.classList.contains('stagePanel-wide')) return;
+			this.stagePanel.classList.replace('stagePanel-vert', 'stagePanel-wide');
+		};
+
+		if (windowWidth >= bsLrgGridmin) {
+			setWide();
+		} else setVertical();
+	},
+
 	makeCanvas(id = `${++this.uniqueId}`, zIndex) {
 		return new Canvas(id, zIndex);
 	},

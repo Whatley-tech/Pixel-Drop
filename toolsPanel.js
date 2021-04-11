@@ -1,6 +1,6 @@
 const toolsPanel = {
 	toolsPanel: document.querySelector('#toolsPanel'),
-	brushSizeSlider: document.querySelector('#toolSize'),
+	toolSizeSlider: document.querySelector('#toolSlider'),
 	brushBtn: document.querySelector('#brush'),
 	eraserBtn: document.querySelector('#eraser'),
 	eyeDropBtn: document.querySelector('#eyeDrop'),
@@ -28,21 +28,21 @@ const toolsPanel = {
 	},
 
 	attachToolPanelListeners() {
-		this.brushSizeSlider.addEventListener('input', () => {
-			this.activeTool.size = this.brushSizeSlider.value;
-			this.brushSizeSlider.title = this.brushSizeSlider.value;
+		this.toolSizeSlider.addEventListener('input', () => {
+			this.activeTool.size = this.toolSizeSlider.value;
+			this.toolSizeSlider.title = this.toolSizeSlider.value;
 		});
-		this.brushSizeSlider.addEventListener('click', () => {
-			this.activeTool.size = this.brushSizeSlider.value;
+		this.toolSizeSlider.addEventListener('click', () => {
+			this.activeTool.size = this.toolSizeSlider.value;
 		});
 		this.brushBtn.addEventListener('click', () => {
 			this.tool = this.brush;
-			this.brushSizeSlider.value = this.activeTool.size;
+			this.toolSizeSlider.value = this.activeTool.size;
 			this.toggleActive();
 		});
 		this.eraserBtn.addEventListener('click', () => {
 			this.tool = this.eraser;
-			this.brushSizeSlider.value = this.activeTool.size;
+			this.toolSizeSlider.value = this.activeTool.size;
 			this.toggleActive();
 		});
 		this.eyeDropBtn.addEventListener('click', () => {

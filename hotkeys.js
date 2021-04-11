@@ -7,11 +7,11 @@ document.addEventListener('keyup', (e) => {
 	if (e.key == 'a') toolsPanel.eyeDropBtn.click();
 	if (e.key == 'g') toolsPanel.fillToolBtn.click();
 	if (e.key == 'e') {
-		toolsPanel.brushSizeSlider.value--;
-		toolsPanel.brushSizeSlider.click();
+		toolsPanel.toolSizeSlider.value--;
+		toolsPanel.toolSizeSlider.click();
 	}
 	if (e.key == 'r') {
-		toolsPanel.brushSizeSlider.value++;
-		toolsPanel.brushSizeSlider.click();
+		toolsPanel.toolSizeSlider.value++;
+		toolsPanel.toolSizeSlider.click();
 	}
 });
