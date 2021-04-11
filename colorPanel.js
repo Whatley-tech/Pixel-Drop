@@ -37,7 +37,7 @@ const colorPanel = {
 			this.setColor(color);
 		});
 
-		if (container.childNodes.length >= 12) {
+		if (container.childNodes.length >= 27) {
 			container.removeChild(container.firstChild);
 		}
 

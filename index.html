@@ -51,16 +51,19 @@
 						</div>
 					</div>
 				</div>
-				<div id="controlsContainer" class="col-lg-2 d-flex align-items-center">
+				<div
+					id="controlsContainer"
+					class="col-lg-2 d-flex align-items-lg-center"
+				>
 					<div
 						id="controlsPanel"
-						class="mt-3 d-flex flex-lg-column d-sm-flex flex-sm-row justify-content-center"
+						class="mt-3 d-flex flex-lg-column d-sm-flex flex-row controlsPanel-vert"
 					>
 						<div
 							id="layerPanelContainer"
-							class="d-flex flex-column align-items-center"
+							class="d-flex flex-column align-items-center panel"
 						>
-							<div id="layerPanel" class="dropend">
+							<div id="layerPanel" class="dropend d-grid">
 								<button
 									class="btn btn-secondary dropdown-toggle"
 									type="button"
@@ -117,7 +120,7 @@
 						</div>
 						<div
 							id="colorPickerPanel"
-							class="d-flex flex-column"
+							class="d-flex flex-column panel"
 							data-bs-toggle="tooltip"
 							title="Color Select"
 						>
@@ -126,11 +129,11 @@
 								<div id="newColor"></div>
 							</div>
 							<input type="color" id="colorPicker" value="#000000" />
-							<div id="colorHistoryPanel" class="d-flex">
+							<div id="colorHistoryPanel" class="">
 								<div id="colorHistory" class="d-flex flex-wrap"></div>
 							</div>
 						</div>
-						<div id="toolsPanel" class="">
+						<div id="toolsPanel" class="panel">
 							<div
 								id="tools"
 								class="btn-toolbar d-flex flex-column"
@@ -225,7 +228,7 @@
 								/>
 							</div>
 						</div>
-						<div id="statePanel">
+						<div id="statePanel" class="panel d-grid">
 							<div class="btn-group" role="group" aria-label="undoRedo">
 								<button
 									id="undo"

@@ -110,11 +110,19 @@ const stage = {
 			layerPanel.layerPanel.classList.replace('dropend', 'dropup');
 			if (this.stagePanel.classList.contains('stagePanel-vert')) return;
 			this.stagePanel.classList.replace('stagePanel-wide', 'stagePanel-vert');
+			this.controlsPanel.classList.replace(
+				'controlsPanel-wide',
+				'controlsPanel-vert'
+			);
 		};
 		const setWide = () => {
 			layerPanel.layerPanel.classList.replace('dropup', 'dropend');
 			if (this.stagePanel.classList.contains('stagePanel-wide')) return;
 			this.stagePanel.classList.replace('stagePanel-vert', 'stagePanel-wide');
+			this.controlsPanel.classList.replace(
+				'controlsPanel-vert',
+				'controlsPanel-wide'
+			);
 		};
 
 		if (windowWidth >= bsLrgGridmin) {
