@@ -107,10 +107,12 @@ const stage = {
 		const windowWidth = window.innerWidth;
 		const bsLrgGridmin = 992; //bootstrap large grid, minimum pixel size
 		const setVertical = () => {
+			layerPanel.layerPanel.classList.replace('dropend', 'dropup');
 			if (this.stagePanel.classList.contains('stagePanel-vert')) return;
 			this.stagePanel.classList.replace('stagePanel-wide', 'stagePanel-vert');
 		};
 		const setWide = () => {
+			layerPanel.layerPanel.classList.replace('dropup', 'dropend');
 			if (this.stagePanel.classList.contains('stagePanel-wide')) return;
 			this.stagePanel.classList.replace('stagePanel-vert', 'stagePanel-wide');
 		};
