@@ -3,6 +3,8 @@ const stage = {
 	layersDiv: document.querySelector('#stageLayers'),
 	stageDiv: document.querySelector('#stage'),
 	stagePanel: document.querySelector('#stagePanel'),
+	controlsContainer: document.querySelector('#controlsContainer'),
+	controlsPanel: document.querySelector('#controlsPanel'),
 	background: undefined,
 	mergedView: undefined,
 	brushOverlay: undefined,
@@ -42,6 +44,7 @@ const stage = {
 		this.mainDiv.addEventListener('mouseup', (e) => {
 			toolsPanel.activeTool.releaseAction();
 			toolsPanel.activeTool.isDrawing = false;
+			layerPanel.updateLayerPview();
 		});
 		window.addEventListener('resize', () => {
 			this.resizeStage();

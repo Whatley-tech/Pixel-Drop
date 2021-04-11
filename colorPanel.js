@@ -27,7 +27,7 @@ const colorPanel = {
 		this.currentColorDiv.style.background = color;
 	},
 	updateColorHistory(color) {
-		const container = document.querySelector('#colorHistoryPanel');
+		const container = document.querySelector('#colorHistory');
 		const prevColor = document.createElement('div');
 
 		prevColor.style.background = color;

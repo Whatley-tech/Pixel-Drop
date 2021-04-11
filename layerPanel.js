@@ -9,6 +9,8 @@ const layerPanel = {
 	layersDropDownMenu: document.getElementById('layersDropDownMenu'),
 	tileRenameForm: document.getElementById('tileRenameForm'),
 	tileRenameInput: document.getElementById('tileRenameInput'),
+	layerPview: document.getElementById('layerPview'),
+	layerPviewCtx: layerPview.getContext('2d'),
 
 	activeTile: undefined,
 	get tileCount() {
@@ -18,9 +20,14 @@ const layerPanel = {
 		this.updateTiles();
 		this.addLayerPanelListeners();
 		this.toggleActive();
+		this.setLayerPviewDim();
 		$('#tileContainer').sortable({
 			stop: (event, ui) => this.moveLayer(ui.item[0]),
 		});
+	},
+	setLayerPviewDim() {
+		this.layerPview.width = stage.width;
+		this.layerPview.height = stage.height;
 	},
 	moveLayer(movedLayerTile) {
 		const layer = _.find(stage.layers, (layer) => layer.tile == movedLayerTile);
@@ -63,6 +70,10 @@ const layerPanel = {
 		});
 		this.toggleActive();
 	},
+	updateLayerPview() {
+		this.layerPviewCtx.clearRect(0, 0, stage.width, stage.height);
+		this.layerPviewCtx.drawImage(stage.activeLayer.element, 0, 0);
+	},
 
 	toggleActive() {
 		const currentlyActive = document.querySelectorAll('#tileContainer .active');
@@ -71,6 +82,7 @@ const layerPanel = {
 				node.classList.toggle('active');
 			});
 		this.activeTile.classList.toggle('active');
+		this.updateLayerPview();
 	},
 	addLayerPanelListeners() {
 		this.newLayerBtn.addEventListener('click', (e) => {

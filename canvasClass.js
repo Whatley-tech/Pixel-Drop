@@ -8,7 +8,7 @@ class Canvas {
 		this.element.width = stage.width;
 		this.element.height = stage.height;
 		this.element.style.zIndex = zIndex || id;
-		this.element.classList.add('canvas');
+		this.element.classList.add('main-canvas');
 		this.visible = true;
 	}
 	get img() {

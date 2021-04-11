@@ -51,117 +51,15 @@
 						</div>
 					</div>
 				</div>
-				<div id="controlsContainer" class="col">
-					<div id="controlsPanel">
-						<div id="controlsRow" class="">
-							<div
-								id="colorPickerPanel"
-								class="d-flex flex-row"
-								data-bs-toggle="tooltip"
-								title="Color Select"
-							>
-								<div id="colorSelector" class="">
-									<div id="currentColor"></div>
-									<div id="newColor"></div>
-								</div>
-								<input type="color" id="colorPicker" value="#000000" />
-							</div>
-							<div id="toolsPanel" class="">
-								<div
-									id="tools"
-									class="btn-toolbar"
-									role="toolbar"
-									aria-label="Toolbar with button groups"
-								>
-									<div
-										id="toolGroup1"
-										class="btn-group btn-group-sm"
-										role="toolbar"
-										aria-label="Tool Group 1"
-									>
-										<button
-											type="button"
-											id="brush"
-											class="btn btn-secondary toolBtn"
-											data-bs-toggle="tooltip"
-											title="Brush Tool"
-										>
-											<span class="material-icons"> brush </span>
-										</button>
-										<button
-											type="button"
-											id="eraser"
-											class="btn btn-secondary toolBtn"
-											data-bs-toggle="tooltip"
-											title="Eraser Tool"
-										>
-											<span class="material-icons"> hide_source </span>
-										</button>
-									</div>
-									<div
-										id="toolGroup2"
-										class="btn-group btn-group-sm"
-										role="toolbar"
-										aria-label="Tool Group 2"
-									>
-										<button
-											type="button"
-											id="moveTool"
-											class="btn btn-secondary toolBtn"
-											data-bs-toggle="tooltip"
-											title="Move Tool"
-										>
-											<span class="material-icons"> open_with</span>
-										</button>
-										<button
-											type="button"
-											id="resizeTool"
-											class="btn btn-secondary toolBtn"
-											data-bs-toggle="tooltip"
-											title="Resize Tool"
-										>
-											<span class="material-icons"> transform </span>
-										</button>
-									</div>
-									<div
-										id="toolGroup3"
-										class="btn-group btn-group-sm"
-										role="toolbar"
-										aria-label="Tool Group 3"
-									>
-										<button
-											type="button"
-											id="eyeDrop"
-											class="btn btn-secondary toolBtn"
-											data-bs-toggle="tooltip"
-											title="Color Picker Tool"
-										>
-											<span class="material-icons"> colorize</span>
-										</button>
-										<button
-											type="button"
-											id="fillTool"
-											class="btn btn-secondary toolBtn"
-											data-bs-toggle="tooltip"
-											title="Color Replace Tool"
-										>
-											<span class="material-icons"> format_color_fill</span>
-										</button>
-									</div>
-								</div>
-								<div id="toolSizeContainer" class="">
-									<input
-										title="1"
-										type="range"
-										name="toolSlider"
-										id="toolSlider"
-										value="1"
-										min="1"
-										max="5"
-									/>
-								</div>
-							</div>
-
+				<div id="controlsContainer" class="col-lg-2 d-flex align-items-center">
+					<div
+						id="controlsPanel"
+						class="mt-3 d-flex flex-lg-column d-sm-flex flex-sm-row justify-content-center"
+					>
+						<div
+							id="layerPanelContainer"
+							class="d-flex flex-column align-items-center"
+						>
 							<div id="layerPanel" class="dropup">
 								<button
 									class="btn btn-secondary dropdown-toggle"
@@ -213,35 +111,146 @@
 									</div>
 								</div>
 							</div>
-							<div id="statePanel">
-								<div class="btn-group" role="group" aria-label="undoRedo">
+							<div id="layerPviewContainer">
+								<canvas height="0" width="0" id="layerPview"></canvas>
+							</div>
+						</div>
+						<div
+							id="colorPickerPanel"
+							class="d-flex flex-column"
+							data-bs-toggle="tooltip"
+							title="Color Select"
+						>
+							<div id="colorSelector" class="d-flex">
+								<div id="currentColor"></div>
+								<div id="newColor"></div>
+							</div>
+							<input type="color" id="colorPicker" value="#000000" />
+							<div id="colorHistoryPanel" class="d-flex">
+								<div id="colorHistory" class="d-flex flex-wrap"></div>
+							</div>
+						</div>
+						<div id="toolsPanel" class="">
+							<div
+								id="tools"
+								class="btn-toolbar d-flex flex-column"
+								role="toolbar"
+								aria-label="Toolbar with button groups"
+							>
+								<div
+									id="toolGroup1"
+									class="btn-group btn-group-sm"
+									role="toolbar"
+									aria-label="Tool Group 1"
+								>
 									<button
-										id="undo"
-										class="btn btn-sm btn-secondary"
+										type="button"
+										id="brush"
+										class="btn btn-secondary toolBtn"
 										data-bs-toggle="tooltip"
-										title="Undo"
+										title="Brush Tool"
 									>
-										<span class="material-icons"> undo </span>
+										<span class="material-icons"> brush </span>
 									</button>
 									<button
-										id="redo"
-										class="btn btn-sm btn-secondary"
+										type="button"
+										id="eraser"
+										class="btn btn-secondary toolBtn"
 										data-bs-toggle="tooltip"
-										title="Redo"
+										title="Eraser Tool"
 									>
-										<span class="material-icons"> redo </span>
+										<span class="material-icons"> hide_source </span>
 									</button>
 								</div>
+								<div
+									id="toolGroup2"
+									class="btn-group btn-group-sm"
+									role="toolbar"
+									aria-label="Tool Group 2"
+								>
+									<button
+										type="button"
+										id="moveTool"
+										class="btn btn-secondary toolBtn"
+										data-bs-toggle="tooltip"
+										title="Move Tool"
+									>
+										<span class="material-icons"> open_with</span>
+									</button>
+									<button
+										type="button"
+										id="resizeTool"
+										class="btn btn-secondary toolBtn"
+										data-bs-toggle="tooltip"
+										title="Resize Tool"
+									>
+										<span class="material-icons"> transform </span>
+									</button>
+								</div>
+								<div
+									id="toolGroup3"
+									class="btn-group btn-group-sm"
+									role="toolbar"
+									aria-label="Tool Group 3"
+								>
+									<button
+										type="button"
+										id="eyeDrop"
+										class="btn btn-secondary toolBtn"
+										data-bs-toggle="tooltip"
+										title="Color Picker Tool"
+									>
+										<span class="material-icons"> colorize</span>
+									</button>
+									<button
+										type="button"
+										id="fillTool"
+										class="btn btn-secondary toolBtn"
+										data-bs-toggle="tooltip"
+										title="Color Replace Tool"
+									>
+										<span class="material-icons"> format_color_fill</span>
+									</button>
+								</div>
+							</div>
+							<div id="toolSizeContainer" class="">
+								<input
+									title="1"
+									type="range"
+									name="toolSlider"
+									id="toolSlider"
+									value="1"
+									min="1"
+									max="5"
+								/>
+							</div>
+						</div>
+						<div id="statePanel">
+							<div class="btn-group" role="group" aria-label="undoRedo">
+								<button
+									id="undo"
+									class="btn btn-secondary"
+									data-bs-toggle="tooltip"
+									title="Undo"
+								>
+									<span class="material-icons"> undo </span>
+								</button>
+								<button
+									id="redo"
+									class="btn btn-secondary"
+									data-bs-toggle="tooltip"
+									title="Redo"
+								>
+									<span class="material-icons"> redo </span>
+								</button>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div id="colorHistoryRow" class="col">
-					<div id="colorHistoryPanel" class=""></div>
-				</div>
 			</div>
 		</div>
 
+		<!-- modals -->
 		<div id="newCanvasModal" class="modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
