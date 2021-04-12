@@ -48,10 +48,14 @@ canvas,
 	width: 100%;
 	/* background-color: rgb(211, 211, 211); */
 }
+.layerTitle .badge {
+	cursor: pointer;
+}
 .tilePreview {
 	height: 3rem;
 	width: 3rem;
 }
+
 .material-icons.md-14 {
 	font-size: 14px;
 }

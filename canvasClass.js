@@ -34,7 +34,7 @@ class Layer extends Canvas {
 		this.tile.name = `Layer-${id}`;
 		this.tile.id = `tile${id}`;
 		this.tile.layerTitle = document.querySelector(
-			`#${this.tile.id} .layerTitle`
+			`#${this.tile.id} .layerTitle span`
 		);
 		this.tile.layerTitle.textContent = `${this.tile.name}`;
 		this.tile.visibleBtn = document.querySelector(
