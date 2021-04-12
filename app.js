@@ -1,4 +1,5 @@
 const customCanvasModal = document.querySelector('#customCanvasModal');
+const newCanvasModal = document.querySelector('#newCanvasModal');
 const newCanvasForm = document.querySelector('#newCanvasForm');
 const canvasHeightInput = document.querySelector('#canvasHeightInput');
 const canvasWidthInput = document.querySelector('#canvasWidthInput');
@@ -53,6 +54,7 @@ newCanvasForm.addEventListener('submit', (e) => {
 _.each(createCanvasBtn, (btn) =>
 	btn.addEventListener('click', () => {
 		initApp(btn.dataset.width, btn.dataset.height);
+		$('#newCanvasModal').modal('toggle');
 	})
 );
 
