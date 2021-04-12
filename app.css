@@ -36,7 +36,11 @@ canvas,
 	cursor: pointer;
 }
 .tile {
+	cursor: grab;
 	border-bottom: 2px solid rgb(160, 160, 160);
+}
+.tile:active {
+	cursor: grabbing;
 }
 .layerTitle {
 	height: fit-content;
@@ -66,6 +70,9 @@ canvas,
 #colorPicker {
 	visibility: hidden;
 	position: absolute;
+}
+#colorPickerPanel {
+	cursor: pointer;
 }
 #colorSelector {
 	height: 40px;
