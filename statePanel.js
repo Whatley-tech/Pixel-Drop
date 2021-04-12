@@ -36,6 +36,7 @@ const statePanel = {
 			this.redoStates.push(currentState);
 		});
 		prevState.restore();
+		layerPanel.updateLayerPview();
 	},
 	redo() {
 		if (!this.redoStates.length) return;
@@ -45,6 +46,7 @@ const statePanel = {
 			this.undoStates.push(currentState);
 		});
 		prevState.restore();
+		layerPanel.updateLayerPview();
 	},
 	clearRedos() {
 		_.remove(statePanel.redoStates);
