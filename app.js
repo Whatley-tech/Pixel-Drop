@@ -2,6 +2,7 @@ const customCanvasModal = document.querySelector('#customCanvasModal');
 const newCanvasForm = document.querySelector('#newCanvasForm');
 const canvasHeightInput = document.querySelector('#canvasHeightInput');
 const canvasWidthInput = document.querySelector('#canvasWidthInput');
+const createCanvasBtn = document.querySelectorAll('.createCanvasBtn');
 
 const enableToolTips = function () {
 	$(function () {
@@ -29,9 +30,7 @@ const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 	return new bootstrap.Tooltip(tooltipTriggerEl);
 });
 
-const initApp = function () {
-	const height = canvasHeightInput.value;
-	const width = canvasWidthInput.value;
+const initApp = function (width, height) {
 	toolsPanel.init();
 	stage.init(height, width);
 	statePanel.init();
@@ -46,10 +45,16 @@ newCanvasForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	$('#customCanvasModal').modal('toggle');
 	stage.reset();
-	initApp();
+	initApp(canvasWidthInput.value, canvasHeightInput.value);
 	canvasHeightInput.value = null;
 	canvasWidthInput.value = null;
 });
+
+_.each(createCanvasBtn, (btn) =>
+	btn.addEventListener('click', () => {
+		initApp(btn.dataset.width, btn.dataset.height);
+	})
+);
 
 //start new canvas on load
 window.onload = () => {

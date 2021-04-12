@@ -88,7 +88,6 @@ const stage = {
 		this.checkWindowSize();
 		const maxW = this.stagePanel.clientWidth;
 		const maxH = this.stagePanel.clientHeight;
-		console.log(maxW, maxH);
 		const wr = maxW / this.width;
 		const hr = maxH / this.height;
 
