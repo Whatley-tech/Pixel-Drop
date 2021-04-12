@@ -1,13 +1,9 @@
-body {
-	/* overflow: hidden; */
-}
 .hidden {
 	display: none;
 }
 .template {
 	display: none !important;
 }
-
 #newLayerBtn {
 	cursor: pointer;
 }
@@ -36,7 +32,6 @@ canvas,
 .main-canvas {
 	position: absolute;
 }
-
 .layerBtn {
 	cursor: pointer;
 }
@@ -55,7 +50,6 @@ canvas,
 	height: 3rem;
 	width: 3rem;
 }
-
 .material-icons.md-14 {
 	font-size: 14px;
 }
