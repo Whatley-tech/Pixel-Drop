@@ -1,4 +1,4 @@
-const newCanvasModal = document.querySelector('#newCanvasModal');
+const customCanvasModal = document.querySelector('#customCanvasModal');
 const newCanvasForm = document.querySelector('#newCanvasForm');
 const canvasHeightInput = document.querySelector('#canvasHeightInput');
 const canvasWidthInput = document.querySelector('#canvasWidthInput');
@@ -19,7 +19,7 @@ const toggleHidden = function (element) {
 const percentage = function (num, per) {
 	return (num / 100) * per;
 };
-newCanvasModal.addEventListener('shown.bs.modal', function () {
+customCanvasModal.addEventListener('shown.bs.modal', function () {
 	canvasWidthInput.focus();
 });
 const tooltipTriggerList = [].slice.call(
@@ -44,7 +44,7 @@ const initApp = function () {
 
 newCanvasForm.addEventListener('submit', (e) => {
 	e.preventDefault();
-	$('#newCanvasModal').modal('toggle');
+	$('#customCanvasModal').modal('toggle');
 	stage.reset();
 	initApp();
 	canvasHeightInput.value = null;

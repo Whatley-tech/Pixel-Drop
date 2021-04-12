@@ -122,3 +122,6 @@ canvas,
 .panel {
 	width: 100%;
 }
+.card {
+	width: 14rem;
+}
