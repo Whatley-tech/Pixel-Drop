@@ -50,6 +50,10 @@ canvas,
 .layerTitle .badge {
 	cursor: pointer;
 }
+.layerTitle .badge:hover {
+	text-decoration: underline;
+}
+
 .tilePreview {
 	height: 3rem;
 	width: 3rem;
