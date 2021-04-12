@@ -5,6 +5,9 @@ const stage = {
 	stagePanel: document.querySelector('#stagePanel'),
 	controlsContainer: document.querySelector('#controlsContainer'),
 	controlsPanel: document.querySelector('#controlsPanel'),
+	layerPviewContainer: document.querySelector('#layerPviewContainer'),
+	layerPviewWrapper: document.querySelector('#layerPviewWrapper'),
+
 	background: undefined,
 	mergedView: undefined,
 	brushOverlay: undefined,
@@ -48,6 +51,7 @@ const stage = {
 		});
 		window.addEventListener('resize', () => {
 			this.resizeStage();
+			this.resizePview();
 		});
 	},
 	init(height, width) {
@@ -55,6 +59,7 @@ const stage = {
 		this.width = width;
 
 		this.resizeStage();
+		this.resizePview();
 
 		this.background = this.makeCanvas('background', 0);
 		this.appendToStageDiv(this.background);
@@ -99,6 +104,23 @@ const stage = {
 		if (hr > wr) {
 			this.stageDiv.style.height = `${Math.floor(this.height * wr)}px`;
 			this.stageDiv.style.width = `${Math.floor(this.width * wr)}px`;
+			// console.log('asdf');
+		}
+	},
+	resizePview() {
+		const maxW = this.layerPviewContainer.clientWidth;
+		const maxH = this.layerPviewContainer.clientHeight;
+		const wr = maxW / this.width;
+		const hr = maxH / this.height;
+
+		if (wr > hr) {
+			this.layerPviewWrapper.style.height = `${Math.floor(this.height * hr)}px`;
+			this.layerPviewWrapper.style.width = `${Math.floor(this.width * hr)}px`;
+			// console.log('asdf');
+		}
+		if (hr > wr) {
+			this.layerPviewWrapper.style.height = `${Math.floor(this.height * wr)}px`;
+			this.layerPviewWrapper.style.width = `${Math.floor(this.width * wr)}px`;
 			// console.log('asdf');
 		}
 	},

@@ -59,10 +59,7 @@
 						id="controlsPanel"
 						class="mt-3 d-flex flex-lg-column d-sm-flex flex-row controlsPanel-vert"
 					>
-						<div
-							id="layerPanelContainer"
-							class="d-flex flex-column align-items-center panel"
-						>
+						<div id="layerPanelContainer" class="d-flex flex-column panel">
 							<div id="layerPanel" class="dropend d-grid">
 								<button
 									class="btn btn-secondary dropdown-toggle"
@@ -118,8 +115,13 @@
 									</div>
 								</div>
 							</div>
-							<div id="layerPviewContainer" class="border border-2 bg-light">
-								<canvas height="0" width="0" id="layerPview"></canvas>
+							<div
+								id="layerPviewContainer"
+								class="border border-2 d-flex justify-content-center"
+							>
+								<div id="layerPviewWrapper" class="bg-light">
+									<canvas height="0" width="0" id="layerPview"></canvas>
+								</div>
 							</div>
 						</div>
 						<div
