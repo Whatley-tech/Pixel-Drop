@@ -103,20 +103,10 @@ canvas,
 	width: 100%;
 }
 #layerPviewContainer {
-	height: 19vh;
-}
-#layerPviewWrapper canvas {
-	background-color: rgb(245, 245, 245);
-}
-#layerPviewWrapper {
-	height: 100%;
-	width: 100%;
-}
-
-#statePanel {
-	height: min-content;
+	max-height: 24vh;
 }
 .panel {
+	max-width: 150px;
 	width: 100%;
 }
 .card {
