@@ -109,21 +109,20 @@ const stage = {
 		}
 	},
 	resizePview() {
-		const maxW = this.layerPviewContainer.clientWidth;
-		const maxH = this.layerPviewContainer.clientHeight;
-		const wr = maxW / this.width;
-		const hr = maxH / this.height;
-
-		if (wr > hr) {
-			this.layerPviewWrapper.style.height = `${Math.floor(this.height * hr)}px`;
-			this.layerPviewWrapper.style.width = `${Math.floor(this.width * hr)}px`;
-			// console.log('asdf');
-		}
-		if (hr > wr) {
-			this.layerPviewWrapper.style.height = `${Math.floor(this.height * wr)}px`;
-			this.layerPviewWrapper.style.width = `${Math.floor(this.width * wr)}px`;
-			// console.log('asdf');
-		}
+		// const maxW = this.layerPviewContainer.clientWidth;
+		// const maxH = this.layerPviewContainer.clientHeight;
+		// const wr = maxW / this.width;
+		// const hr = maxH / this.height;
+		// if (wr > hr) {
+		// 	this.layerPviewWrapper.style.height = `${Math.floor(this.height * hr)}px`;
+		// 	this.layerPviewWrapper.style.width = `${Math.floor(this.width * hr)}px`;
+		// 	// console.log('asdf');
+		// }
+		// if (hr > wr) {
+		// 	this.layerPviewWrapper.style.height = `${Math.floor(this.height * wr)}px`;
+		// 	this.layerPviewWrapper.style.width = `${Math.floor(this.width * wr)}px`;
+		// 	// console.log('asdf');
+		// }
 	},
 	checkWindowSize() {
 		const windowWidth = window.innerWidth;

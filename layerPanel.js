@@ -82,6 +82,7 @@ const layerPanel = {
 				node.classList.toggle('active');
 			});
 		this.activeTile.classList.toggle('active');
+		this.layersDropDownBtn.innerText = this.activeTile.name;
 		this.updateLayerPview();
 	},
 	addLayerPanelListeners() {

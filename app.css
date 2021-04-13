@@ -53,7 +53,6 @@ canvas,
 .layerTitle .badge:hover {
 	text-decoration: underline;
 }
-
 .tilePreview {
 	height: 3rem;
 	width: 3rem;
@@ -103,10 +102,15 @@ canvas,
 #toolSlider {
 	width: 100%;
 }
-
 #layerPviewContainer {
-	flex: 1 1 1%;
 	height: 20vh;
+}
+#layerPviewWrapper canvas {
+	background-color: rgb(245, 245, 245);
+}
+#layerPviewWrapper {
+	height: 100%;
+	width: 100%;
 }
 
 #statePanel {
