@@ -103,7 +103,7 @@ canvas,
 	width: 100%;
 }
 #layerPviewContainer {
-	height: 20vh;
+	height: 19vh;
 }
 #layerPviewWrapper canvas {
 	background-color: rgb(245, 245, 245);
