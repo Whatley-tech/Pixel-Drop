@@ -45,7 +45,6 @@ const initApp = function (width, height) {
 newCanvasForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	$('#customCanvasModal').modal('toggle');
-	stage.reset();
 	initApp(canvasWidthInput.value, canvasHeightInput.value);
 	canvasHeightInput.value = null;
 	canvasWidthInput.value = null;
