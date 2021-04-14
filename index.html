@@ -37,6 +37,8 @@
 					<button
 						id="saveCanvasBtn"
 						class="btn btn-secondary btn-sm border border-dark border-1"
+						data-bs-toggle="modal"
+						data-bs-target="#saveCanvasModal"
 					>
 						Save
 					</button>
@@ -471,7 +473,7 @@
 			aria-hidden="true"
 			data-tileName=""
 		>
-			<div class="modal-dialog">
+			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">Rename Layer</h5>
@@ -508,6 +510,28 @@
 							</div>
 						</form>
 					</div>
+				</div>
+			</div>
+		</div>
+		<div
+			id="saveCanvasModal"
+			class="modal fade"
+			tabindex="-1"
+			aria-labelledby="save image"
+			aria-hidden="true"
+		>
+			<div class="modal-dialoge" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Export your work</h5>
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						></button>
+					</div>
+					<div class="modal-body">Slide inputs here</div>
 				</div>
 			</div>
 		</div>
