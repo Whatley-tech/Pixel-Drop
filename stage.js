@@ -160,7 +160,7 @@ const stage = {
 	},
 	setMergedView() {
 		_.each(stage.layers, (layer) => {
-			stage.mergedView.ctx.drawImage(layer.img, 0, 0);
+			stage.mergedView.ctx.drawImage(layer.dataURL, 0, 0);
 		});
 	},
 	restoreLayer(layer, index) {

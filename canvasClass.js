@@ -12,6 +12,10 @@ class Canvas {
 		this.visible = true;
 	}
 	get img() {
+		let img = this.ctx.getImageData(0, 0, stage.width, stage.height);
+		return img;
+	}
+	get dataURL() {
 		let img = new Image();
 		img.src = this.element.toDataURL();
 		return img;
@@ -19,7 +23,7 @@ class Canvas {
 	clearCanvas() {
 		this.ctx.clearRect(0, 0, stage.width, stage.height);
 	}
-	renderCanvas(img = this.img) {
+	renderCanvas(img = this.dataURL) {
 		this.ctx.drawImage(img, 0, 0);
 	}
 }

@@ -97,12 +97,7 @@ class EyeDrop extends Tool {
 	}
 	startAction() {
 		stage.setMergedView();
-		this.imgData = stage.mergedView.ctx.getImageData(
-			0,
-			0,
-			stage.width,
-			stage.height
-		);
+		this.imgData = stage.mergedView.img;
 	}
 	action() {
 		this.color = this.selectColor();
@@ -164,7 +159,7 @@ class MoveTool extends Tool {
 	startAction() {
 		this.xMoveStart = this.xPixelPosition;
 		this.yMoveStart = this.yPixelPosition;
-		this.startImg = this.canvas.img;
+		this.startImg = this.canvas.dataURL;
 	}
 	action() {
 		this.moveCanvas();
