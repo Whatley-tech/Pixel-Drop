@@ -176,4 +176,21 @@ const stage = {
 		this.setActiveLayer(layer);
 		layer.renderCanvas();
 	},
+	exportImage(userWidth) {
+		let baseW = stage.width,
+			baseH = stage.height,
+			ratio = userWidth / baseW,
+			newW = stage.width * ratio,
+			newH = stage.height * ratio,
+			c = document.createElement('canvas'),
+			ctx = c.getContext('2d');
+
+		c.width = newW;
+		c.height = newH;
+		ctx.drawImage(stage.mergedView, 0, 0, baseW, baseH, 0, 0, newW, newH);
+
+		let img = new Image();
+		img.src = c.toDataURL();
+		return img;
+	},
 };
