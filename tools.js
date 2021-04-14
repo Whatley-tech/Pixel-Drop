@@ -15,11 +15,11 @@ class Tool {
 	get canvas() {
 		return stage.activeLayer;
 	}
-	updatePosition(evt) {
+	updatePosition(event) {
 		let canvas = stage.brushOverlay;
 		//find brushPosition
-		this.xPosition = Math.floor(evt.pageX - stage.leftOrigin);
-		this.yPosition = Math.floor(evt.pageY - stage.topOrigin);
+		this.xPosition = Math.floor(event.pageX - stage.leftOrigin);
+		this.yPosition = Math.floor(event.pageY - stage.topOrigin);
 		this.xPixelPosition = Math.floor(this.xPosition / stage.pixelSize);
 		this.yPixelPosition = Math.floor(this.yPosition / stage.pixelSize);
 
