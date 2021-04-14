@@ -3,11 +3,8 @@ const stage = {
 	layersDiv: document.querySelector('#stageLayers'),
 	stageDiv: document.querySelector('#stage'),
 	stagePanel: document.querySelector('#stagePanel'),
-	controlsContainer: document.querySelector('#controlsContainer'),
-	controlsPanel: document.querySelector('#controlsPanel'),
+	controls: document.querySelector('#controls'),
 	layerPviewContainer: document.querySelector('#layerPviewContainer'),
-	layerPviewWrapper: document.querySelector('#layerPviewWrapper'),
-
 	background: undefined,
 	mergedView: undefined,
 	brushOverlay: undefined,
@@ -51,7 +48,6 @@ const stage = {
 		});
 		window.addEventListener('resize', () => {
 			this.resizeStage();
-			this.resizePview();
 		});
 	},
 	init(height, width) {
@@ -60,7 +56,6 @@ const stage = {
 
 		stage.reset();
 		this.resizeStage();
-		this.resizePview();
 
 		this.background = this.makeCanvas('background', 0);
 		this.appendToStageDiv(this.background);
@@ -89,7 +84,6 @@ const stage = {
 		_.remove(this.layers);
 		_.remove(statePanel.undoStates);
 	},
-
 	resizeStage() {
 		this.checkWindowSize();
 		const maxW = this.stagePanel.clientWidth;
@@ -108,22 +102,6 @@ const stage = {
 			// console.log('asdf');
 		}
 	},
-	resizePview() {
-		// const maxW = this.layerPviewContainer.clientWidth;
-		// const maxH = this.layerPviewContainer.clientHeight;
-		// const wr = maxW / this.width;
-		// const hr = maxH / this.height;
-		// if (wr > hr) {
-		// 	this.layerPviewWrapper.style.height = `${Math.floor(this.height * hr)}px`;
-		// 	this.layerPviewWrapper.style.width = `${Math.floor(this.width * hr)}px`;
-		// 	// console.log('asdf');
-		// }
-		// if (hr > wr) {
-		// 	this.layerPviewWrapper.style.height = `${Math.floor(this.height * wr)}px`;
-		// 	this.layerPviewWrapper.style.width = `${Math.floor(this.width * wr)}px`;
-		// 	// console.log('asdf');
-		// }
-	},
 	checkWindowSize() {
 		const windowWidth = window.innerWidth;
 		const bsLrgGridmin = 992; //bootstrap large grid, minimum pixel size
@@ -131,11 +109,13 @@ const stage = {
 			layerPanel.layerPanel.classList.replace('dropend', 'dropup');
 			if (this.stagePanel.classList.contains('stagePanel-vert')) return;
 			this.stagePanel.classList.replace('stagePanel-wide', 'stagePanel-vert');
+			this.controls.classList.replace('controls-wide', 'controls-vert');
 		};
 		const setWide = () => {
 			layerPanel.layerPanel.classList.replace('dropup', 'dropend');
 			if (this.stagePanel.classList.contains('stagePanel-wide')) return;
 			this.stagePanel.classList.replace('stagePanel-vert', 'stagePanel-wide');
+			this.controls.classList.replace('controls-vert', 'controls-wide');
 		};
 
 		if (windowWidth >= bsLrgGridmin) {

@@ -4,9 +4,9 @@ const layerPanel = {
 	tileContainer: document.querySelector('#tileContainer'),
 	tileTemplate: document.querySelector('#tileTemplate'),
 	activeLayerPreview: document.querySelector('#activeLayerPreview'),
-	layersDropDownBtn: document.getElementById('layersDropDownBtn'),
+	layerMenuBtn: document.getElementById('layerMenuBtn'),
 	layerPanel: document.querySelector('#layerPanel'),
-	layersDropDownMenu: document.getElementById('layersDropDownMenu'),
+	layerMenu: document.getElementById('layerMenu'),
 	tileRenameForm: document.getElementById('tileRenameForm'),
 	tileRenameInput: document.getElementById('tileRenameInput'),
 	layerPview: document.getElementById('layerPview'),
@@ -82,7 +82,7 @@ const layerPanel = {
 				node.classList.toggle('active');
 			});
 		this.activeTile.classList.toggle('active');
-		this.layersDropDownBtn.innerText = this.activeTile.name;
+		this.layerMenuBtn.innerText = this.activeTile.name;
 		this.updateLayerPview();
 	},
 	addLayerPanelListeners() {
@@ -93,7 +93,7 @@ const layerPanel = {
 			statePanel.saveState('layer', newLayer);
 			this.toggleActive();
 		});
-		this.layersDropDownBtn.addEventListener('shown.bs.dropdown', (e) => {
+		this.layerMenuBtn.addEventListener('shown.bs.dropdown', (e) => {
 			_.each(stage.layers, (layer) => layer.updateTilePreview());
 		});
 
@@ -111,8 +111,8 @@ const layerPanel = {
 
 		//collapse layerpanel on outside click
 		// document.addEventListener('mousedown', (e) => {
-		// 	if (layersDropDownMenu.classList.contains('show'))
-		// 		layersDropDownBtn.click();
+		// 	if (layerMenu.classList.contains('show'))
+		// 		layerMenuBtn.click();
 		// });
 	},
 };

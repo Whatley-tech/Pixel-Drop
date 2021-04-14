@@ -51,29 +51,33 @@
 						</div>
 					</div>
 				</div>
+
 				<div
 					id="controlsContainer"
-					class="col-lg-2 d-flex align-items-lg-center"
+					class="px-2 py-3 shadow-lg border border-1 border-dark col-lg-2"
 				>
 					<div
-						id="controlsPanel"
-						class="mt-3 d-flex flex-lg-column d-sm-flex flex-row panel"
+						id="controls"
+						class="controls-vert d-flex flex-nowrap flex-lg-column justify-content-center"
 					>
-						<div id="layerPanelContainer" class="mb-2 d-flex flex-column panel">
-							<div id="layerPanel" class="dropend d-grid">
+						<div
+							id="layerPanelContainer"
+							class="mb-2 d-flex flex-column panel shadow-sm border border-2 p-1"
+						>
+							<div id="layerPanel" class="dropend d-grid p-1">
 								<button
 									class="btn btn-secondary dropdown-toggle"
 									type="button"
-									id="layersDropDownBtn"
+									id="layerMenuBtn"
 									data-bs-toggle="dropdown"
 								>
 									Layers
 								</button>
 
 								<div
-									id="layersDropDownMenu"
+									id="layerMenu"
 									class="dropdown-menu"
-									aria-labelledby="layersDropDownBtn"
+									aria-labelledby="layerMenu"
 								>
 									<div id="tileContainer">
 										<div
@@ -117,16 +121,14 @@
 							</div>
 							<div
 								id="layerPviewContainer"
-								class="border border-2 d-flex justify-content-center"
+								class="d-flex justify-content-center"
 							>
-								<div id="layerPviewWrapper" class="bg-light">
-									<canvas height="0" width="0" id="layerPview"></canvas>
-								</div>
+								<canvas height="0" width="0" id="layerPview"></canvas>
 							</div>
 						</div>
 						<div
 							id="colorPickerPanel"
-							class="d-flex flex-column panel"
+							class="d-flex flex-column panel mb-2 shadow-sm border border-2 p-2"
 							data-bs-toggle="tooltip"
 							title="Color Select"
 						>
@@ -145,7 +147,7 @@
 						<div id="toolsPanel" class="panel">
 							<div
 								id="tools"
-								class="btn-toolbar d-flex flex-column"
+								class="btn-toolbar d-flex flex-column shadow-sm"
 								role="toolbar"
 								aria-label="Toolbar with button groups"
 							>
@@ -225,7 +227,7 @@
 									</button>
 								</div>
 							</div>
-							<div id="toolSizeContainer" class="my-2">
+							<div id="toolSizeContainer" class="p-2">
 								<input
 									title="1"
 									type="range"
@@ -236,7 +238,7 @@
 									max="5"
 								/>
 							</div>
-							<div id="statePanel" class="panel d-grid">
+							<div id="statePanel" class="panel d-grid shadow">
 								<div
 									class="btn-group btn-group-sm"
 									role="group"
@@ -244,7 +246,7 @@
 								>
 									<button
 										id="undo"
-										class="btn btn-secondary"
+										class="btn btn-secondary border border-dark border-1"
 										data-bs-toggle="tooltip"
 										title="Undo"
 									>
@@ -252,7 +254,7 @@
 									</button>
 									<button
 										id="redo"
-										class="btn btn-secondary"
+										class="btn btn-secondary border border-dark border-1"
 										data-bs-toggle="tooltip"
 										title="Redo"
 									>
