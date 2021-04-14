@@ -108,6 +108,9 @@ canvas,
 #layerPviewContainer {
 	height: 20vh;
 }
+#layerPviewContainer canvas {
+	background-color: rgb(245, 245, 245);
+}
 #controlsContainer {
 	margin-top: 1rem;
 }
