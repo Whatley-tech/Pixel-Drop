@@ -41,7 +41,9 @@ class Brush extends Tool {
 	action() {
 		this.drawPixel();
 	}
-	releaseAction() {}
+	releaseAction() {
+		stage.updateMergedView();
+	}
 	drawPixel(
 		x = this.xPixelPosition,
 		y = this.yPixelPosition,
@@ -83,7 +85,9 @@ class Eraser extends Tool {
 	action() {
 		this.erasePixel();
 	}
-	releaseAction() {}
+	releaseAction() {
+		stage.updateMergedView();
+	}
 	erasePixel(x = this.xPixelPosition, y = this.yPixelPosition) {
 		this.ctx.clearRect(x, y, this.size, this.size);
 	}
@@ -93,19 +97,14 @@ class EyeDrop extends Tool {
 		super(buttonElement);
 		this.color = undefined;
 		this.undoAble = false;
-		this.imgData = [];
 	}
-	startAction() {
-		stage.setMergedView();
-		this.imgData = stage.mergedView.img;
-	}
+	startAction() {}
 	action() {
 		this.color = this.selectColor();
 	}
 	releaseAction() {
-		//do nothing if pixel was transparent
-		stage.mergedView.clearCanvas();
 		colorPanel.setColor();
+		//do nothing if pixel was transparent
 		if (this.color) return colorPanel.updateColorHistory(this.color);
 	}
 	selectColor(x = this.xPixelPosition, y = this.yPixelPosition) {
@@ -124,6 +123,7 @@ class FillTool extends Tool {
 	releaseAction() {
 		// this.fill();
 		this.colorReplace();
+		stage.updateMergedView();
 	}
 	getColorSample(x = this.xPixelPosition, y = this.yPixelPosition) {
 		return this.ctx.getImageData(x, y, 1, 1).data;
@@ -164,7 +164,9 @@ class MoveTool extends Tool {
 	action() {
 		this.moveCanvas();
 	}
-	releaseAction() {}
+	releaseAction() {
+		stage.updateMergedView();
+	}
 	moveCanvas(xpp = this.xPixelPosition, ypp = this.yPixelPosition) {
 		const xDistance = this.checkMoveDistance(this.xMoveStart, xpp);
 		const yDistance = this.checkMoveDistance(this.yMoveStart, ypp);

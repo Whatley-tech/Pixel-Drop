@@ -57,6 +57,9 @@ const stage = {
 		stage.reset();
 		this.resizeStage();
 
+		this.mergedView = this.makeCanvas('mergedView', 0);
+		this.appendToStageDiv(this.mergedView);
+
 		this.background = this.makeCanvas('background', 0);
 		this.appendToStageDiv(this.background);
 
@@ -64,9 +67,6 @@ const stage = {
 
 		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
 		this.appendToStageDiv(this.brushOverlay);
-
-		this.mergedView = this.makeCanvas('mergedView', this.maxZIndex - 1);
-		this.appendToStageDiv(this.mergedView);
 
 		this.newLayer();
 		this.activeLayer = _.head(this.layers);
@@ -158,9 +158,16 @@ const stage = {
 		this.layers.splice(prevIndex, 1);
 		this.layers.splice(currentIndex, 0, element);
 	},
-	setMergedView() {
+	updateMergedView() {
+		this.mergedView.clearCanvas();
 		_.each(stage.layers, (layer) => {
-			stage.mergedView.ctx.drawImage(layer.dataURL, 0, 0);
+			stage.mergedView.ctx.drawImage(
+				layer.element,
+				0,
+				0,
+				stage.width,
+				stage.height
+			);
 		});
 	},
 	restoreLayer(layer, index) {

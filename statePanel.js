@@ -36,6 +36,7 @@ const statePanel = {
 			this.redoStates.push(currentState);
 		});
 		prevState.restore();
+		stage.updateMergedView();
 		layerPanel.updateLayerPview();
 	},
 	redo() {
@@ -46,6 +47,7 @@ const statePanel = {
 			this.undoStates.push(currentState);
 		});
 		prevState.restore();
+		stage.updateMergedView();
 		layerPanel.updateLayerPview();
 	},
 	clearRedos() {
