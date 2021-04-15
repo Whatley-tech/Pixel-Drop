@@ -520,10 +520,10 @@
 			aria-labelledby="save image"
 			aria-hidden="true"
 		>
-			<div class="modal-dialoge" role="document">
+			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Export your work</h5>
+						<h5 class="modal-title">Export your artwork.</h5>
 						<button
 							type="button"
 							class="btn-close"
@@ -531,7 +531,56 @@
 							aria-label="Close"
 						></button>
 					</div>
-					<div class="modal-body">Slide inputs here</div>
+					<div class="modal-body">
+						<form id="saveImageForm" name="saveImage" action="">
+							<p>Choose your export format.</p>
+							<div class="form-check">
+								<input
+									class="form-check-input"
+									type="radio"
+									name="fileFormatRadio"
+									id="svgRadio"
+								/>
+								<label class="form-check-label" for="svgRadio"> SVG </label>
+							</div>
+							<div class="form-check mb-3">
+								<input
+									class="form-check-input"
+									type="radio"
+									name="fileFormatRadio"
+									id="pngRadio"
+									checked
+								/>
+								<label class="form-check-label" for="pngRadio"> .png </label>
+							</div>
+							<div>
+								<label for="imageDimSlide" class="form-label"
+									>Export image dimensions: <span id="exportDim"></span
+								></label>
+								<input
+									class="form-control"
+									type="range"
+									id="imageDimSlide"
+									aria-label="Image Dimension input"
+									min="0"
+									max="3840"
+									value="0"
+								/>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="btn btn-secondary"
+							data-bs-dismiss="modal"
+						>
+							Close
+						</button>
+						<button id="exportBtn" type="button" class="btn btn-primary">
+							export
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
