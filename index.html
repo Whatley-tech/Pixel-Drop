@@ -387,7 +387,7 @@
 									<p class="card-text">Choose a custom size!</p>
 									<button
 										type="button"
-										class="btn btn-primary"
+										class="btn btn-sm btn-primary"
 										data-bs-toggle="modal"
 										data-bs-target="#customCanvasModal"
 									>
@@ -410,7 +410,7 @@
 			</div>
 		</div>
 		<!-- custom new canvas -->
-		<div id="customCanvasModal" class="modal" tabindex="-1" role="dialog">
+		<div id="customCanvasModal" class="modal fade" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -424,7 +424,7 @@
 					</div>
 
 					<div class="modal-body">
-						<form id="newCanvasForm" action="">
+						<form id="customCanvasForm" action="">
 							<div class="form-group">
 								<label for="width">Width:</label>
 								<input
@@ -563,7 +563,8 @@
 									id="imageDimSlide"
 									aria-label="Image Dimension input"
 									min="0"
-									max="3840"
+									max="1080"
+									step="1"
 									value="0"
 								/>
 							</div>
@@ -578,7 +579,7 @@
 							Close
 						</button>
 						<button id="exportBtn" type="button" class="btn btn-primary">
-							export
+							Export
 						</button>
 					</div>
 				</div>

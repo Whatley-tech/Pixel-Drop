@@ -1,29 +1,16 @@
-const customCanvasModal = document.querySelector('#customCanvasModal');
-const newCanvasModal = document.querySelector('#newCanvasModal');
-const newCanvasForm = document.querySelector('#newCanvasForm');
-const canvasHeightInput = document.querySelector('#canvasHeightInput');
-const canvasWidthInput = document.querySelector('#canvasWidthInput');
-const createCanvasBtn = document.querySelectorAll('.createCanvasBtn');
+const customCanvasModalElm = document.querySelector('#customCanvasModal'),
+	customCanvasModal = new bootstrap.Modal(customCanvasModalElm),
+	newCanvasModalElm = document.querySelector('#newCanvasModal'),
+	newCanvasModal = new bootstrap.Modal(newCanvasModalElm),
+	customCanvasForm = document.querySelector('#customCanvasForm'),
+	saveCanvasModalElm = document.querySelector('#saveCanvasModal'),
+	saveCanvasModal = new bootstrap.Modal(saveCanvasModalElm),
+	imgDimSlide = document.querySelector('#imageDimSlide'),
+	exportDim = document.querySelector('#exportDim'),
+	canvasHeightInput = document.querySelector('#canvasHeightInput'),
+	canvasWidthInput = document.querySelector('#canvasWidthInput'),
+	createCanvasBtn = document.querySelectorAll('.createCanvasBtn');
 
-const enableToolTips = function () {
-	$(function () {
-		$('[data-toggle="tooltip"]').tooltip();
-	});
-};
-const enablePopOvers = function () {
-	$(function () {
-		$('[data-toggle="popover"]').popover();
-	});
-};
-const toggleHidden = function (element) {
-	element.classList.toggle('hidden');
-};
-const percentage = function (num, per) {
-	return (num / 100) * per;
-};
-customCanvasModal.addEventListener('shown.bs.modal', function () {
-	canvasWidthInput.focus();
-});
 const tooltipTriggerList = [].slice.call(
 	document.querySelectorAll('[data-bs-toggle="tooltip"]')
 );
@@ -31,6 +18,38 @@ const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 	return new bootstrap.Tooltip(tooltipTriggerEl);
 });
 
+customCanvasModalElm.addEventListener('shown.bs.modal', function () {
+	canvasWidthInput.focus();
+});
+
+customCanvasForm.addEventListener('submit', (e) => {
+	e.preventDefault();
+	customCanvasModal.toggle();
+	newCanvasModal.toggle();
+	initApp(parseInt(canvasWidthInput.value), parseInt(canvasHeightInput.value));
+	canvasHeightInput.value = null;
+	canvasWidthInput.value = null;
+});
+
+_.each(createCanvasBtn, (btn) =>
+	btn.addEventListener('click', () => {
+		initApp(parseInt(btn.dataset.width), parseInt(btn.dataset.height));
+		newCanvasModal.toggle();
+	})
+);
+saveCanvasModalElm.addEventListener('shown.bs.modal', () => {
+	exportDim.innerText = `${stage.width}x${stage.height}`;
+});
+imgDimSlide.addEventListener('input', (e) => {
+	console.log(e);
+	let value = parseInt(imgDimSlide.value);
+	exportDim.innerText = `${stage.width + value}x${stage.height + value}`;
+});
+
+//start new canvas on load
+window.onload = () => {
+	document.querySelector('#newCanvasBtn').click();
+};
 const initApp = function (width, height) {
 	toolsPanel.init();
 	stage.init(height, width);
@@ -38,26 +57,4 @@ const initApp = function (width, height) {
 	colorPanel.init();
 	layerPanel.init();
 	colorPanel.selectNewColor();
-	enablePopOvers();
-	enableToolTips();
-};
-
-newCanvasForm.addEventListener('submit', (e) => {
-	e.preventDefault();
-	$('#customCanvasModal').modal('toggle');
-	initApp(canvasWidthInput.value, canvasHeightInput.value);
-	canvasHeightInput.value = null;
-	canvasWidthInput.value = null;
-});
-
-_.each(createCanvasBtn, (btn) =>
-	btn.addEventListener('click', () => {
-		initApp(btn.dataset.width, btn.dataset.height);
-		$('#newCanvasModal').modal('toggle');
-	})
-);
-
-//start new canvas on load
-window.onload = () => {
-	document.querySelector('#newCanvasBtn').click();
 };
