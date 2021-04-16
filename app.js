@@ -39,7 +39,7 @@ _.each(createCanvasBtn, (btn) =>
 	})
 );
 saveCanvasModalElm.addEventListener('shown.bs.modal', () => {
-	exportDim.innerText = `${stage.width}x${stage.height}`;
+	exportDim.innerText = `${stage.width}x${stage.height}px`;
 });
 imgDimSlide.addEventListener('input', (e) => {
 	let value = parseInt(imgDimSlide.value);
