@@ -21,15 +21,15 @@
 .stagePanel-wide {
 	height: 85vh;
 }
-canvas,
-.main-canvas {
+.pixel-canvas,
+.stage-canvas {
 	height: 100%;
 	width: 100%;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
 	object-fit: contain;
 }
-.main-canvas {
+.stage-canvas {
 	position: absolute;
 }
 .layerBtn {

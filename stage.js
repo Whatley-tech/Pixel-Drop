@@ -176,21 +176,48 @@ const stage = {
 		this.setActiveLayer(layer);
 		layer.renderCanvas();
 	},
-	exportImage(userWidth) {
+	exportImage(scaleValue) {
 		let baseW = stage.width,
 			baseH = stage.height,
-			ratio = userWidth / baseW,
-			newW = stage.width * ratio,
-			newH = stage.height * ratio,
+			newW = scaleValue + baseW,
+			newH = scaleValue + baseH,
+			dpr = window.devicePixelRatio,
 			c = document.createElement('canvas'),
 			ctx = c.getContext('2d');
 
+		ctx.scale(dpr, dpr);
 		c.width = newW;
 		c.height = newH;
-		ctx.drawImage(stage.mergedView, 0, 0, baseW, baseH, 0, 0, newW, newH);
+		ctx.drawImage(
+			stage.mergedView.element,
+			0,
+			0,
+			baseW,
+			baseH,
+			0,
+			0,
+			newW,
+			newH
+		);
 
-		let img = new Image();
-		img.src = c.toDataURL();
-		return img;
+		src = c.toDataURL();
+
+		let newTab = window.open();
+		newTab.document.body.innerHTML = `<img src="${src}" >`;
+	},
+	getPixelData() {
+		let pixelCollection = {
+			imgHeight: stage.height,
+			imgWidth: stage.width,
+			pixels: [],
+		};
+
+		for (let y = 0; y < stage.height; y++) {
+			for (let x = 0; x < stage.width; x++) {
+				let pixel = this.mergedView.ctx.getImageData(x, y, 1, 1).data;
+				pixelCollection.pixels.push(pixel);
+			}
+		}
+		return pixelCollection;
 	},
 };
