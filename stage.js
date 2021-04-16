@@ -176,34 +176,43 @@ const stage = {
 		this.setActiveLayer(layer);
 		layer.renderCanvas();
 	},
-	exportImage(scaleValue) {
-		let baseW = stage.width,
-			baseH = stage.height,
-			newW = scaleValue + baseW,
-			newH = scaleValue + baseH,
-			dpr = window.devicePixelRatio,
-			c = document.createElement('canvas'),
-			ctx = c.getContext('2d');
+	createSVG(scaleValue = 1) {
+		if (scaleValue < 1) return console.error('scale value less than 1');
+		const newW = stage.width * scaleValue,
+			newH = stage.height * scaleValue,
+			ratio = newW / this.width,
+			pixelCollection = this.getPixelData(),
+			svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+			svgElements = [];
 
-		ctx.scale(dpr, dpr);
-		c.width = newW;
-		c.height = newH;
-		ctx.drawImage(
-			stage.mergedView.element,
-			0,
-			0,
-			baseW,
-			baseH,
-			0,
-			0,
-			newW,
-			newH
+		svg.setAttribute('width', `${newW}`);
+		svg.setAttribute('height', `${newH}`);
+		svg.setAttributeNS(
+			'http://www.w3.org/2000/xmlns/',
+			'xmlns:xlink',
+			'http://www.w3.org/1999/xlink'
 		);
 
-		src = c.toDataURL();
+		for (let y = 0; y < stage.height; y++) {
+			for (let x = 0; x < stage.width; x++) {
+				let pointer = y * stage.width + x;
+				let pixel = pixelCollection.pixels[pointer];
+				let color = this.UintToRGB(pixel);
+				let rect = this.makeSVGRect(x * ratio, y * ratio, ratio, ratio, color);
+				svg.appendChild(rect);
+				svgElements.push(rect);
+			}
+		}
+		console.log(svg);
 
-		let newTab = window.open();
-		newTab.document.body.innerHTML = `<img src="${src}" >`;
+		return svg;
+	},
+	exportImage(type, scaleValue) {
+		if (type == 'svg') {
+			let svg = this.createSVG(scaleValue);
+			let newTab = window.open();
+			newTab.document.body.append(svg);
+		}
 	},
 	getPixelData() {
 		let pixelCollection = {
@@ -219,5 +228,20 @@ const stage = {
 			}
 		}
 		return pixelCollection;
+	},
+	UintToRGB(array) {
+		const color = `rgb(${array[0]},${array[1]},${array[2]},${array[3]})`;
+		return color;
+	},
+	makeSVGRect(x, y, width, height, color) {
+		let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+		rect.setAttribute('x', x);
+		rect.setAttribute('y', y);
+		rect.setAttribute('width', width);
+		rect.setAttribute('height', height);
+		rect.setAttribute('fill', color);
+		rect.setAttribute('shape-rendering', 'crispEdges');
+		// const rect = `<rect x='${x}' y='${y}' width='${width}' height='${height}' fill='${color}'`;
+		return rect;
 	},
 };

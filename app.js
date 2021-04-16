@@ -43,12 +43,15 @@ saveCanvasModalElm.addEventListener('shown.bs.modal', () => {
 });
 imgDimSlide.addEventListener('input', (e) => {
 	let value = parseInt(imgDimSlide.value);
-	exportDim.innerText = `${stage.width + value}x${stage.height + value}`;
+	exportDim.innerText = `${stage.width * value}x${stage.height * value}px`;
 });
-exportBtn.addEventListener('click', () => {
-	let scaleValue = parseInt(imgDimSlide.value);
+saveImageForm.addEventListener('submit', (e) => {
+	e.preventDefault();
 	saveCanvasModal.toggle();
-	stage.exportImage(scaleValue);
+	// console.log(e);
+	let scaleValue = parseInt(imgDimSlide.value);
+	//src
+	if (e.srcElement[1].checked) stage.exportImage('svg', scaleValue);
 });
 
 //start new canvas on load
