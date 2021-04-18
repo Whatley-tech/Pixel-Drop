@@ -182,8 +182,7 @@ const stage = {
 			newH = stage.height * scaleValue,
 			ratio = newW / this.width,
 			pixelCollection = this.getPixelData(),
-			svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
-			svgElements = [];
+			svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
 		svg.setAttribute('width', `${newW}`);
 		svg.setAttribute('height', `${newH}`);
@@ -195,23 +194,35 @@ const stage = {
 
 		for (let y = 0; y < stage.height; y++) {
 			for (let x = 0; x < stage.width; x++) {
-				let pointer = y * stage.width + x;
-				let pixel = pixelCollection.pixels[pointer];
-				let color = this.UintToRGB(pixel);
-				let rect = this.makeSVGRect(x * ratio, y * ratio, ratio, ratio, color);
+				let pointer = y * stage.width + x,
+					pixel = pixelCollection.pixels[pointer],
+					color = this.UintToRGB(pixel),
+					rect = this.makeSVGRect(x * ratio, y * ratio, ratio, ratio, color);
 				svg.appendChild(rect);
-				svgElements.push(rect);
 			}
 		}
-		console.log(svg);
 
 		return svg;
 	},
+	createPNG(svg) {
+		const height = svg.height,
+			width = svg.width;
+
+		console.log(svg);
+
+		// return img;
+	},
 	exportImage(type, scaleValue) {
+		const svg = this.createSVG(scaleValue),
+			newTab = window.open();
+
 		if (type == 'svg') {
-			let svg = this.createSVG(scaleValue);
-			let newTab = window.open();
 			newTab.document.body.append(svg);
+		}
+		if (type == 'png') {
+			const img = this.createPNG(svg);
+			newTab.document.body.append(img);
+			console.log(img);
 		}
 	},
 	getPixelData() {

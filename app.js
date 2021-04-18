@@ -52,6 +52,7 @@ saveImageForm.addEventListener('submit', (e) => {
 	let scaleValue = parseInt(imgDimSlide.value);
 	//src
 	if (e.srcElement[1].checked) stage.exportImage('svg', scaleValue);
+	if (e.srcElement[2].checked) stage.exportImage('png', scaleValue);
 });
 
 //start new canvas on load
