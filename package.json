@@ -1,0 +1,26 @@
+{
+  "name": "pixel-drop",
+  "version": "1.0.0",
+  "description": "A simple pixel painting application",
+  "main": "app.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stebon24/Pixel-Drop.git"
+  },
+  "author": "Stephen Whatley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stebon24/Pixel-Drop/issues"
+  },
+  "homepage": "https://github.com/Stebon24/Pixel-Drop#readme"
+}
