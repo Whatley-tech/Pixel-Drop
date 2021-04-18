@@ -1,6 +1,0 @@
-{
-    "files.exclude": {
-        "**/lib": true
-    },
-    "liveServer.settings.port": 5501
-}
