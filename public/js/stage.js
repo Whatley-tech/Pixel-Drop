@@ -208,21 +208,37 @@ const stage = {
 		const height = svg.height,
 			width = svg.width;
 
-		console.log(svg);
-
+		// console.log(svg);
+		axios
+			.get('/PNG', {
+				params: {
+					svg: svg,
+				},
+			})
+			.then(function (res) {
+				console.log(res.body.params);
+				console.log('recieved svg');
+			})
+			.catch(function (err) {
+				console.log('there was an error');
+				console.log(err);
+			})
+			.then(function () {
+				console.log('done');
+			});
 		// return img;
 	},
 	exportImage(type, scaleValue) {
-		const svg = this.createSVG(scaleValue),
-			newTab = window.open();
+		const svg = this.createSVG(scaleValue);
+		// let newTab = window.open();
 
 		if (type == 'svg') {
 			newTab.document.body.append(svg);
 		}
 		if (type == 'png') {
 			const img = this.createPNG(svg);
-			newTab.document.body.append(img);
-			console.log(img);
+			// newTab.document.body.append(img);
+			// console.log(img);
 		}
 	},
 	getPixelData() {
