@@ -184,8 +184,9 @@ const stage = {
 			pixelCollection = this.getPixelData(),
 			svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
-		svg.setAttribute('width', `${newW}`);
-		svg.setAttribute('height', `${newH}`);
+		// svg.setAttribute('width', `${newW}`);
+		// svg.setAttribute('height', `${newH}`);
+		svg.setAttribute('viewbox', `0 0 ${newW} ${newH}`);
 		svg.setAttributeNS(
 			'http://www.w3.org/2000/xmlns/',
 			'xmlns:xlink',

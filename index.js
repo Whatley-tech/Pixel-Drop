@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const { convertFile } = require('convert-svg-to-png');
 const { stringify } = require('querystring');
 const port = 3000;
 
@@ -21,9 +22,11 @@ app.post('/PNG', (req, res) => {
 
 	const makePng = async () => {
 		try {
-			let svgFile = await writeSvgElmToFile(svgElm);
-			let stats = await getFileStats(svgPath);
+			const svgFile = await writeSvgElmToFile(svgElm);
+			const stats = await getFileStats(svgPath);
 			console.log(`SVG size was ${stats.size}bytes...`);
+			const outputFilePath = await convertFile(svgPath);
+			console.log(outputFilePath);
 			res.send('finished');
 		} catch (err) {
 			console.log(err);
