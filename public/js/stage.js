@@ -198,7 +198,7 @@ const stage = {
 					pixel = pixelCollection.pixels[pointer],
 					color = this.UintToRGB(pixel),
 					rect = this.makeSVGRect(x * ratio, y * ratio, ratio, ratio, color);
-				axios({ method: 'post', url: '/PNG', data: rect });
+
 				svg.appendChild(rect);
 			}
 		}
@@ -221,7 +221,8 @@ const stage = {
 			// newTab.document.body.append(svg);
 		}
 		if (type == 'png') {
-			const img = this.createPNG(svg);
+			svgHtml = svg.outerHTML;
+			axios({ method: 'post', url: '/PNG', data: { svgElm: svgHtml } });
 			// newTab.document.body.append(img);
 			// console.log(img);
 		}
