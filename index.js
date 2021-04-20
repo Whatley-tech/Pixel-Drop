@@ -22,23 +22,15 @@ app.post('/PNG', (req, res) => {
 	const makePng = async () => {
 		try {
 			let svgFile = await writeSvgElmToFile(svgElm);
-			let svg = await fs.promises.open(svgPath);
-			let stats = await svg.stat();
+			let stats = await getFileStats(svgPath);
+			console.log(`SVG size was ${stats.size}bytes...`);
 			res.send('finished');
-			console.log(stats);
 		} catch (err) {
 			console.log(err);
 		}
 	};
 	makePng();
-	console.log('here before done!');
-
-	// fs.open('public/img/test.svg', 'w+', (err, fd) => {
-	// 	if (err) {
-	// 		console.log(err);
-	// 		return;
-	// 	}
-	// });
+	// console.log('here before done!');
 });
 
 app.listen(port, () => {
@@ -47,4 +39,10 @@ app.listen(port, () => {
 
 const writeSvgElmToFile = async (svgElm) => {
 	return await fs.promises.writeFile('public/img/test.svg', svgElm);
+};
+const getFileStats = async (path) => {
+	const file = await fs.promises.open(path);
+	const stats = await file.stat();
+	file.close();
+	return stats;
 };
