@@ -184,9 +184,9 @@ const stage = {
 			pixelCollection = this.getPixelData(),
 			svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
-		// svg.setAttribute('width', `${newW}`);
-		// svg.setAttribute('height', `${newH}`);
-		svg.setAttribute('viewbox', `0 0 ${newW} ${newH}`);
+		svg.setAttribute('width', `${newW}`);
+		svg.setAttribute('height', `${newH}`);
+		// svg.setAttribute('viewbox', `0 0 ${newW} ${newH}`);
 		svg.setAttributeNS(
 			'http://www.w3.org/2000/xmlns/',
 			'xmlns:xlink',
@@ -216,14 +216,35 @@ const stage = {
 	},
 	exportImage(type, scaleValue) {
 		const svg = this.createSVG(scaleValue);
-		// let newTab = window.open();
-
+		const svgHtml = svg.outerHTML;
+		// console.log(svg);
 		if (type == 'svg') {
-			// newTab.document.body.append(svg);
+			axios({
+				method: 'post',
+				url: '/SVG',
+				data: { svgElm: svgHtml },
+			}).catch((err) => console.log(err));
 		}
 		if (type == 'png') {
-			svgHtml = svg.outerHTML;
-			axios({ method: 'post', url: '/PNG', data: { svgElm: svgHtml } });
+			let newTab = window.open();
+			const img = new Image();
+
+			axios({
+				method: 'post',
+				url: '/PNG',
+				data: { svgElm: svgHtml },
+			}).then((res) => {
+				img.src = '/img/test.svg';
+				// const c = document.createElement('canvas');
+				// const ctx = c.getContext('2d');
+				// c.height = svg.height.baseVal.value;
+				// c.width = svg.width.baseVal.value;
+				// ctx.drawImage(img, 0, 0);
+				// img.src = c.toDataURL();
+
+				newTab.document.body.appendChild(res.data);
+				console.log(img);
+			});
 			// newTab.document.body.append(img);
 			// console.log(img);
 		}
