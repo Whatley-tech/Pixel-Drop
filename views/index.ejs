@@ -38,15 +38,9 @@
 						id="saveCanvasBtn"
 						class="btn btn-secondary btn-sm border border-dark border-1"
 						data-bs-toggle="modal"
-						data-bs-target="#saveCanvasModal"
+						data-bs-target="#exportCanvasModal"
 					>
-						Save
-					</button>
-					<button
-						id="loadCanvasBtn"
-						class="btn btn-secondary btn-sm border border-dark border-1"
-					>
-						Load
+						Export
 					</button>
 				</div>
 			</div>
@@ -253,7 +247,7 @@
 		<!-- rename tile modal -->
 		<%- include('renameTileModal') %>
 		<!-- save canvas modal -->
-		<%- include('saveCanvasModal') %>
+		<%- include('exportCanvasModal') %>
 
 		<script src="/lib/jquery.js"></script>
 		<script src="lib/jquery-ui-1.12.1.custom/jquery-ui.js"></script>

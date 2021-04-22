@@ -3,8 +3,8 @@ const customCanvasModalElm = document.querySelector('#customCanvasModal'),
 	newCanvasModalElm = document.querySelector('#newCanvasModal'),
 	newCanvasModal = new bootstrap.Modal(newCanvasModalElm),
 	customCanvasForm = document.querySelector('#customCanvasForm'),
-	saveCanvasModalElm = document.querySelector('#saveCanvasModal'),
-	saveCanvasModal = new bootstrap.Modal(saveCanvasModalElm),
+	saveCanvasModalElm = document.querySelector('#exportCanvasModal'),
+	exportCanvasModal = new bootstrap.Modal(saveCanvasModalElm),
 	exportBtn = document.querySelector('#exportBtn'),
 	imgDimSlide = document.querySelector('#imageDimSlide'),
 	exportDim = document.querySelector('#exportDim'),
@@ -45,9 +45,9 @@ imgDimSlide.addEventListener('input', (e) => {
 	let value = parseInt(imgDimSlide.value);
 	exportDim.innerText = `${stage.width * value}x${stage.height * value}px`;
 });
-saveImageForm.addEventListener('submit', (e) => {
+exportImageForm.addEventListener('submit', (e) => {
 	e.preventDefault();
-	saveCanvasModal.toggle();
+	exportCanvasModal.toggle();
 	// console.log(e);
 	let scaleValue = parseInt(imgDimSlide.value);
 	//src

@@ -16,7 +16,7 @@ const stage = {
 	uniqueId: 0,
 
 	get pixelSize() {
-		return parseInt(this.stageDiv.style.height) / stage.height;
+		return parseInt(this.stageDiv.style.height) / this.height;
 	},
 	get leftOrigin() {
 		return this.stageDiv.getBoundingClientRect().left;
@@ -28,7 +28,7 @@ const stage = {
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
 			if (toolsPanel.activeTool.undoAble)
-				statePanel.saveState('action', stage.activeLayer);
+				statePanel.saveState('action', this.activeLayer);
 			statePanel.clearRedos();
 			toolsPanel.activeTool.isDrawing = true;
 			toolsPanel.activeTool.startAction();
@@ -54,7 +54,7 @@ const stage = {
 		this.height = height;
 		this.width = width;
 
-		stage.reset();
+		this.reset();
 		this.resizeStage();
 
 		this.mergedView = this.makeCanvas('mergedView', 0);
@@ -137,7 +137,7 @@ const stage = {
 		return layer;
 	},
 	setActiveLayer(layer) {
-		stage.activeLayer = layer;
+		this.activeLayer = layer;
 		layerPanel.activeTile = layer.tile;
 		layerPanel.updateTiles();
 	},
@@ -160,26 +160,50 @@ const stage = {
 	},
 	updateMergedView() {
 		this.mergedView.clearCanvas();
-		_.each(stage.layers, (layer) => {
-			stage.mergedView.ctx.drawImage(
+		_.each(this.layers, (layer) => {
+			this.mergedView.ctx.drawImage(
 				layer.element,
 				0,
 				0,
-				stage.width,
-				stage.height
+				this.width,
+				this.height
 			);
 		});
 	},
 	restoreLayer(layer, index) {
-		stage.layers.splice(index, 0, layer);
+		this.layers.splice(index, 0, layer);
 		this.appendToLayerDiv(layer);
 		this.setActiveLayer(layer);
 		layer.renderCanvas();
 	},
+	exportImage(type, scaleValue) {
+		const svg = this.createSVG(scaleValue);
+
+		if (type == 'svg') {
+			let newTab = window.open();
+			newTab.document.body.appendChild(svg);
+		}
+		if (type == 'png') {
+			let newTab = window.open();
+			const dpr = window.devicePixelRatio,
+				h = this.height * scaleValue,
+				w = this.width * scaleValue,
+				c = document.createElement('canvas'),
+				ctx = c.getContext('2d');
+
+			c.width = w * dpr;
+			c.height = h * dpr;
+			ctx.scale(dpr, dpr);
+			this.drawSVGtoCanvas(svg, ctx, () => {
+				let png = this.canvasToPNG(c, w, h);
+				newTab.document.body.append(png);
+			});
+		}
+	},
 	createSVG(scaleValue = 1) {
 		if (scaleValue < 1) return console.error('scale value less than 1');
-		const newW = stage.width * scaleValue,
-			newH = stage.height * scaleValue,
+		const newW = this.width * scaleValue,
+			newH = this.height * scaleValue,
 			ratio = newW / this.width,
 			pixelCollection = this.getPixelData(),
 			svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -193,9 +217,10 @@ const stage = {
 			'http://www.w3.org/1999/xlink'
 		);
 
-		for (let y = 0; y < stage.height; y++) {
-			for (let x = 0; x < stage.width; x++) {
-				let pointer = y * stage.width + x,
+		//create a rect element for each pixel
+		for (let y = 0; y < this.height; y++) {
+			for (let x = 0; x < this.width; x++) {
+				let pointer = y * this.width + x,
 					pixel = pixelCollection.pixels[pointer],
 					color = this.UintToRGB(pixel),
 					rect = this.makeSVGRect(x * ratio, y * ratio, ratio, ratio, color);
@@ -206,58 +231,40 @@ const stage = {
 
 		return svg;
 	},
-	createPNG(svg) {
-		const height = svg.height,
-			width = svg.width;
-
-		// console.log(svg);
-
-		// return img;
+	makeSVGRect(x, y, width, height, color) {
+		let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+		rect.setAttribute('x', x);
+		rect.setAttribute('y', y);
+		rect.setAttribute('width', width);
+		rect.setAttribute('height', height);
+		rect.setAttribute('fill', color);
+		rect.setAttribute('shape-rendering', 'crispEdges');
+		return rect;
 	},
-	exportImage(type, scaleValue) {
-		const svg = this.createSVG(scaleValue);
-		const svgHtml = svg.outerHTML;
-		// console.log(svg);
-		if (type == 'svg') {
-			axios({
-				method: 'post',
-				url: '/SVG',
-				data: { svgElm: svgHtml },
-			}).catch((err) => console.log(err));
-		}
-		if (type == 'png') {
-			let newTab = window.open();
-			const img = new Image();
 
-			axios({
-				method: 'post',
-				url: '/PNG',
-				data: { svgElm: svgHtml },
-			}).then((res) => {
-				img.src = '/img/test.svg';
-				// const c = document.createElement('canvas');
-				// const ctx = c.getContext('2d');
-				// c.height = svg.height.baseVal.value;
-				// c.width = svg.width.baseVal.value;
-				// ctx.drawImage(img, 0, 0);
-				// img.src = c.toDataURL();
-
-				newTab.document.body.appendChild(res.data);
-				console.log(img);
-			});
-			// newTab.document.body.append(img);
-			// console.log(img);
-		}
+	canvasToPNG(canvas, width, height) {
+		let pngImg = new Image(width, height);
+		pngImg.src = canvas.toDataURL();
+		return pngImg;
+	},
+	drawSVGtoCanvas(svgElement, ctx, callback) {
+		const svgURL = new XMLSerializer().serializeToString(svgElement);
+		const img = new Image();
+		img.onload = function () {
+			ctx.drawImage(this, 0, 0);
+			callback();
+		};
+		img.src = 'data:image/svg+xml; charset=utf8, ' + encodeURIComponent(svgURL);
 	},
 	getPixelData() {
 		let pixelCollection = {
-			imgHeight: stage.height,
-			imgWidth: stage.width,
+			imgHeight: this.height,
+			imgWidth: this.width,
 			pixels: [],
 		};
 
-		for (let y = 0; y < stage.height; y++) {
-			for (let x = 0; x < stage.width; x++) {
+		for (let y = 0; y < this.height; y++) {
+			for (let x = 0; x < this.width; x++) {
 				let pixel = this.mergedView.ctx.getImageData(x, y, 1, 1).data;
 				pixelCollection.pixels.push(pixel);
 			}
@@ -267,16 +274,5 @@ const stage = {
 	UintToRGB(array) {
 		const color = `rgb(${array[0]},${array[1]},${array[2]},${array[3]})`;
 		return color;
-	},
-	makeSVGRect(x, y, width, height, color) {
-		let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-		rect.setAttribute('x', x);
-		rect.setAttribute('y', y);
-		rect.setAttribute('width', width);
-		rect.setAttribute('height', height);
-		rect.setAttribute('fill', color);
-		rect.setAttribute('shape-rendering', 'crispEdges');
-		// const rect = `<rect x='${x}' y='${y}' width='${width}' height='${height}' fill='${color}'`;
-		return rect;
 	},
 };
