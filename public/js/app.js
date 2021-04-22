@@ -3,10 +3,10 @@ const customCanvasModalElm = document.querySelector('#customCanvasModal'),
 	newCanvasModalElm = document.querySelector('#newCanvasModal'),
 	newCanvasModal = new bootstrap.Modal(newCanvasModalElm),
 	customCanvasForm = document.querySelector('#customCanvasForm'),
-	saveCanvasModalElm = document.querySelector('#exportCanvasModal'),
-	exportCanvasModal = new bootstrap.Modal(saveCanvasModalElm),
+	exportCanvasModalElm = document.querySelector('#exportCanvasModal'),
+	exportCanvasModal = new bootstrap.Modal(exportCanvasModalElm),
 	exportBtn = document.querySelector('#exportBtn'),
-	imgDimSlide = document.querySelector('#imageDimSlide'),
+	exportDimSlider = document.querySelector('#exportDimSlider'),
 	exportDim = document.querySelector('#exportDim'),
 	canvasHeightInput = document.querySelector('#canvasHeightInput'),
 	canvasWidthInput = document.querySelector('#canvasWidthInput'),
@@ -38,21 +38,21 @@ _.each(createCanvasBtn, (btn) =>
 		newCanvasModal.toggle();
 	})
 );
-saveCanvasModalElm.addEventListener('shown.bs.modal', () => {
+exportCanvasModalElm.addEventListener('shown.bs.modal', () => {
 	exportDim.innerText = `${stage.width}x${stage.height}px`;
 });
-imgDimSlide.addEventListener('input', (e) => {
-	let value = parseInt(imgDimSlide.value);
+exportDimSlider.addEventListener('input', (e) => {
+	let value = parseInt(exportDimSlider.value);
 	exportDim.innerText = `${stage.width * value}x${stage.height * value}px`;
 });
 exportImageForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	exportCanvasModal.toggle();
-	// console.log(e);
-	let scaleValue = parseInt(imgDimSlide.value);
-	//src
+	let scaleValue = parseInt(exportDimSlider.value);
+
 	if (e.srcElement[1].checked) stage.exportImage('svg', scaleValue);
 	if (e.srcElement[2].checked) stage.exportImage('png', scaleValue);
+	exportDimSlider.value = 1;
 });
 
 //start new canvas on load
