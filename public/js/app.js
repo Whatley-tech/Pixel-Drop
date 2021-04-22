@@ -60,10 +60,12 @@ window.onload = () => {
 	document.querySelector('#newCanvasBtn').click();
 };
 const initApp = function (width, height) {
-	toolsPanel.init();
-	stage.init(parseInt(height), parseInt(width));
-	statePanel.init();
-	colorPanel.init();
-	layerPanel.init();
-	colorPanel.selectNewColor();
+	if (!stage.appIsInit) {
+		toolsPanel.init();
+		stage.init(parseInt(height), parseInt(width));
+		statePanel.init();
+		colorPanel.init();
+		layerPanel.init();
+		colorPanel.selectNewColor();
+	} else stage.init(parseInt(height), parseInt(width));
 };

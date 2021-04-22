@@ -14,6 +14,7 @@ const stage = {
 	width: undefined,
 	maxZIndex: 12,
 	uniqueId: 0,
+	appIsInit: false,
 
 	get pixelSize() {
 		return parseInt(this.stageDiv.style.height) / this.height;
@@ -53,6 +54,7 @@ const stage = {
 	init(height, width) {
 		this.height = height;
 		this.width = width;
+		this.appIsInit = true;
 
 		this.reset();
 		this.resizeStage();
