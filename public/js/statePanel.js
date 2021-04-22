@@ -12,7 +12,7 @@ const statePanel = {
 	},
 	saveState(type, layer, callback) {
 		//Types: action,layer,arrange, new?
-		let state = undefined;
+		let state = {};
 		switch (type) {
 			case 'action':
 				state = new ActionState(type, layer);
