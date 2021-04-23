@@ -98,4 +98,10 @@ class Layer extends Canvas {
 		this.tilePreviewCtx.clearRect(0, 0, stage.height, stage.width);
 		this.tilePreviewCtx.drawImage(this.element, 0, 0);
 	}
+
+	layerIndex() {
+		return _.findIndex(stage.layers, (layer) => {
+			return layer === this;
+		});
+	}
 }
