@@ -3,8 +3,8 @@ class Canvas {
 		//Canvas Element for stage
 		this.element = document.createElement('canvas');
 		this.ctx = this.element.getContext('2d');
-		this.pixels = [];
-		this.element.id = `Layer${id}`;
+		this.id = id;
+		this.element.id = `Layer${this.id}`;
 		this.element.width = stage.width;
 		this.element.height = stage.height;
 		this.element.style.zIndex = zIndex || id;
@@ -36,7 +36,7 @@ class Layer extends Canvas {
 		this.tile.classList.toggle('template');
 		this.tileContainer.append(this.tile);
 		this.tile.name = name || `Layer-${id}`;
-		this.tile.id = `tile${id}`;
+		this.tile.id = `tile${this.id}`;
 		this.tile.layerTitle = document.querySelector(
 			`#${this.tile.id} .layerTitle span`
 		);

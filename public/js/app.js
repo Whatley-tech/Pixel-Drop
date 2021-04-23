@@ -15,6 +15,7 @@ const customCanvasModalElm = document.querySelector('#customCanvasModal'),
 const tooltipTriggerList = [].slice.call(
 	document.querySelectorAll('[data-bs-toggle="tooltip"]')
 );
+
 const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 	return new bootstrap.Tooltip(tooltipTriggerEl);
 });
@@ -40,13 +41,16 @@ _.each(createCanvasBtn, (btn) =>
 		clearSessionStorage();
 	})
 );
+
 exportCanvasModalElm.addEventListener('shown.bs.modal', () => {
 	exportDim.innerText = `${stage.width}x${stage.height}px`;
 });
+
 exportDimSlider.addEventListener('input', (e) => {
 	let value = parseInt(exportDimSlider.value);
 	exportDim.innerText = `${stage.width * value}x${stage.height * value}px`;
 });
+
 exportImageForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	exportCanvasModal.toggle();
@@ -60,13 +64,13 @@ exportImageForm.addEventListener('submit', (e) => {
 //start new canvas on load
 window.onload = () => {
 	const { prevLayers, prevStage } = checkStorage();
-	console.log(prevStage, prevLayers);
 	if (!prevStage) document.querySelector('#newCanvasBtn').click();
 	else {
 		initApp(prevStage.width, prevStage.height);
 		stage.restorePrevSession(prevLayers);
 	}
 };
+
 const initApp = function (width, height) {
 	if (!stage.appIsInit) {
 		toolsPanel.init();
@@ -82,18 +86,20 @@ const autoSave = function () {
 	saveSessionStage();
 	saveSessionLayers();
 };
+
 const saveSessionLayers = function () {
 	const saveData = _.map(stage.layers, (layer) => {
 		return {
 			name: layer.tile.name,
 			zIndex: layer.element.style.zIndex,
 			imgDataUri: layer.dataURLImg.src,
-			id: layer.element.id,
+			id: layer.id,
 		};
 	});
 
 	saveSessionItem('layers', saveData);
 };
+
 const saveSessionStage = function () {
 	saveSessionItem('stage', { width: stage.width, height: stage.height });
 };

@@ -46,6 +46,7 @@ const stage = {
 			toolsPanel.activeTool.releaseAction();
 			toolsPanel.activeTool.isDrawing = false;
 			layerPanel.updateLayerPview();
+			autoSave();
 		});
 		window.addEventListener('resize', () => {
 			this.resizeStage();
@@ -81,6 +82,7 @@ const stage = {
 		if (this.mergedView) this.mergedView.element.remove();
 		this.clearLayers();
 		_.remove(statePanel.undoStates);
+		this.uniqueId = 0;
 	},
 	clearLayers() {
 		_.each(this.layers, (layer) => {
