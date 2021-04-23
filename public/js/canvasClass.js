@@ -1,5 +1,5 @@
 class Canvas {
-	constructor(id, zIndex) {
+	constructor(id, zIndex, name) {
 		//Canvas Element for stage
 		this.element = document.createElement('canvas');
 		this.ctx = this.element.getContext('2d');
@@ -15,7 +15,7 @@ class Canvas {
 		let img = this.ctx.getImageData(0, 0, stage.width, stage.height);
 		return img;
 	}
-	get dataURL() {
+	get dataURLImg() {
 		let img = new Image();
 		img.src = this.element.toDataURL();
 		return img;
@@ -23,19 +23,19 @@ class Canvas {
 	clearCanvas() {
 		this.ctx.clearRect(0, 0, stage.width, stage.height);
 	}
-	renderCanvas(img = this.dataURL) {
+	renderCanvas(img = this.dataURLImg) {
 		this.ctx.drawImage(img, 0, 0);
 	}
 }
 class Layer extends Canvas {
-	constructor(id, zIndex) {
-		super(id, zIndex);
+	constructor(id, zIndex, name) {
+		super(id, zIndex, name);
 		//layerPanel Element
 		this.tileContainer = document.querySelector('#tileContainer');
 		this.tile = document.querySelector('#tileTemplate').cloneNode(true);
 		this.tile.classList.toggle('template');
 		this.tileContainer.append(this.tile);
-		this.tile.name = `Layer-${id}`;
+		this.tile.name = name || `Layer-${id}`;
 		this.tile.id = `tile${id}`;
 		this.tile.layerTitle = document.querySelector(
 			`#${this.tile.id} .layerTitle span`

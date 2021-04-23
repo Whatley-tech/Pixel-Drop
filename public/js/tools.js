@@ -159,7 +159,7 @@ class MoveTool extends Tool {
 	startAction() {
 		this.xMoveStart = this.xPixelPosition;
 		this.yMoveStart = this.yPixelPosition;
-		this.startImg = this.canvas.dataURL;
+		this.startImg = this.canvas.dataURLImg;
 	}
 	action() {
 		this.moveCanvas();

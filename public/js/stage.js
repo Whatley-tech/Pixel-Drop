@@ -79,12 +79,15 @@ const stage = {
 		if (this.background) this.background.element.remove();
 		if (this.brushOverlay) this.brushOverlay.element.remove();
 		if (this.mergedView) this.mergedView.element.remove();
+		this.clearLayers();
+		_.remove(statePanel.undoStates);
+	},
+	clearLayers() {
 		_.each(this.layers, (layer) => {
 			layer.element.remove();
 			layer.tile.remove();
 		});
 		_.remove(this.layers);
-		_.remove(statePanel.undoStates);
 	},
 	resizeStage() {
 		this.checkWindowSize();
@@ -104,6 +107,7 @@ const stage = {
 			// console.log('asdf');
 		}
 	},
+
 	checkWindowSize() {
 		const windowWidth = window.innerWidth;
 		const bsLrgGridmin = 992; //bootstrap large grid, minimum pixel size
@@ -124,17 +128,26 @@ const stage = {
 			setWide();
 		} else setVertical();
 	},
-
+	restorePrevSession(prevLayers) {
+		this.clearLayers();
+		_.each(prevLayers, (layer) => {
+			const { name, zIndex, imgDataUri, id } = layer;
+			const img = new Image();
+			img.src = imgDataUri;
+			this.newLayer(id, zIndex, name, img);
+		});
+	},
 	makeCanvas(id = `${++this.uniqueId}`, zIndex) {
 		return new Canvas(id, zIndex);
 	},
-	makeLayer(id = `${++this.uniqueId}`, zIndex) {
-		return new Layer(id, zIndex);
+	makeLayer(id = `${++this.uniqueId}`, zIndex, name) {
+		return new Layer(id, zIndex, name);
 	},
-	newLayer() {
-		let layer = this.makeLayer();
+	newLayer(id, zIndex, name, img) {
+		let layer = this.makeLayer(id, zIndex, name);
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
+		if (img) layer.renderCanvas(img);
 		this.setActiveLayer(layer);
 		return layer;
 	},

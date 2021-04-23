@@ -7,7 +7,7 @@ class UndoState {
 class ActionState extends UndoState {
 	constructor(type, layer) {
 		super(type, layer);
-		this.img = layer.dataURL;
+		this.img = layer.dataURLImg;
 	}
 	restore() {
 		this.layer.clearCanvas();

@@ -26,6 +26,7 @@ const statePanel = {
 		}
 
 		if (callback) return callback(state);
+		autoSave();
 		this.undoStates.push(state);
 	},
 	undo() {
@@ -38,6 +39,7 @@ const statePanel = {
 		prevState.restore();
 		stage.updateMergedView();
 		layerPanel.updateLayerPview();
+		autoSave();
 	},
 	redo() {
 		if (!this.redoStates.length) return;
@@ -49,6 +51,7 @@ const statePanel = {
 		prevState.restore();
 		stage.updateMergedView();
 		layerPanel.updateLayerPview();
+		autoSave();
 	},
 	clearRedos() {
 		_.remove(statePanel.redoStates);

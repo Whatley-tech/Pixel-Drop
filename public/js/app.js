@@ -30,12 +30,14 @@ customCanvasForm.addEventListener('submit', (e) => {
 	initApp(canvasWidthInput.value, canvasHeightInput.value);
 	canvasHeightInput.value = null;
 	canvasWidthInput.value = null;
+	clearSessionStorage();
 });
 
 _.each(createCanvasBtn, (btn) =>
 	btn.addEventListener('click', () => {
 		initApp(btn.dataset.width, btn.dataset.height);
 		newCanvasModal.toggle();
+		clearSessionStorage();
 	})
 );
 exportCanvasModalElm.addEventListener('shown.bs.modal', () => {
@@ -57,15 +59,64 @@ exportImageForm.addEventListener('submit', (e) => {
 
 //start new canvas on load
 window.onload = () => {
-	document.querySelector('#newCanvasBtn').click();
+	const { prevLayers, prevStage } = checkStorage();
+	console.log(prevStage, prevLayers);
+	if (!prevStage) document.querySelector('#newCanvasBtn').click();
+	else {
+		initApp(prevStage.width, prevStage.height);
+		stage.restorePrevSession(prevLayers);
+	}
 };
 const initApp = function (width, height) {
 	if (!stage.appIsInit) {
 		toolsPanel.init();
 		stage.init(parseInt(height), parseInt(width));
+		layerPanel.init();
 		statePanel.init();
 		colorPanel.init();
-		layerPanel.init();
 		colorPanel.selectNewColor();
 	} else stage.init(parseInt(height), parseInt(width));
+};
+
+const autoSave = function () {
+	saveSessionStage();
+	saveSessionLayers();
+};
+const saveSessionLayers = function () {
+	const saveData = _.map(stage.layers, (layer) => {
+		return {
+			name: layer.tile.name,
+			zIndex: layer.element.style.zIndex,
+			imgDataUri: layer.dataURLImg.src,
+			id: layer.element.id,
+		};
+	});
+
+	saveSessionItem('layers', saveData);
+};
+const saveSessionStage = function () {
+	saveSessionItem('stage', { width: stage.width, height: stage.height });
+};
+
+const saveSessionItem = function (key, data) {
+	let storage = window.sessionStorage;
+	if (typeof key !== 'string') key = key.stringify();
+	if (typeof data !== 'string') data = JSON.stringify(data);
+
+	storage.setItem(key, data);
+};
+
+const checkStorage = function () {
+	let storage = window.sessionStorage;
+	let layers = storage.getItem('layers');
+	let stage = storage.getItem('stage');
+	prevLayers = JSON.parse(layers);
+	prevStage = JSON.parse(stage);
+	console.log(prevLayers, prevStage);
+	return { prevLayers, prevStage };
+};
+
+const clearSessionStorage = function () {
+	let storage = window.sessionStorage;
+	storage.clear();
 };
