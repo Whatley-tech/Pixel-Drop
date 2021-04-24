@@ -26,6 +26,7 @@ const statePanel = {
 		}
 
 		if (callback) return callback(state);
+		autoSave();
 		this.undoStates.push(state);
 	},
 	undo() {
