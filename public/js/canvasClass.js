@@ -1,6 +1,8 @@
 class Canvas {
 	constructor(uuid, zIndex) {
 		//Canvas Element for stage
+		this.uuid = uuid;
+		this.zIndex = zIndex;
 		this.element = document.createElement('canvas');
 		this.ctx = this.element.getContext('2d');
 		this.element.dataset.uuid = uuid;
@@ -19,16 +21,27 @@ class Canvas {
 		img.src = this.element.toDataURL();
 		return img;
 	}
+	get dataUri() {
+		return this.element.toDataURL();
+	}
 	clearCanvas() {
 		this.ctx.clearRect(0, 0, stage.width, stage.height);
 	}
-	renderCanvas(img = this.dataURLImg) {
-		this.ctx.drawImage(img, 0, 0);
+	renderCanvas(dataUri = this.dataUri) {
+		return new Promise((res, rej) => {
+			let img = new Image();
+			img.onload = () => {
+				this.ctx.drawImage(img, 0, 0);
+				res(true);
+			};
+			img.src = dataUri;
+		});
 	}
 }
 class Layer extends Canvas {
 	constructor(uuid, zIndex, name) {
 		super(uuid, zIndex, name);
+		this.name = name;
 		//layerPanel Element
 		this.tileContainer = document.querySelector('#tileContainer');
 		this.tile = document
@@ -90,6 +103,7 @@ class Layer extends Canvas {
 	renameTile(newName) {
 		this.tile.dataset.name = newName;
 		this.tile.layerTitle.textContent = newName;
+		this.name = newName;
 	}
 
 	updateTilePreview() {
@@ -101,5 +115,13 @@ class Layer extends Canvas {
 		return _.findIndex(stage.layers, (layer) => {
 			return layer === this;
 		});
+	}
+	state() {
+		return {
+			uuid: this.uuid,
+			zIndex: this.zIndex,
+			name: this.name,
+			imgDataUri: this.dataUri,
+		};
 	}
 }

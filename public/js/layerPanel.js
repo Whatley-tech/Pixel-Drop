@@ -34,7 +34,7 @@ const layerPanel = {
 	},
 	moveLayer(movedLayerTile) {
 		const layer = _.find(stage.layers, (layer) => layer.tile == movedLayerTile);
-		statePanel.saveState('arrange', layer);
+		statePanel.saveState('arrange', layer.state());
 		let tiles = [...this.tileContainer.children];
 		_.reverse(tiles);
 		const currentTileIndex = this.findArrayIndex(tiles, movedLayerTile);
@@ -47,7 +47,7 @@ const layerPanel = {
 		autoSave();
 	},
 	deleteLayer(deletedLayer) {
-		statePanel.saveState('layer', deletedLayer);
+		statePanel.saveState('layer', layer.state());
 		_.find(stage.layers, (layer) => {
 			if (layer && layer.element === deletedLayer.element)
 				_.remove(stage.layers, layer);
@@ -99,14 +99,13 @@ const layerPanel = {
 			e.stopPropagation();
 			if (this.tileCount > 8) return; //max layers
 			const newLayer = stage.newLayer();
-			statePanel.saveState('layer', newLayer);
+			statePanel.saveState('layer', layer.state());
 			this.toggleActive();
 		});
 		this.layerMenuBtn.addEventListener('shown.bs.dropdown', (e) => {
 			_.each(stage.layers, (layer) => layer.updateTilePreview());
 		});
 		this.renameModalElement.addEventListener('shown.bs.modal', (e) => {
-			console.log(e.target.dataset.name);
 			const oldName = e.target.dataset.name;
 			this.tileRenameInput.placeholder = e.target.dataset.name;
 		});

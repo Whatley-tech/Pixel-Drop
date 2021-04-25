@@ -9,12 +9,7 @@ const autoSave = function () {
 
 const saveSessionLayers = function () {
 	const saveData = _.map(stage.layers, (layer) => {
-		return {
-			uuid: layer.element.dataset.uuid,
-			zIndex: layer.element.style.zIndex,
-			name: layer.tile.dataset.name,
-			imgDataUri: layer.dataURLImg.src,
-		};
+		return layer.state();
 	});
 
 	saveSessionItem('layers', saveData);

@@ -36,7 +36,7 @@ const stage = {
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
 			if (toolsPanel.activeTool.undoAble)
-				statePanel.saveState('action', this.activeLayer);
+				statePanel.saveState('action', this.activeLayer.state());
 			statePanel.clearRedos();
 			toolsPanel.activeTool.isDrawing = true;
 			toolsPanel.activeTool.startAction();
@@ -80,6 +80,7 @@ const stage = {
 			this.sessionStorage = true;
 			this.lastLayerNum = lastLayerNum;
 			this.restorePrevSession(prevLayers);
+			layerPanel.updateLayerPview();
 		}
 		if (!stage.sessionStorage) this.newLayer();
 		this.appIsInit = true;
@@ -139,14 +140,9 @@ const stage = {
 		} else setVertical();
 	},
 	restorePrevSession(prevLayers) {
-		// this.clearLayers();
 		_.each(prevLayers, (layer) => {
 			const { uuid, zIndex, name, imgDataUri } = layer;
-			const img = new Image();
-			img.onload = function () {
-				stage.newLayer(uuid, zIndex, name, this);
-			};
-			img.src = imgDataUri;
+			stage.newLayer(uuid, zIndex, name, imgDataUri);
 		});
 	},
 	makeCanvas(uuid = uuidv4(), zIndex) {
@@ -156,14 +152,13 @@ const stage = {
 		uuid = uuidv4(),
 		zIndex = this.nextLayerZindex,
 		name = this.nextlayerName,
-		img
+		imgDataUri
 	) {
 		let layer = new Layer(uuid, zIndex, name);
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
-		if (img) layer.renderCanvas(img);
+		if (imgDataUri) layer.renderCanvas(imgDataUri);
 		this.setActiveLayer(layer);
-		return layer;
 	},
 	setActiveLayer(layer) {
 		this.activeLayer = layer;
@@ -180,6 +175,7 @@ const stage = {
 		for (let i = 0; i < this.layers.length; i++) {
 			let canvas = this.layers[i];
 			canvas.element.style.zIndex = i + 1;
+			canvas.zIndex = i + 1;
 		}
 	},
 	moveIndex(currentIndex, prevIndex) {

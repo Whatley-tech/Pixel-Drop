@@ -1,22 +1,28 @@
 class UndoState {
-	constructor(type, layer) {
+	constructor(type, layerData) {
 		this.type = type;
-		this.layer = layer;
+		this.layerData = layerData;
+	}
+	get layer() {
+		const layer = _.find(stage.layers, (layer) => {
+			return layer.uuid === this.layerData.uuid;
+		});
+		return layer;
 	}
 }
 class ActionState extends UndoState {
-	constructor(type, layer) {
-		super(type, layer);
-		this.img = layer.dataURLImg;
+	constructor(type, layerData) {
+		super(type, layerData);
+		this.imgDataUri = layerData.imgDataUri;
 	}
-	restore() {
+	async restore() {
 		this.layer.clearCanvas();
-		this.layer.renderCanvas(this.img);
+		await this.layer.renderCanvas(this.imgDataUri);
 	}
 }
 class LayerState extends UndoState {
-	constructor(type, layer) {
-		super(type, layer);
+	constructor(type, layerData) {
+		super(type, layerData);
 		this.index = _.findIndex(stage.layers, this.layer);
 	}
 	restore() {
@@ -31,8 +37,8 @@ class LayerState extends UndoState {
 	}
 }
 class ArrangeState extends UndoState {
-	constructor(type, layer) {
-		super(type, layer);
+	constructor(type, layerData) {
+		super(type, layerData);
 		this.layerTile = layer.tile;
 		this.prevIndex = layerPanel.findArrayIndex(stage.layers, (layer) => {
 			return layer.tile == this.layerTile;
