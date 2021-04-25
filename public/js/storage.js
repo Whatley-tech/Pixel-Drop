@@ -12,7 +12,7 @@ const saveSessionLayers = function () {
 		return {
 			uuid: layer.element.dataset.uuid,
 			zIndex: layer.element.style.zIndex,
-			name: layer.tile.name,
+			name: layer.tile.dataset.name,
 			imgDataUri: layer.dataURLImg.src,
 		};
 	});

@@ -7,12 +7,15 @@ const layerPanel = {
 	layerMenuBtn: document.getElementById('layerMenuBtn'),
 	layerPanel: document.querySelector('#layerPanel'),
 	layerMenu: document.getElementById('layerMenu'),
-	tileRenameForm: document.getElementById('tileRenameForm'),
-	tileRenameInput: document.getElementById('tileRenameInput'),
 	layerPview: document.getElementById('layerPview'),
 	layerPviewCtx: layerPview.getContext('2d'),
-
+	renameModal: new bootstrap.Modal(document.querySelector('#renameTileModal')),
+	tileRenameForm: document.getElementById('tileRenameForm'),
+	renameModalElement: document.querySelector('#renameTileModal'),
+	tileRenameInput: document.querySelector('#tileRenameInput'),
+	renameBtn: document.querySelector('#renameBtn'),
 	activeTile: undefined,
+
 	get tileCount() {
 		return this.tileContainer.children.length;
 	},
@@ -87,7 +90,7 @@ const layerPanel = {
 		}
 		if (this.activeTile) {
 			this.activeTile.classList.toggle('active');
-			this.layerMenuBtn.innerText = this.activeTile.name;
+			this.layerMenuBtn.innerText = this.activeTile.dataset.name;
 			this.updateLayerPview();
 		}
 	},
@@ -102,17 +105,26 @@ const layerPanel = {
 		this.layerMenuBtn.addEventListener('shown.bs.dropdown', (e) => {
 			_.each(stage.layers, (layer) => layer.updateTilePreview());
 		});
-
-		tileRenameForm.addEventListener('submit', (e) => {
+		this.renameModalElement.addEventListener('shown.bs.modal', (e) => {
+			console.log(e.target.dataset.name);
+			const oldName = e.target.dataset.name;
+			this.tileRenameInput.placeholder = e.target.dataset.name;
+		});
+		this.renameModalElement.addEventListener('hide.bs.modal', (e) => {
+			this.tileRenameInput.value = '';
+		});
+		this.tileRenameForm.addEventListener('submit', (e) => {
 			e.preventDefault();
-			let currentTileName = renameTileModal.dataset.tileName;
-			let newName = tileRenameInput.value;
-			let layer = _.find(stage.layers, (l) => {
-				return l.tile.name == currentTileName;
+			console.log(e);
+			const oldName = this.renameModalElement.dataset.name;
+			const newName = this.tileRenameInput.value;
+			const layer = _.find(stage.layers, (layer) => {
+				return layer.tile.dataset.name == oldName;
 			});
-			layer.renameModal.toggle();
 			layer.renameTile(newName);
+			this.renameModal.toggle();
 			this.updateTiles();
+			autoSave();
 		});
 	},
 };
