@@ -37,11 +37,11 @@ class Layer extends Canvas {
 		this.tile.classList.toggle('template');
 		this.tileContainer.append(this.tile);
 		this.tile.dataset.uuid = uuid;
-		this.tile.name = name;
+		this.tile.dataset.name = name;
 		this.tile.layerTitle = document.querySelector(
 			`.tile[data-uuid='${uuid}'] .layerTitle span`
 		);
-		this.tile.layerTitle.textContent = `${this.tile.name}`;
+		this.tile.layerTitle.textContent = name;
 		this.tile.visibleBtn = document.querySelector(
 			`.tile[data-uuid='${uuid}'] .visibleBtn`
 		);
@@ -51,11 +51,6 @@ class Layer extends Canvas {
 		this.tilePreviewCanvas.height = stage.height;
 		this.tilePreviewCanvas.width = stage.width;
 		this.tilePreviewCtx = this.tilePreviewCanvas.getContext('2d');
-		this.tileRenameInput = document.querySelector('#tileRenameInput');
-		this.renameModal = new bootstrap.Modal(
-			document.querySelector('#renameTileModal')
-		);
-		this.renameModalElement = document.querySelector('#renameTileModal');
 
 		//tile controls
 		this.tile.removeBtn = document.querySelector(
@@ -88,15 +83,13 @@ class Layer extends Canvas {
 				toggleHidden(this.element);
 			}
 		});
-
-		this.tile.layerTitle.addEventListener('click', () => {
-			this.tileRenameInput.placeholder = this.tile.name;
-			this.renameModalElement.dataset.tileName = `${this.tile.name}`;
+		this.tile.layerTitle.addEventListener('click', (e) => {
+			layerPanel.renameModalElement.dataset.name = this.tile.dataset.name;
 		});
 	}
 	renameTile(newName) {
-		this.tile.name = newName;
-		this.tile.layerTitle.textContent = `${this.tile.name}`;
+		this.tile.dataset.name = newName;
+		this.tile.layerTitle.textContent = newName;
 	}
 
 	updateTilePreview() {
