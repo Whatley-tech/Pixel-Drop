@@ -2,12 +2,14 @@ const customCanvasModalElm = document.querySelector('#customCanvasModal'),
 	customCanvasModal = new bootstrap.Modal(customCanvasModalElm),
 	newCanvasModalElm = document.querySelector('#newCanvasModal'),
 	newCanvasModal = new bootstrap.Modal(newCanvasModalElm),
+	newCanvasBtn = document.querySelector('#newCanvasBtn'),
 	customCanvasForm = document.querySelector('#customCanvasForm'),
 	exportCanvasModalElm = document.querySelector('#exportCanvasModal'),
 	exportCanvasModal = new bootstrap.Modal(exportCanvasModalElm),
 	exportBtn = document.querySelector('#exportBtn'),
 	exportDimSlider = document.querySelector('#exportDimSlider'),
 	exportDim = document.querySelector('#exportDim'),
+	dayNightBtn = document.querySelector('#dayNightBtn'),
 	canvasHeightInput = document.querySelector('#canvasHeightInput'),
 	canvasWidthInput = document.querySelector('#canvasWidthInput'),
 	createCanvasBtn = document.querySelectorAll('.createCanvasBtn');
@@ -18,6 +20,10 @@ const tooltipTriggerList = [].slice.call(
 
 const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 	return new bootstrap.Tooltip(tooltipTriggerEl);
+});
+
+dayNightBtn.addEventListener('click', () => {
+	document.body.classList.toggle('bg-dark');
 });
 
 customCanvasModalElm.addEventListener('shown.bs.modal', function () {
@@ -68,7 +74,7 @@ exportImageForm.addEventListener('submit', (e) => {
 //check session storage for saved contents,  reload work if saved contents found
 window.onload = () => {
 	const { prevLayers, prevStage, prevColors, currentColor } = checkStorage();
-	if (!prevStage) document.querySelector('#newCanvasBtn').click();
+	if (!prevStage) newCanvasBtn.click();
 	else {
 		initApp(
 			prevStage.width,
