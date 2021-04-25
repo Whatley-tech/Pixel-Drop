@@ -139,7 +139,7 @@ const stage = {
 		} else setVertical();
 	},
 	restorePrevSession(prevLayers) {
-		this.clearLayers();
+		// this.clearLayers();
 		_.each(prevLayers, (layer) => {
 			const { uuid, zIndex, name, imgDataUri } = layer;
 			const img = new Image();
