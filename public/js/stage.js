@@ -5,16 +5,17 @@ const stage = {
 	stagePanel: document.querySelector('#stagePanel'),
 	controls: document.querySelector('#controls'),
 	layerPviewContainer: document.querySelector('#layerPviewContainer'),
-	background: undefined,
-	mergedView: undefined,
-	brushOverlay: undefined,
+	background: {},
+	mergedView: {},
+	brushOverlay: {},
 	layers: [],
-	activeLayer: undefined,
-	height: undefined,
-	width: undefined,
+	activeLayer: {},
+	height: 0,
+	width: 0,
 	maxZIndex: 12,
-	uniqueId: 0,
+	lastLayerNum: 0,
 	appIsInit: false,
+	sessionStorage: false,
 
 	get pixelSize() {
 		return parseInt(this.stageDiv.style.height) / this.height;
@@ -24,6 +25,12 @@ const stage = {
 	},
 	get topOrigin() {
 		return this.stageDiv.getBoundingClientRect().top;
+	},
+	get nextLayerZindex() {
+		return this.layers.length + 1;
+	},
+	get nextlayerName() {
+		return `Layer-${++this.lastLayerNum}`;
 	},
 
 	attachStageListeners() {
@@ -52,12 +59,9 @@ const stage = {
 			this.resizeStage();
 		});
 	},
-	init(height, width) {
+	init(height, width, lastLayerNum, prevlayers) {
 		this.height = height;
 		this.width = width;
-		this.appIsInit = true;
-
-		this.reset();
 		this.resizeStage();
 
 		this.mergedView = this.makeCanvas('mergedView', 0);
@@ -70,26 +74,30 @@ const stage = {
 
 		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
 		this.appendToStageDiv(this.brushOverlay);
-
-		this.newLayer();
-		this.activeLayer = _.head(this.layers);
-		layerPanel.activeTile = this.activeLayer.tile;
 		this.attachStageListeners();
+
+		if (lastLayerNum && prevLayers) {
+			this.sessionStorage = true;
+			this.lastLayerNum = lastLayerNum;
+			this.restorePrevSession(prevLayers);
+		}
+		if (!stage.sessionStorage) this.newLayer();
+		this.appIsInit = true;
 	},
 	reset() {
-		if (this.background) this.background.element.remove();
-		if (this.brushOverlay) this.brushOverlay.element.remove();
-		if (this.mergedView) this.mergedView.element.remove();
+		if (this.background.element) this.background.element.remove();
+		if (this.brushOverlay.element) this.brushOverlay.element.remove();
+		if (this.mergedView.element) this.mergedView.element.remove();
 		this.clearLayers();
 		_.remove(statePanel.undoStates);
-		this.uniqueId = 0;
+		this.lastLayerNum = 0;
 	},
 	clearLayers() {
 		_.each(this.layers, (layer) => {
 			layer.element.remove();
 			layer.tile.remove();
 		});
-		_.remove(this.layers);
+		_.remove(stage.layers);
 	},
 	resizeStage() {
 		this.checkWindowSize();
@@ -133,20 +141,24 @@ const stage = {
 	restorePrevSession(prevLayers) {
 		this.clearLayers();
 		_.each(prevLayers, (layer) => {
-			const { name, zIndex, imgDataUri, id } = layer;
+			const { uuid, zIndex, name, imgDataUri } = layer;
 			const img = new Image();
+			img.onload = function () {
+				stage.newLayer(uuid, zIndex, name, this);
+			};
 			img.src = imgDataUri;
-			this.newLayer(id, zIndex, name, img);
 		});
 	},
-	makeCanvas(id = `${++this.uniqueId}`, zIndex) {
-		return new Canvas(id, zIndex);
+	makeCanvas(uuid = uuidv4(), zIndex) {
+		return new Canvas(uuid, zIndex);
 	},
-	makeLayer(id = `${++this.uniqueId}`, zIndex, name) {
-		return new Layer(id, zIndex, name);
-	},
-	newLayer(id, zIndex, name, img) {
-		let layer = this.makeLayer(id, zIndex, name);
+	newLayer(
+		uuid = uuidv4(),
+		zIndex = this.nextLayerZindex,
+		name = this.nextlayerName,
+		img
+	) {
+		let layer = new Layer(uuid, zIndex, name);
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
 		if (img) layer.renderCanvas(img);
