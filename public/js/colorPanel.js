@@ -43,13 +43,16 @@ const colorPanel = {
 
 		container.appendChild(prevColor);
 		this.colorHistory.push(color);
+		autoSave();
 	},
 	rgbToHex(r, g, b) {
 		return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 	},
-	restoreColors(prevColors) {
+	restoreColors(prevColors, currentColor) {
 		_.each(prevColors, (color) => {
 			this.updateColorHistory(color);
 		});
+		this.selectNewColor(currentColor);
+		this.setColor(currentColor);
 	},
 };
