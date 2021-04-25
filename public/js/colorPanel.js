@@ -59,5 +59,7 @@ const colorPanel = {
 		_.each(prevColors, (color) => {
 			color.remove();
 		});
+		this.selectNewColor();
+		this.setColor();
 	},
 };
