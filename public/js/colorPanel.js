@@ -4,6 +4,7 @@ const colorPanel = {
 	colorSelectorDiv: document.querySelector('#colorSelector'),
 	newColorDiv: document.querySelector('#newColor'),
 	currentColorDiv: document.querySelector('#currentColor'),
+	colorHistoryDiv: document.querySelector('#colorHistory'),
 	colorPicker: document.querySelector('#colorPicker'),
 
 	init() {
@@ -27,7 +28,6 @@ const colorPanel = {
 		this.currentColorDiv.style.background = color;
 	},
 	updateColorHistory(color) {
-		const container = document.querySelector('#colorHistory');
 		const prevColor = document.createElement('div');
 
 		prevColor.style.background = color;
@@ -37,13 +37,12 @@ const colorPanel = {
 			this.setColor(color);
 		});
 
-		if (container.childNodes.length >= 28) {
-			container.removeChild(container.firstChild);
+		if (this.colorHistoryDiv.childNodes.length >= 28) {
+			this.colorHistoryDiv.removeChild(this.colorHistoryDiv.firstChild);
 		}
 
-		container.appendChild(prevColor);
+		this.colorHistoryDiv.appendChild(prevColor);
 		this.colorHistory.push(color);
-		autoSave();
 	},
 	rgbToHex(r, g, b) {
 		return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
@@ -54,5 +53,11 @@ const colorPanel = {
 		});
 		this.selectNewColor(currentColor);
 		this.setColor(currentColor);
+	},
+	reset() {
+		const prevColors = document.querySelectorAll('.prevColor');
+		_.each(prevColors, (color) => {
+			color.remove();
+		});
 	},
 };
