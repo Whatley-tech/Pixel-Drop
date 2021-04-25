@@ -65,7 +65,7 @@ exportImageForm.addEventListener('submit', (e) => {
 
 //check session storage for saved contents,  reload work if saved contents found
 window.onload = () => {
-	const { prevLayers, prevStage } = checkStorage();
+	const { prevLayers, prevStage, prevColors } = checkStorage();
 	if (!prevStage) document.querySelector('#newCanvasBtn').click();
 	else {
 		initApp(
@@ -74,6 +74,7 @@ window.onload = () => {
 			prevStage.lastLayerNum,
 			prevLayers
 		);
+		colorPanel.restoreColors(prevColors);
 	}
 };
 
@@ -88,12 +89,12 @@ const initApp = function (width, height, lastLayerNum) {
 	} else {
 		stage.init(parseInt(height), parseInt(width));
 	}
-	// autoSave();
 };
 
 const autoSave = function () {
 	saveSessionStage();
 	saveSessionLayers();
+	saveSessionColors();
 	stage.sessionStorage = true;
 	console.log('Auto saved');
 	console.log(checkStorage());
@@ -110,6 +111,10 @@ const saveSessionLayers = function () {
 	});
 
 	saveSessionItem('layers', saveData);
+};
+
+const saveSessionColors = function () {
+	saveSessionItem('colors', colorPanel.colorHistory);
 };
 
 const saveSessionStage = function () {
@@ -132,9 +137,11 @@ const checkStorage = function () {
 	let storage = window.sessionStorage;
 	let layers = storage.getItem('layers');
 	let stage = storage.getItem('stage');
+	let colors = storage.getItem('colors');
 	prevLayers = JSON.parse(layers);
 	prevStage = JSON.parse(stage);
-	return { prevLayers, prevStage };
+	prevColors = JSON.parse(colors);
+	return { prevLayers, prevStage, prevColors };
 };
 
 const clearSessionStorage = function () {
