@@ -26,19 +26,21 @@ customCanvasModalElm.addEventListener('shown.bs.modal', function () {
 
 customCanvasForm.addEventListener('submit', (e) => {
 	e.preventDefault();
+	clearSessionStorage();
+	stage.reset();
 	customCanvasModal.toggle();
 	newCanvasModal.toggle();
 	initApp(canvasWidthInput.value, canvasHeightInput.value);
 	canvasHeightInput.value = null;
 	canvasWidthInput.value = null;
-	clearSessionStorage();
 });
 
 _.each(createCanvasBtn, (btn) =>
 	btn.addEventListener('click', () => {
+		clearSessionStorage();
+		stage.reset();
 		initApp(btn.dataset.width, btn.dataset.height);
 		newCanvasModal.toggle();
-		clearSessionStorage();
 	})
 );
 
@@ -61,39 +63,49 @@ exportImageForm.addEventListener('submit', (e) => {
 	exportDimSlider.value = 1;
 });
 
-//start new canvas on load
+//check session storage for saved contents,  reload work if saved contents found
 window.onload = () => {
 	const { prevLayers, prevStage } = checkStorage();
 	if (!prevStage) document.querySelector('#newCanvasBtn').click();
 	else {
-		initApp(prevStage.width, prevStage.height);
-		stage.restorePrevSession(prevLayers);
+		initApp(
+			prevStage.width,
+			prevStage.height,
+			prevStage.lastLayerNum,
+			prevLayers
+		);
 	}
 };
 
-const initApp = function (width, height) {
+const initApp = function (width, height, lastLayerNum) {
 	if (!stage.appIsInit) {
 		toolsPanel.init();
-		stage.init(parseInt(height), parseInt(width));
+		stage.init(parseInt(height), parseInt(width), parseInt(lastLayerNum));
 		layerPanel.init();
 		statePanel.init();
 		colorPanel.init();
 		colorPanel.selectNewColor();
-	} else stage.init(parseInt(height), parseInt(width));
+	} else {
+		stage.init(parseInt(height), parseInt(width));
+	}
+	// autoSave();
 };
 
 const autoSave = function () {
 	saveSessionStage();
 	saveSessionLayers();
+	stage.sessionStorage = true;
+	console.log('Auto saved');
+	console.log(checkStorage());
 };
 
 const saveSessionLayers = function () {
 	const saveData = _.map(stage.layers, (layer) => {
 		return {
-			name: layer.tile.name,
+			uuid: layer.element.dataset.uuid,
 			zIndex: layer.element.style.zIndex,
+			name: layer.tile.name,
 			imgDataUri: layer.dataURLImg.src,
-			id: layer.id,
 		};
 	});
 
@@ -101,7 +113,11 @@ const saveSessionLayers = function () {
 };
 
 const saveSessionStage = function () {
-	saveSessionItem('stage', { width: stage.width, height: stage.height });
+	saveSessionItem('stage', {
+		width: stage.width,
+		height: stage.height,
+		lastLayerNum: stage.lastLayerNum,
+	});
 };
 
 const saveSessionItem = function (key, data) {
@@ -118,11 +134,11 @@ const checkStorage = function () {
 	let stage = storage.getItem('stage');
 	prevLayers = JSON.parse(layers);
 	prevStage = JSON.parse(stage);
-	console.log(prevLayers, prevStage);
 	return { prevLayers, prevStage };
 };
 
 const clearSessionStorage = function () {
 	let storage = window.sessionStorage;
 	storage.clear();
+	stage.sessionStorage = false;
 };

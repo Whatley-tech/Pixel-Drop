@@ -2,7 +2,7 @@
 const layerPanel = {
 	newLayerBtn: document.querySelector('#newLayerBtn'),
 	tileContainer: document.querySelector('#tileContainer'),
-	tileTemplate: document.querySelector('#tileTemplate'),
+	tileTemplate: document.querySelector(`.tile[data-uuid='template']`),
 	activeLayerPreview: document.querySelector('#activeLayerPreview'),
 	layerMenuBtn: document.getElementById('layerMenuBtn'),
 	layerPanel: document.querySelector('#layerPanel'),
@@ -39,8 +39,9 @@ const layerPanel = {
 			return layer.tile == movedLayerTile;
 		});
 		stage.moveIndex(currentTileIndex, prevTileIndex);
-		this.updateTiles();
 		stage.updateZIndexes();
+		this.updateTiles();
+		autoSave();
 	},
 	deleteLayer(deletedLayer) {
 		statePanel.saveState('layer', deletedLayer);
@@ -55,6 +56,7 @@ const layerPanel = {
 			stage.setActiveLayer(_.last(stage.layers));
 		}
 		this.updateTiles();
+		autoSave();
 	},
 	findArrayIndex(arr, element) {
 		const index = _.findIndex(arr, element);
@@ -62,7 +64,8 @@ const layerPanel = {
 	},
 	updateTiles() {
 		_.each(this.tileContainer.children, (child) => {
-			if (child && child.id != this.tileTemplate.id) child.remove();
+			if (child && child.dataset.uuid != this.tileTemplate.dataset.uuid)
+				child.remove();
 		});
 
 		_.eachRight(stage.layers, (layer) => {
@@ -77,13 +80,16 @@ const layerPanel = {
 
 	toggleActive() {
 		const currentlyActive = document.querySelectorAll('#tileContainer .active');
-		if (currentlyActive)
+		if (currentlyActive.length) {
 			_.each(currentlyActive, (node) => {
 				node.classList.toggle('active');
 			});
-		this.activeTile.classList.toggle('active');
-		this.layerMenuBtn.innerText = this.activeTile.name;
-		this.updateLayerPview();
+		}
+		if (this.activeTile) {
+			this.activeTile.classList.toggle('active');
+			this.layerMenuBtn.innerText = this.activeTile.name;
+			this.updateLayerPview();
+		}
 	},
 	addLayerPanelListeners() {
 		this.newLayerBtn.addEventListener('click', (e) => {
@@ -108,11 +114,5 @@ const layerPanel = {
 			layer.renameTile(newName);
 			this.updateTiles();
 		});
-
-		//collapse layerpanel on outside click
-		// document.addEventListener('mousedown', (e) => {
-		// 	if (layerMenu.classList.contains('show'))
-		// 		layerMenuBtn.click();
-		// });
 	},
 };

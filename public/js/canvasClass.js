@@ -1,13 +1,12 @@
 class Canvas {
-	constructor(id, zIndex, name) {
+	constructor(uuid, zIndex) {
 		//Canvas Element for stage
 		this.element = document.createElement('canvas');
 		this.ctx = this.element.getContext('2d');
-		this.id = id;
-		this.element.id = `Layer${this.id}`;
+		this.element.dataset.uuid = uuid;
 		this.element.width = stage.width;
 		this.element.height = stage.height;
-		this.element.style.zIndex = zIndex || id;
+		this.element.style.zIndex = zIndex;
 		this.element.classList.add('stage-canvas');
 		this.visible = true;
 	}
@@ -28,34 +27,40 @@ class Canvas {
 	}
 }
 class Layer extends Canvas {
-	constructor(id, zIndex, name) {
-		super(id, zIndex, name);
+	constructor(uuid, zIndex, name) {
+		super(uuid, zIndex, name);
 		//layerPanel Element
 		this.tileContainer = document.querySelector('#tileContainer');
-		this.tile = document.querySelector('#tileTemplate').cloneNode(true);
+		this.tile = document
+			.querySelector(`.tile[data-uuid='template']`)
+			.cloneNode(true);
 		this.tile.classList.toggle('template');
 		this.tileContainer.append(this.tile);
-		this.tile.name = name || `Layer-${id}`;
-		this.tile.id = `tile${this.id}`;
+		this.tile.dataset.uuid = uuid;
+		this.tile.name = name;
 		this.tile.layerTitle = document.querySelector(
-			`#${this.tile.id} .layerTitle span`
+			`.tile[data-uuid='${uuid}'] .layerTitle span`
 		);
 		this.tile.layerTitle.textContent = `${this.tile.name}`;
 		this.tile.visibleBtn = document.querySelector(
-			`#${this.tile.id} .visibleBtn`
+			`.tile[data-uuid='${uuid}'] .visibleBtn`
 		);
-		this.tilePreviewCanvas = document.querySelector(`#${this.tile.id} canvas`);
+		this.tilePreviewCanvas = document.querySelector(
+			`.tile[data-uuid='${uuid}'] canvas`
+		);
 		this.tilePreviewCanvas.height = stage.height;
 		this.tilePreviewCanvas.width = stage.width;
 		this.tilePreviewCtx = this.tilePreviewCanvas.getContext('2d');
-		this.tileRenameInput = document.getElementById('tileRenameInput');
+		this.tileRenameInput = document.querySelector('#tileRenameInput');
 		this.renameModal = new bootstrap.Modal(
-			document.getElementById('renameTileModal')
+			document.querySelector('#renameTileModal')
 		);
-		this.renameModalElement = document.getElementById('renameTileModal');
+		this.renameModalElement = document.querySelector('#renameTileModal');
 
 		//tile controls
-		this.tile.removeBtn = document.querySelector(`#${this.tile.id} .removeBtn`);
+		this.tile.removeBtn = document.querySelector(
+			`.tile[data-uuid='${uuid}'] .removeBtn`
+		);
 		this.tile.addEventListener('click', (e) => {
 			e.stopPropagation();
 			stage.activeLayer = this;
