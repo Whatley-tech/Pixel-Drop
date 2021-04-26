@@ -1,8 +1,8 @@
 const autoSave = function () {
 	saveSessionStage();
-	saveSessionStates();
 	saveSessionLayers();
 	saveSessionColors();
+	saveSessionStates();
 	stage.sessionStorage = true;
 	console.log('Auto saved');
 	const { undos, redos } = checkStorage();
