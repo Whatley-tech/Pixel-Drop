@@ -1,4 +1,4 @@
-class UndoState {
+class ActionState {
 	constructor(type, layerData) {
 		this.type = type;
 		this.layerData = layerData;
@@ -10,47 +10,53 @@ class UndoState {
 		return layer;
 	}
 }
-class ActionState extends UndoState {
+class ToolAction extends ActionState {
 	constructor(type, layerData) {
 		super(type, layerData);
 		this.imgDataUri = layerData.imgDataUri;
 	}
-	async restore() {
+	undo() {
+		let currentState = this.layer.state();
+		statePanel.saveState('toolAction', currentState, (state) => {
+			statePanel.redoStates.push(state);
+		});
 		this.layer.clearCanvas();
-		await this.layer.renderCanvas(this.imgDataUri);
+		this.layer.renderCanvas(this.imgDataUri);
+	}
+	redo() {
+		let currentState = this.layer.state();
+		statePanel.saveState('toolAction', currentState, (state) => {
+			statePanel.undoStates.push(state);
+		});
+		this.layer.renderCanvas(this.imgDataUri);
 	}
 }
-class LayerState extends UndoState {
+class NewLayerAction extends ActionState {
 	constructor(type, layerData) {
 		super(type, layerData);
-		this.index = _.findIndex(stage.layers, this.layer);
 	}
-	restore() {
-		if (_.find(stage.layers, this.layer)) return this.deleteLayer();
-		return this.unDeleteLayer();
+	undo() {
+		layerPanel.deleteLayer(this.layerData);
+		statePanel.redoStates.push(this);
 	}
-	deleteLayer() {
-		layerPanel.deleteLayer(this.layer);
-	}
-	unDeleteLayer() {
-		stage.restoreLayer(this.layer, this.index);
+	redo() {
+		statePanel.undoStates.push(this);
+		stage.restoreLayer(this.layerData);
 	}
 }
-class ArrangeState extends UndoState {
+class DeleteLayerAction extends ActionState {
 	constructor(type, layerData) {
 		super(type, layerData);
-		this.layerTile = layer.tile;
-		this.prevIndex = layerPanel.findArrayIndex(stage.layers, (layer) => {
-			return layer.tile == this.layerTile;
-		});
-		this.currentIndex = undefined;
 	}
-	restore() {
-		this.currentIndex = layerPanel.findArrayIndex(stage.layers, (layer) => {
-			return layer.tile == this.layerTile;
-		});
-		stage.moveIndex(this.currentIndex, this.prevIndex);
-		layerPanel.updateTiles();
-		stage.updateZIndexes();
+	restore() {}
+}
+class RestoreLayerAction extends ActionState {
+	constructor(type, layerData) {
+		super(type, layerData);
+	}
+}
+class ArrangeAction extends ActionState {
+	constructor(type, layerData) {
+		super(type, layerData);
 	}
 }

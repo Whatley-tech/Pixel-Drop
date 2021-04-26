@@ -47,17 +47,17 @@ const layerPanel = {
 		autoSave();
 	},
 	deleteLayer(deletedLayer) {
-		statePanel.saveState('layer', layer.state());
-		_.find(stage.layers, (layer) => {
-			if (layer && layer.element === deletedLayer.element)
-				_.remove(stage.layers, layer);
+		let layer = _.find(stage.layers, (layer) => {
+			if (layer.uuid === deletedLayer.uuid) return layer;
 		});
-		deletedLayer.element.remove();
-		deletedLayer.tile.remove();
+		layer.element.remove();
+		layer.tile.remove();
+		_.remove(stage.layers, layer);
 
-		if (deletedLayer.tile === layerPanel.activeTile) {
+		if (layer.tile === layerPanel.activeTile) {
 			stage.setActiveLayer(_.last(stage.layers));
 		}
+
 		this.updateTiles();
 		autoSave();
 	},
@@ -99,7 +99,7 @@ const layerPanel = {
 			e.stopPropagation();
 			if (this.tileCount > 8) return; //max layers
 			const newLayer = stage.newLayer();
-			statePanel.saveState('layer', layer.state());
+			statePanel.saveState('newLayer', newLayer.state());
 			this.toggleActive();
 		});
 		this.layerMenuBtn.addEventListener('shown.bs.dropdown', (e) => {

@@ -36,7 +36,7 @@ const stage = {
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
 			if (toolsPanel.activeTool.undoAble)
-				statePanel.saveState('action', this.activeLayer.state());
+				statePanel.saveState('toolAction', this.activeLayer.state());
 			statePanel.clearRedos();
 			toolsPanel.activeTool.isDrawing = true;
 			toolsPanel.activeTool.startAction();
@@ -159,6 +159,8 @@ const stage = {
 		this.layers.push(layer);
 		if (imgDataUri) layer.renderCanvas(imgDataUri);
 		this.setActiveLayer(layer);
+		this.updateZIndexes();
+		return layer;
 	},
 	setActiveLayer(layer) {
 		this.activeLayer = layer;
@@ -195,11 +197,15 @@ const stage = {
 			);
 		});
 	},
-	restoreLayer(layer, index) {
-		this.layers.splice(index, 0, layer);
+	restoreLayer(layerData) {
+		const { uuid, zIndex, name, imgDataUri } = layerData;
+		console.log(zIndex);
+		let layer = new Layer(uuid, zIndex, name);
+		this.layers.splice(zIndex - 1, 0, layer);
 		this.appendToLayerDiv(layer);
+		if (imgDataUri) layer.renderCanvas(imgDataUri);
 		this.setActiveLayer(layer);
-		layer.renderCanvas();
+		return layer;
 	},
 	exportImage(type, scaleValue) {
 		const svg = this.createSVG(scaleValue);
