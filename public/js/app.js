@@ -73,7 +73,14 @@ exportImageForm.addEventListener('submit', (e) => {
 
 //check session storage for saved contents,  reload work if saved contents found
 window.onload = () => {
-	const { prevLayers, prevStage, prevColors, currentColor } = checkStorage();
+	const {
+		prevLayers,
+		prevStage,
+		prevColors,
+		currentColor,
+		undos,
+		redos,
+	} = checkStorage();
 	if (!prevStage) newCanvasBtn.click();
 	else {
 		initApp(
@@ -83,6 +90,7 @@ window.onload = () => {
 			prevLayers
 		);
 		colorPanel.restoreColors(prevColors, currentColor);
+		statePanel.restoreStates(undos, redos);
 	}
 };
 

@@ -16,7 +16,7 @@ class ToolAction extends ActionState {
 		this.imgDataUri = layerData.imgDataUri;
 	}
 	undo() {
-		let currentState = this.layer.state();
+		const currentState = this.layer.state();
 		statePanel.saveState('toolAction', currentState, (state) => {
 			statePanel.redoStates.push(state);
 		});
@@ -24,7 +24,7 @@ class ToolAction extends ActionState {
 		this.layer.renderCanvas(this.imgDataUri);
 	}
 	redo() {
-		let currentState = this.layer.state();
+		const currentState = this.layer.state();
 		statePanel.saveState('toolAction', currentState, (state) => {
 			statePanel.undoStates.push(state);
 		});

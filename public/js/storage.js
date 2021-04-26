@@ -1,10 +1,22 @@
 const autoSave = function () {
 	saveSessionStage();
+	saveSessionStates();
 	saveSessionLayers();
 	saveSessionColors();
 	stage.sessionStorage = true;
 	console.log('Auto saved');
-	console.log(checkStorage());
+	const { undos, redos } = checkStorage();
+	console.log(undos, redos);
+};
+const saveSessionStates = function () {
+	const undos = _.each(statePanel.undoStates, (state) => {
+		return { type: state.type, state: state.layerData };
+	});
+	const redos = _.each(statePanel.redoStates, (state) => {
+		return { type: state.type, state: state.layerData };
+	});
+	saveSessionItem('undos', undos);
+	saveSessionItem('redos', redos);
 };
 
 const saveSessionLayers = function () {
@@ -35,16 +47,21 @@ const saveSessionItem = function (key, data) {
 };
 
 const checkStorage = function () {
-	let storage = window.sessionStorage;
-	let layers = storage.getItem('layers');
-	let stage = storage.getItem('stage');
-	let colors = storage.getItem('colors');
-	let currentColor = storage.getItem('currentColor');
+	const storage = window.sessionStorage;
+	let layers = storage.getItem('layers'),
+		stage = storage.getItem('stage'),
+		colors = storage.getItem('colors'),
+		currentColor = storage.getItem('currentColor'),
+		undos = storage.getItem('undos'),
+		redos = storage.getItem('redos');
+
 	prevLayers = JSON.parse(layers);
 	prevStage = JSON.parse(stage);
 	prevColors = JSON.parse(colors);
 	currentColor = JSON.parse(currentColor);
-	return { prevLayers, prevStage, prevColors, currentColor };
+	undos = JSON.parse(undos);
+	redos = JSON.parse(redos);
+	return { prevLayers, prevStage, prevColors, currentColor, undos, redos };
 };
 
 const clearSessionStorage = function () {

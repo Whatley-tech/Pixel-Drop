@@ -10,6 +10,16 @@ const statePanel = {
 		this.undoBtn.addEventListener('click', () => this.undo());
 		this.redoBtn.addEventListener('click', () => this.redo());
 	},
+	restoreStates(undos, redos) {
+		_.each(undos, (undoState) => {
+			this.saveState(undoState.type, undoState.layerData);
+		});
+		_.each(redos, (redoState) => {
+			this.saveState(redoState.type, redoState.layerData, (state) => {
+				this.redoStates.push(state);
+			});
+		});
+	},
 	saveState(type, layerData, callback) {
 		//Types: action,layer,arrange, new?
 		let state = {};
