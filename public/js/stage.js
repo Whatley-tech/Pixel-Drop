@@ -75,7 +75,10 @@ const stage = {
 
 		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
 		this.appendToStageDiv(this.brushOverlay);
-		this.attachStageListeners();
+
+		if (!this.appIsInit) {
+			this.attachStageListeners();
+		}
 
 		if (lastLayerNum && prevLayers) {
 			this.sessionStorage = true;
