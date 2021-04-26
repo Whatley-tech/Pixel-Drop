@@ -35,8 +35,9 @@ const stage = {
 
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
-			if (toolsPanel.activeTool.undoAble)
+			if (toolsPanel.activeTool.undoAble) {
 				statePanel.saveState('toolAction', this.activeLayer.state());
+			}
 			statePanel.clearRedos();
 			toolsPanel.activeTool.isDrawing = true;
 			toolsPanel.activeTool.startAction();
@@ -168,9 +169,11 @@ const stage = {
 		layerPanel.updateTiles();
 	},
 	appendToStageDiv(canvas) {
+		//stage canvases... bg, overlay, merged
 		this.mainDiv.appendChild(canvas.element);
 	},
 	appendToLayerDiv(canvas) {
+		//painting canvases
 		this.layersDiv.appendChild(canvas.element);
 	},
 	updateZIndexes() {
@@ -180,7 +183,6 @@ const stage = {
 			canvas.zIndex = i + 1;
 		}
 	},
-
 	findArrayIndex(arr, element) {
 		const index = _.findIndex(arr, element);
 		return index;
@@ -228,12 +230,11 @@ const stage = {
 		layerPanel.updateTiles();
 		autoSave();
 	},
-
 	restoreLayer(layerData) {
-		const { uuid, zIndex, name, imgDataUri } = layerData;
+		const { uuid, zIndex, name, imgDataUri, layerIndex } = layerData;
 		console.log(zIndex);
 		let layer = new Layer(uuid, zIndex, name);
-		this.layers.splice(zIndex - 1, 0, layer);
+		this.layers.splice(layerIndex, 0, layer);
 		this.appendToLayerDiv(layer);
 		if (imgDataUri) layer.renderCanvas(imgDataUri);
 		this.setActiveLayer(layer);

@@ -36,32 +36,18 @@ const statePanel = {
 
 		let state = this.undoStates.pop();
 		state.undo();
-		console.log(this.undoStates, this.redoStates);
-		// this.saveState(prevState.type, prevState.layer.state(), (currentState) => {
-		// 	this.redoStates.push(currentState);
-		// });
-		// prevState.restore().then(() => {
-		// 	stage.updateMergedView();
-		// 	layerPanel.updateLayerPview();
-		// 	autoSave();
-		// });
+		stage.updateMergedView();
+		layerPanel.updateLayerPview();
+		autoSave();
 	},
 	redo() {
 		if (!this.redoStates.length) return;
 
 		let state = this.redoStates.pop();
 		state.redo();
-		console.log(this.undoStates, this.redoStates);
-
-		// let prevState = this.redoStates.pop();
-		// this.saveState(prevState.type, prevState.layer.state(), (currentState) => {
-		// 	this.undoStates.push(currentState);
-		// });
-		// prevState.restore().then(() => {
-		// 	stage.updateMergedView();
-		// 	layerPanel.updateLayerPview();
-		// 	autoSave();
-		// });
+		stage.updateMergedView();
+		layerPanel.updateLayerPview();
+		autoSave();
 	},
 	clearRedos() {
 		_.remove(statePanel.redoStates);

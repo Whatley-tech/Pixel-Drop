@@ -28,6 +28,7 @@ class ToolAction extends ActionState {
 		statePanel.saveState('toolAction', currentState, (state) => {
 			statePanel.undoStates.push(state);
 		});
+		this.layer.clearCanvas();
 		this.layer.renderCanvas(this.imgDataUri);
 	}
 }
@@ -66,17 +67,16 @@ class ArrangeAction extends ActionState {
 		statePanel.saveState('arrangeLayer', currentState, (state) => {
 			statePanel.redoStates.push(state);
 		});
-		const prevIndex = this.layerData.layerIndex;
-		const currentIndex = this.layer.layerIndex();
-		stage.moveIndex(prevIndex, currentIndex);
-		stage.updateZIndexes();
-		layerPanel.updateTiles();
+		this.restore();
 	}
 	redo() {
 		let currentState = this.layer.state();
 		statePanel.saveState('arrangeLayer', currentState, (state) => {
 			statePanel.undoStates.push(state);
 		});
+		this.restore();
+	}
+	restore() {
 		const prevIndex = this.layerData.layerIndex;
 		const currentIndex = this.layer.layerIndex();
 		stage.moveIndex(prevIndex, currentIndex);
