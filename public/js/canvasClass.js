@@ -27,12 +27,15 @@ class Canvas {
 	clearCanvas() {
 		this.ctx.clearRect(0, 0, stage.width, stage.height);
 	}
-	renderCanvas(dataUri = this.dataUri) {
-		let img = new Image();
-		img.onload = () => {
-			this.ctx.drawImage(img, 0, 0);
-		};
-		img.src = dataUri;
+	async renderCanvas(dataUri = this.dataUri) {
+		await new Promise((res, rej) => {
+			let img = new Image();
+			img.onload = async () => {
+				this.ctx.drawImage(img, 0, 0);
+				res(img);
+			};
+			img.src = dataUri;
+		});
 	}
 }
 class Layer extends Canvas {

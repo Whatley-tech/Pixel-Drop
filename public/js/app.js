@@ -91,7 +91,6 @@ window.onload = () => {
 		);
 		colorPanel.restoreColors(prevColors, currentColor);
 		statePanel.restoreStates(undos, redos);
-		autoSave();
 	}
 };
 
