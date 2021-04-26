@@ -197,6 +197,22 @@ const stage = {
 			);
 		});
 	},
+	deleteLayer(deletedLayer) {
+		let layer = _.find(this.layers, (layer) => {
+			if (layer.uuid === deletedLayer.uuid) return layer;
+		});
+
+		layer.element.remove();
+		layer.tile.remove();
+		_.remove(this.layers, layer);
+
+		if (layer.tile === layerPanel.activeTile) {
+			this.setActiveLayer(_.last(this.layers));
+		}
+
+		layerPanel.updateTiles();
+		autoSave();
+	},
 	restoreLayer(layerData) {
 		const { uuid, zIndex, name, imgDataUri } = layerData;
 		console.log(zIndex);

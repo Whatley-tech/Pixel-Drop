@@ -36,7 +36,7 @@ class NewLayerAction extends ActionState {
 		super(type, layerData);
 	}
 	undo() {
-		layerPanel.deleteLayer(this.layerData);
+		stage.deleteLayer(this.layerData);
 		statePanel.redoStates.push(this);
 	}
 	redo() {
@@ -48,7 +48,14 @@ class DeleteLayerAction extends ActionState {
 	constructor(type, layerData) {
 		super(type, layerData);
 	}
-	restore() {}
+	undo() {
+		stage.restoreLayer(this.layerData);
+		statePanel.redoStates.push(this);
+	}
+	redo() {
+		stage.deleteLayer(this.layerData);
+		statePanel.undoStates.push(this);
+	}
 }
 class RestoreLayerAction extends ActionState {
 	constructor(type, layerData) {

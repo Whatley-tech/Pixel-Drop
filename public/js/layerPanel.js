@@ -46,21 +46,7 @@ const layerPanel = {
 		this.updateTiles();
 		autoSave();
 	},
-	deleteLayer(deletedLayer) {
-		let layer = _.find(stage.layers, (layer) => {
-			if (layer.uuid === deletedLayer.uuid) return layer;
-		});
-		layer.element.remove();
-		layer.tile.remove();
-		_.remove(stage.layers, layer);
 
-		if (layer.tile === layerPanel.activeTile) {
-			stage.setActiveLayer(_.last(stage.layers));
-		}
-
-		this.updateTiles();
-		autoSave();
-	},
 	findArrayIndex(arr, element) {
 		const index = _.findIndex(arr, element);
 		return index;

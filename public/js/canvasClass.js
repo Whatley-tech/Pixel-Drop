@@ -79,7 +79,7 @@ class Layer extends Canvas {
 			e.stopPropagation();
 			if (stage.layers.length <= 1) return; //alert here "must have atleast one layer"
 			statePanel.saveState('deleteLayer', this.state());
-			layerPanel.deleteLayer(this);
+			stage.deleteLayer(this);
 		});
 		this.tile.visibleBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
