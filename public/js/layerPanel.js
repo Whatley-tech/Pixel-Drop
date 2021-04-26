@@ -25,32 +25,21 @@ const layerPanel = {
 		this.toggleActive();
 		this.setLayerPviewDim();
 		$('#tileContainer').sortable({
-			stop: (event, ui) => this.moveLayer(ui.item[0]),
+			stop: (event, ui) => {
+				const movedTile = ui.item[0];
+				const layer = _.find(stage.layers, (layer) => {
+					return layer.tile == movedTile;
+				});
+				statePanel.saveState('arrangeLayer', layer.state());
+				stage.moveLayer(layer);
+			},
 		});
 	},
 	setLayerPviewDim() {
 		this.layerPview.width = stage.width;
 		this.layerPview.height = stage.height;
 	},
-	moveLayer(movedLayerTile) {
-		const layer = _.find(stage.layers, (layer) => layer.tile == movedLayerTile);
-		statePanel.saveState('arrange', layer.state());
-		let tiles = [...this.tileContainer.children];
-		_.reverse(tiles);
-		const currentTileIndex = this.findArrayIndex(tiles, movedLayerTile);
-		const prevTileIndex = this.findArrayIndex(stage.layers, (layer) => {
-			return layer.tile == movedLayerTile;
-		});
-		stage.moveIndex(currentTileIndex, prevTileIndex);
-		stage.updateZIndexes();
-		this.updateTiles();
-		autoSave();
-	},
 
-	findArrayIndex(arr, element) {
-		const index = _.findIndex(arr, element);
-		return index;
-	},
 	updateTiles() {
 		_.each(this.tileContainer.children, (child) => {
 			if (child && child.dataset.uuid != this.tileTemplate.dataset.uuid)

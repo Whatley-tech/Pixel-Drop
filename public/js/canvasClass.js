@@ -123,6 +123,7 @@ class Layer extends Canvas {
 			zIndex: this.zIndex,
 			name: this.name,
 			imgDataUri: this.dataUri,
+			layerIndex: this.layerIndex(),
 		};
 	}
 }

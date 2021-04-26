@@ -23,9 +23,6 @@ const statePanel = {
 			case 'deleteLayer':
 				state = new DeleteLayerAction(type, layerData);
 				break;
-			case 'restoreLayer':
-				state = new RestoreLayerAction(type, layerData);
-				break;
 			case 'arrangeLayer':
 				state = new ArrangeAction(type, layerData);
 				break;

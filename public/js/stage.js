@@ -180,10 +180,10 @@ const stage = {
 			canvas.zIndex = i + 1;
 		}
 	},
-	moveIndex(currentIndex, prevIndex) {
-		element = this.layers[prevIndex];
-		this.layers.splice(prevIndex, 1);
-		this.layers.splice(currentIndex, 0, element);
+
+	findArrayIndex(arr, element) {
+		const index = _.findIndex(arr, element);
+		return index;
 	},
 	updateMergedView() {
 		this.mergedView.clearCanvas();
@@ -213,6 +213,22 @@ const stage = {
 		layerPanel.updateTiles();
 		autoSave();
 	},
+	moveIndex(moveToIndex, moveFromIndex) {
+		element = this.layers[moveFromIndex];
+		this.layers.splice(moveFromIndex, 1);
+		this.layers.splice(moveToIndex, 0, element);
+	},
+	moveLayer(movedLayer) {
+		let tiles = [...layerPanel.tileContainer.children];
+		_.reverse(tiles);
+		const currentTileIndex = this.findArrayIndex(tiles, movedLayer.tile);
+		const currentLayerIndex = movedLayer.layerIndex();
+		this.moveIndex(currentTileIndex, currentLayerIndex);
+		this.updateZIndexes();
+		layerPanel.updateTiles();
+		autoSave();
+	},
+
 	restoreLayer(layerData) {
 		const { uuid, zIndex, name, imgDataUri } = layerData;
 		console.log(zIndex);

@@ -57,13 +57,30 @@ class DeleteLayerAction extends ActionState {
 		statePanel.undoStates.push(this);
 	}
 }
-class RestoreLayerAction extends ActionState {
-	constructor(type, layerData) {
-		super(type, layerData);
-	}
-}
 class ArrangeAction extends ActionState {
 	constructor(type, layerData) {
 		super(type, layerData);
+	}
+	undo() {
+		let currentState = this.layer.state();
+		statePanel.saveState('arrangeLayer', currentState, (state) => {
+			statePanel.redoStates.push(state);
+		});
+		const prevIndex = this.layerData.layerIndex;
+		const currentIndex = this.layer.layerIndex();
+		stage.moveIndex(prevIndex, currentIndex);
+		stage.updateZIndexes();
+		layerPanel.updateTiles();
+	}
+	redo() {
+		let currentState = this.layer.state();
+		statePanel.saveState('arrangeLayer', currentState, (state) => {
+			statePanel.undoStates.push(state);
+		});
+		const prevIndex = this.layerData.layerIndex;
+		const currentIndex = this.layer.layerIndex();
+		stage.moveIndex(prevIndex, currentIndex);
+		stage.updateZIndexes();
+		layerPanel.updateTiles();
 	}
 }
