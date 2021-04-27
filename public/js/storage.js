@@ -5,6 +5,27 @@ const autoSave = function () {
 	saveSessionStates();
 	stage.sessionStorage = true;
 };
+
+const checkStorage = function () {
+	const prevLayers = getSessionItem('layers'),
+		prevActiveLayer = getSessionItem('prevActiveLayer'),
+		prevStage = getSessionItem('stage'),
+		prevColors = getSessionItem('colors'),
+		currentColor = getSessionItem('currentColor'),
+		undos = getSessionItem('undos'),
+		redos = getSessionItem('redos');
+
+	return {
+		prevLayers,
+		prevActiveLayer,
+		prevStage,
+		prevColors,
+		currentColor,
+		undos,
+		redos,
+	};
+};
+
 const saveSessionStates = function () {
 	const undos = _.each(statePanel.undoStates, (state) => {
 		return { type: state.type, state: state.layerData };
@@ -48,26 +69,6 @@ const getSessionItem = function (key) {
 	data = storage.getItem(key);
 	data = JSON.parse(data);
 	return data;
-};
-
-const checkStorage = function () {
-	const prevLayers = getSessionItem('layers'),
-		prevActiveLayer = getSessionItem('prevActiveLayer'),
-		prevStage = getSessionItem('stage'),
-		prevColors = getSessionItem('colors'),
-		currentColor = getSessionItem('currentColor'),
-		undos = getSessionItem('undos'),
-		redos = getSessionItem('redos');
-
-	return {
-		prevLayers,
-		prevActiveLayer,
-		prevStage,
-		prevColors,
-		currentColor,
-		undos,
-		redos,
-	};
 };
 
 const clearSessionStorage = function () {

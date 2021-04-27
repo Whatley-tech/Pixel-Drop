@@ -20,15 +20,19 @@ const stage = {
 	get pixelSize() {
 		return parseInt(this.stageDiv.style.height) / this.height;
 	},
+
 	get leftOrigin() {
 		return this.stageDiv.getBoundingClientRect().left;
 	},
+
 	get topOrigin() {
 		return this.stageDiv.getBoundingClientRect().top;
 	},
+
 	get nextLayerZindex() {
 		return this.layers.length + 1;
 	},
+
 	get nextlayerName() {
 		return `Layer-${++this.lastLayerNum}`;
 	},
@@ -43,23 +47,28 @@ const stage = {
 			toolsPanel.activeTool.startAction();
 			toolsPanel.activeTool.action();
 		});
+
 		this.mainDiv.addEventListener('mousemove', (e) => {
 			toolsPanel.activeTool.updatePosition(e);
 			if (toolsPanel.activeTool.isDrawing) toolsPanel.activeTool.action();
 		});
+
 		this.mainDiv.addEventListener('mouseleave', () => {
 			toolsPanel.activeTool.isDrawing = false;
 		});
+
 		this.mainDiv.addEventListener('mouseup', (e) => {
 			toolsPanel.activeTool.releaseAction();
 			toolsPanel.activeTool.isDrawing = false;
 			layerPanel.updateLayerPview();
 			autoSave();
 		});
+
 		window.addEventListener('resize', () => {
 			this.resizeStage();
 		});
 	},
+
 	init(height, width, lastLayerNum, prevLayers, prevActiveLayer) {
 		this.height = height;
 		this.width = width;
@@ -90,9 +99,14 @@ const stage = {
 				this.setActiveLayer(activeLayer);
 			});
 		}
-		if (!stage.sessionStorage) this.newLayer();
+		if (!stage.sessionStorage) {
+			this.newLayer();
+			this.setActiveLayer(layer);
+			this.updateZIndexes();
+		}
 		this.appIsInit = true;
 	},
+
 	reset() {
 		if (this.background.element) this.background.element.remove();
 		if (this.brushOverlay.element) this.brushOverlay.element.remove();
@@ -101,6 +115,7 @@ const stage = {
 		_.remove(statePanel.undoStates);
 		this.lastLayerNum = 0;
 	},
+
 	clearLayers() {
 		_.each(this.layers, (layer) => {
 			layer.element.remove();
@@ -108,6 +123,7 @@ const stage = {
 		});
 		_.remove(stage.layers);
 	},
+
 	resizeStage() {
 		this.checkWindowSize();
 		const maxW = this.stagePanel.clientWidth;
@@ -145,6 +161,7 @@ const stage = {
 			setWide();
 		} else setVertical();
 	},
+
 	async restorePrevSession(prevLayers) {
 		const newLayers = [];
 		_.each(prevLayers, (layer) => {
@@ -153,6 +170,7 @@ const stage = {
 		});
 		await Promise.all(newLayers);
 	},
+
 	makeCanvas(uuid = uuidv4(), zIndex) {
 		return new Canvas(uuid, zIndex);
 	},
@@ -167,23 +185,27 @@ const stage = {
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
 		if (imgDataUri) await layer.renderCanvas(imgDataUri);
-		this.setActiveLayer(layer);
-		this.updateZIndexes();
+		// this.setActiveLayer(layer);
+		// this.updateZIndexes();
 		return layer;
 	},
+
 	setActiveLayer(layer) {
 		this.activeLayer = layer;
 		layerPanel.activeTile = layer.tile;
 		layerPanel.updateTiles();
 	},
+
 	appendToStageDiv(canvas) {
 		//stage canvases... bg, overlay, merged
 		this.mainDiv.appendChild(canvas.element);
 	},
+
 	appendToLayerDiv(canvas) {
 		//painting canvases
 		this.layersDiv.appendChild(canvas.element);
 	},
+
 	updateZIndexes() {
 		for (let i = 0; i < this.layers.length; i++) {
 			let canvas = this.layers[i];
@@ -191,10 +213,12 @@ const stage = {
 			canvas.zIndex = i + 1;
 		}
 	},
+
 	findArrayIndex(arr, element) {
 		const index = _.findIndex(arr, element);
 		return index;
 	},
+
 	updateMergedView() {
 		this.mergedView.clearCanvas();
 		_.each(this.layers, (layer) => {
@@ -207,6 +231,7 @@ const stage = {
 			);
 		});
 	},
+
 	deleteLayer(deletedLayer) {
 		let layer = _.find(this.layers, (layer) => {
 			if (layer.uuid === deletedLayer.uuid) return layer;
@@ -223,11 +248,13 @@ const stage = {
 		layerPanel.updateTiles();
 		autoSave();
 	},
+
 	moveIndex(moveToIndex, moveFromIndex) {
 		element = this.layers[moveFromIndex];
 		this.layers.splice(moveFromIndex, 1);
 		this.layers.splice(moveToIndex, 0, element);
 	},
+
 	moveLayer(movedLayer) {
 		let tiles = [...layerPanel.tileContainer.children];
 		_.reverse(tiles);
@@ -238,6 +265,7 @@ const stage = {
 		layerPanel.updateTiles();
 		autoSave();
 	},
+
 	restoreLayer(layerData) {
 		const { uuid, zIndex, name, imgDataUri, layerIndex } = layerData;
 		let layer = new Layer(uuid, zIndex, name);
@@ -247,6 +275,7 @@ const stage = {
 		this.setActiveLayer(layer);
 		return layer;
 	},
+
 	exportImage(type, scaleValue) {
 		const svg = this.createSVG(scaleValue);
 

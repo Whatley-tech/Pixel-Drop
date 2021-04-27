@@ -75,6 +75,8 @@ const layerPanel = {
 			if (this.tileCount > 8) return; //max layers
 
 			stage.newLayer().then((layer) => {
+				stage.setActiveLayer(layer);
+				stage.updateZIndexes();
 				statePanel.saveState('newLayer', layer.state());
 				autoSave();
 			});
