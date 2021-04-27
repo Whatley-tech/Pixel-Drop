@@ -124,6 +124,13 @@ const stage = {
 		_.remove(stage.layers);
 	},
 
+	findLayer(seachLayer, property, callback) {
+		let foundLayer = _.each(stage.layer, (l) => {
+			return l[property] === searchLayer[property];
+		});
+		callback(foundLayer);
+	},
+
 	resizeStage() {
 		this.checkWindowSize();
 		const maxW = this.stagePanel.clientWidth;
