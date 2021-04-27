@@ -1,6 +1,6 @@
-document.addEventListener('keyup', (e) => {
-	if (e.ctrlKey == true && e.key == 'z') statePanel.undoBtn.click();
-	if (e.ctrlKey == true && e.key == 'y') statePanel.redoBtn.click();
+document.addEventListener('keydown', (e) => {
+	if (e.key == 'z') statePanel.undoBtn.click();
+	if (e.key == 'y') statePanel.redoBtn.click();
 	if (e.key == 'f') toolsPanel.brushBtn.click();
 	if (e.key == 'd') toolsPanel.eraserBtn.click();
 	if (e.key == 'v') toolsPanel.moveToolBtn.click();
