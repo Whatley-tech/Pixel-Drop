@@ -100,7 +100,7 @@ const stage = {
 			});
 		}
 		if (!stage.sessionStorage) {
-			this.newLayer();
+			const layer = this.newLayer();
 			this.setActiveLayer(layer);
 			this.updateZIndexes();
 		}
@@ -124,11 +124,12 @@ const stage = {
 		_.remove(stage.layers);
 	},
 
-	findLayer(seachLayer, property, callback) {
-		let foundLayer = _.each(stage.layer, (l) => {
+	findLayer(searchLayer, property, callback) {
+		let foundLayer = _.find(stage.layers, (l) => {
 			return l[property] === searchLayer[property];
 		});
-		callback(foundLayer);
+		if (callback) callback(foundLayer);
+		else return foundLayer;
 	},
 
 	resizeStage() {
@@ -192,8 +193,6 @@ const stage = {
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
 		if (imgDataUri) await layer.renderCanvas(imgDataUri);
-		// this.setActiveLayer(layer);
-		// this.updateZIndexes();
 		return layer;
 	},
 
@@ -209,7 +208,7 @@ const stage = {
 	},
 
 	appendToLayerDiv(canvas) {
-		//painting canvases
+		//painting canvases,
 		this.layersDiv.appendChild(canvas.element);
 	},
 
@@ -239,19 +238,14 @@ const stage = {
 		});
 	},
 
-	deleteLayer(deletedLayer) {
-		let layer = _.find(this.layers, (layer) => {
-			if (layer.uuid === deletedLayer.uuid) return layer;
-		});
-
-		layer.element.remove();
-		layer.tile.remove();
-		_.remove(this.layers, layer);
-
-		if (layer.tile === layerPanel.activeTile) {
+	deleteLayer(layer) {
+		const deletedLayer = this.findLayer(layer, 'uuid');
+		_.remove(this.layers, deletedLayer);
+		deletedLayer.element.remove();
+		deletedLayer.tile.remove();
+		if (deletedLayer.tile === layerPanel.activeTile) {
 			this.setActiveLayer(_.last(this.layers));
 		}
-
 		layerPanel.updateTiles();
 		autoSave();
 	},
