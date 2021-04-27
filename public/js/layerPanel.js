@@ -19,6 +19,7 @@ const layerPanel = {
 	get tileCount() {
 		return this.tileContainer.children.length;
 	},
+
 	init() {
 		this.updateTiles();
 		this.addLayerPanelListeners();
@@ -35,6 +36,7 @@ const layerPanel = {
 			},
 		});
 	},
+
 	setLayerPviewDim() {
 		this.layerPview.width = stage.width;
 		this.layerPview.height = stage.height;
@@ -49,8 +51,10 @@ const layerPanel = {
 		_.eachRight(stage.layers, (layer) => {
 			this.tileContainer.appendChild(layer.tile);
 		});
+
 		this.toggleActive();
 	},
+
 	updateLayerPview() {
 		this.layerPviewCtx.clearRect(0, 0, stage.width, stage.height);
 		this.layerPviewCtx.drawImage(stage.activeLayer.element, 0, 0);
@@ -58,17 +62,20 @@ const layerPanel = {
 
 	toggleActive() {
 		const currentlyActive = document.querySelectorAll('#tileContainer .active');
+
 		if (currentlyActive.length) {
 			_.each(currentlyActive, (node) => {
 				node.classList.toggle('active');
 			});
 		}
+
 		if (this.activeTile) {
 			this.activeTile.classList.toggle('active');
 			this.layerMenuBtn.innerText = this.activeTile.dataset.name;
 			this.updateLayerPview();
 		}
 	},
+
 	addLayerPanelListeners() {
 		this.newLayerBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
@@ -81,16 +88,20 @@ const layerPanel = {
 				autoSave();
 			});
 		});
+
 		this.layerMenuBtn.addEventListener('shown.bs.dropdown', (e) => {
 			_.each(stage.layers, (layer) => layer.updateTilePreview());
 		});
+
 		this.renameModalElement.addEventListener('shown.bs.modal', (e) => {
 			const oldName = e.target.dataset.name;
 			this.tileRenameInput.placeholder = e.target.dataset.name;
 		});
+
 		this.renameModalElement.addEventListener('hide.bs.modal', (e) => {
 			this.tileRenameInput.value = '';
 		});
+
 		this.tileRenameForm.addEventListener('submit', (e) => {
 			e.preventDefault();
 			const oldName = this.renameModalElement.dataset.name;
