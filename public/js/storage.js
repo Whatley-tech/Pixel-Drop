@@ -30,20 +30,23 @@ const saveSessionStates = function () {
 	const undos = _.each(statePanel.undoStates, (state) => {
 		return { type: state.type, state: state.layerData };
 	});
+
 	const redos = _.each(statePanel.redoStates, (state) => {
 		return { type: state.type, state: state.layerData };
 	});
+
 	saveSessionItem('undos', undos);
 	saveSessionItem('redos', redos);
 };
 
 const saveSessionLayers = function () {
+	const prevActiveLayer = stage.activeLayer.uuid;
 	const saveData = _.map(stage.layers, (layer) => {
 		return layer.state();
 	});
-	const prevActiveLayer = stage.activeLayer.uuid;
-	saveSessionItem('layers', saveData);
+
 	saveSessionItem('prevActiveLayer', prevActiveLayer);
+	saveSessionItem('layers', saveData);
 };
 
 const saveSessionColors = function () {
@@ -64,6 +67,7 @@ const saveSessionItem = function (key, data) {
 	data = JSON.stringify(data);
 	storage.setItem(key, data);
 };
+
 const getSessionItem = function (key) {
 	let storage = window.sessionStorage;
 	data = storage.getItem(key);
