@@ -27,12 +27,13 @@ class Canvas {
 	clearCanvas() {
 		this.ctx.clearRect(0, 0, stage.width, stage.height);
 	}
-	async renderCanvas(dataUri = this.dataUri) {
-		await new Promise((res, rej) => {
+	renderCanvas(dataUri = this.dataUri) {
+		return new Promise((res, rej) => {
 			let img = new Image();
-			img.onload = async () => {
+			img.onload = () => {
+				this.clearCanvas();
 				this.ctx.drawImage(img, 0, 0);
-				res(img);
+				res();
 			};
 			img.src = dataUri;
 		});
@@ -74,6 +75,7 @@ class Layer extends Canvas {
 			stage.activeLayer = this;
 			layerPanel.activeTile = this.tile;
 			layerPanel.toggleActive();
+			autoSave();
 		});
 		this.tile.removeBtn.addEventListener('click', (e) => {
 			e.stopPropagation();

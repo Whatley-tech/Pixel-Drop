@@ -73,9 +73,12 @@ const layerPanel = {
 		this.newLayerBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			if (this.tileCount > 8) return; //max layers
-			const newLayer = stage.newLayer();
-			statePanel.saveState('newLayer', newLayer.state());
-			this.toggleActive();
+
+			stage.newLayer().then((layer) => {
+				console.log(layer);
+				statePanel.saveState('newLayer', layer.state());
+				autoSave();
+			});
 		});
 		this.layerMenuBtn.addEventListener('shown.bs.dropdown', (e) => {
 			_.each(stage.layers, (layer) => layer.updateTilePreview());

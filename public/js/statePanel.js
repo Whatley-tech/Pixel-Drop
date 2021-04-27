@@ -43,21 +43,24 @@ const statePanel = {
 	},
 	undo() {
 		if (!this.undoStates.length) return;
-
 		let state = this.undoStates.pop();
-		state.undo();
-		stage.updateMergedView();
-		layerPanel.updateLayerPview();
-		autoSave();
+
+		state.undo().then(() => {
+			stage.updateMergedView();
+			layerPanel.updateLayerPview();
+			autoSave();
+		});
 	},
 	redo() {
 		if (!this.redoStates.length) return;
 
 		let state = this.redoStates.pop();
-		state.redo();
-		stage.updateMergedView();
-		layerPanel.updateLayerPview();
-		autoSave();
+
+		state.redo().then(() => {
+			stage.updateMergedView();
+			layerPanel.updateLayerPview();
+			autoSave();
+		});
 	},
 	clearRedos() {
 		_.remove(statePanel.redoStates);

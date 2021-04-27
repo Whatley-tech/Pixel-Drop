@@ -60,7 +60,7 @@ const stage = {
 			this.resizeStage();
 		});
 	},
-	init(height, width, lastLayerNum, prevlayers) {
+	init(height, width, lastLayerNum, prevLayers, prevActiveLayer) {
 		this.height = height;
 		this.width = width;
 		this.resizeStage();
@@ -83,8 +83,15 @@ const stage = {
 		if (lastLayerNum && prevLayers) {
 			this.sessionStorage = true;
 			this.lastLayerNum = lastLayerNum;
-			this.restorePrevSession(prevLayers);
-			layerPanel.updateLayerPview();
+			this.restorePrevSession(prevLayers).then(() => {
+				let activeLayer = _.find(stage.layers, (layer) => {
+					return layer.uuid === prevActiveLayer;
+				});
+				console.log(prevActiveLayer);
+				console.log(activeLayer.uuid);
+				this.setActiveLayer(activeLayer);
+				console.log(this.activeLayer);
+			});
 		}
 		if (!stage.sessionStorage) this.newLayer();
 		this.appIsInit = true;
@@ -143,16 +150,19 @@ const stage = {
 			setWide();
 		} else setVertical();
 	},
-	restorePrevSession(prevLayers) {
+	async restorePrevSession(prevLayers) {
+		const newLayers = [];
 		_.each(prevLayers, (layer) => {
 			const { uuid, zIndex, name, imgDataUri } = layer;
-			stage.newLayer(uuid, zIndex, name, imgDataUri);
+			newLayers.push(stage.newLayer(uuid, zIndex, name, imgDataUri));
 		});
+		await Promise.all(newLayers);
 	},
 	makeCanvas(uuid = uuidv4(), zIndex) {
 		return new Canvas(uuid, zIndex);
 	},
-	newLayer(
+
+	async newLayer(
 		uuid = uuidv4(),
 		zIndex = this.nextLayerZindex,
 		name = this.nextlayerName,
@@ -161,7 +171,7 @@ const stage = {
 		let layer = new Layer(uuid, zIndex, name);
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
-		if (imgDataUri) layer.renderCanvas(imgDataUri);
+		if (imgDataUri) await layer.renderCanvas(imgDataUri);
 		this.setActiveLayer(layer);
 		this.updateZIndexes();
 		return layer;

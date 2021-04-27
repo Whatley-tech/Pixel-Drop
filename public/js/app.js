@@ -74,6 +74,7 @@ exportImageForm.addEventListener('submit', (e) => {
 //check session storage for saved contents,  reload work if saved contents found
 window.onload = () => {
 	const {
+		prevActiveLayer,
 		prevLayers,
 		prevStage,
 		prevColors,
@@ -87,17 +88,30 @@ window.onload = () => {
 			prevStage.width,
 			prevStage.height,
 			prevStage.lastLayerNum,
-			prevLayers
+			prevLayers,
+			prevActiveLayer
 		);
 		colorPanel.restoreColors(prevColors, currentColor);
 		statePanel.restoreStates(undos, redos);
 	}
 };
 
-const initApp = function (width, height, lastLayerNum) {
+const initApp = function (
+	width,
+	height,
+	lastLayerNum,
+	prevLayers,
+	prevActiveLayer
+) {
 	if (!stage.appIsInit) {
 		toolsPanel.init();
-		stage.init(parseInt(height), parseInt(width), parseInt(lastLayerNum));
+		stage.init(
+			parseInt(height),
+			parseInt(width),
+			parseInt(lastLayerNum),
+			prevLayers,
+			prevActiveLayer
+		);
 		layerPanel.init();
 		statePanel.init();
 		colorPanel.init();

@@ -23,8 +23,9 @@ const saveSessionLayers = function () {
 	const saveData = _.map(stage.layers, (layer) => {
 		return layer.state();
 	});
-
+	const prevActiveLayer = stage.activeLayer.uuid;
 	saveSessionItem('layers', saveData);
+	saveSessionItem('prevActiveLayer', prevActiveLayer);
 };
 
 const saveSessionColors = function () {
@@ -49,6 +50,7 @@ const saveSessionItem = function (key, data) {
 const checkStorage = function () {
 	const storage = window.sessionStorage;
 	let layers = storage.getItem('layers'),
+		prevActiveLayer = storage.getItem('prevActiveLayer'),
 		stage = storage.getItem('stage'),
 		colors = storage.getItem('colors'),
 		currentColor = storage.getItem('currentColor'),
@@ -56,12 +58,21 @@ const checkStorage = function () {
 		redos = storage.getItem('redos');
 
 	prevLayers = JSON.parse(layers);
+	prevActiveLayer = JSON.parse(prevActiveLayer);
 	prevStage = JSON.parse(stage);
 	prevColors = JSON.parse(colors);
 	currentColor = JSON.parse(currentColor);
 	undos = JSON.parse(undos);
 	redos = JSON.parse(redos);
-	return { prevLayers, prevStage, prevColors, currentColor, undos, redos };
+	return {
+		prevActiveLayer,
+		prevLayers,
+		prevStage,
+		prevColors,
+		currentColor,
+		undos,
+		redos,
+	};
 };
 
 const clearSessionStorage = function () {
