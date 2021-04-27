@@ -82,6 +82,7 @@ window.onload = () => {
 		undos,
 		redos,
 	} = checkStorage();
+
 	if (!prevStage) newCanvasBtn.click();
 	else {
 		initApp(
