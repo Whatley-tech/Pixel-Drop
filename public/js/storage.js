@@ -4,9 +4,7 @@ const autoSave = function () {
 	saveSessionColors();
 	saveSessionStates();
 	stage.sessionStorage = true;
-	console.log('Auto saved');
 	const { undos, redos } = checkStorage();
-	console.log(undos, redos);
 };
 const saveSessionStates = function () {
 	const undos = _.each(statePanel.undoStates, (state) => {

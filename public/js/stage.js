@@ -87,10 +87,7 @@ const stage = {
 				let activeLayer = _.find(stage.layers, (layer) => {
 					return layer.uuid === prevActiveLayer;
 				});
-				console.log(prevActiveLayer);
-				console.log(activeLayer.uuid);
 				this.setActiveLayer(activeLayer);
-				console.log(this.activeLayer);
 			});
 		}
 		if (!stage.sessionStorage) this.newLayer();
@@ -121,12 +118,10 @@ const stage = {
 		if (wr > hr) {
 			this.stageDiv.style.height = `${Math.floor(this.height * hr)}px`;
 			this.stageDiv.style.width = `${Math.floor(this.width * hr)}px`;
-			// console.log('asdf');
 		}
 		if (hr > wr) {
 			this.stageDiv.style.height = `${Math.floor(this.height * wr)}px`;
 			this.stageDiv.style.width = `${Math.floor(this.width * wr)}px`;
-			// console.log('asdf');
 		}
 	},
 
@@ -245,7 +240,6 @@ const stage = {
 	},
 	restoreLayer(layerData) {
 		const { uuid, zIndex, name, imgDataUri, layerIndex } = layerData;
-		console.log(zIndex);
 		let layer = new Layer(uuid, zIndex, name);
 		this.layers.splice(layerIndex, 0, layer);
 		this.appendToLayerDiv(layer);

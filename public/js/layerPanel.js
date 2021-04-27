@@ -75,7 +75,6 @@ const layerPanel = {
 			if (this.tileCount > 8) return; //max layers
 
 			stage.newLayer().then((layer) => {
-				console.log(layer);
 				statePanel.saveState('newLayer', layer.state());
 				autoSave();
 			});
@@ -92,7 +91,6 @@ const layerPanel = {
 		});
 		this.tileRenameForm.addEventListener('submit', (e) => {
 			e.preventDefault();
-			console.log(e);
 			const oldName = this.renameModalElement.dataset.name;
 			const newName = this.tileRenameInput.value;
 			const layer = _.find(stage.layers, (layer) => {
