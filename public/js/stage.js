@@ -100,9 +100,10 @@ const stage = {
 			});
 		}
 		if (!stage.sessionStorage) {
-			const layer = this.newLayer();
-			this.setActiveLayer(layer);
-			this.updateZIndexes();
+			this.newLayer().then((layer) => {
+				this.setActiveLayer(layer);
+				this.updateZIndexes();
+			});
 		}
 		this.appIsInit = true;
 	},
@@ -124,9 +125,14 @@ const stage = {
 		_.remove(stage.layers);
 	},
 
-	findLayer(searchLayer, property, callback) {
+	findLayer(searchTerm, property, callback) {
 		let foundLayer = _.find(stage.layers, (l) => {
-			return l[property] === searchLayer[property];
+			if (typeof searchTerm === 'string') {
+				return l[property] === searchTerm;
+			}
+			if (typeof searchTerm === 'object') {
+				return l[property] === searchTerm[property];
+			}
 		});
 		if (callback) callback(foundLayer);
 		else return foundLayer;
@@ -156,13 +162,11 @@ const stage = {
 			layerPanel.layerPanel.classList.replace('dropend', 'dropup');
 			if (this.stagePanel.classList.contains('stagePanel-vert')) return;
 			this.stagePanel.classList.replace('stagePanel-wide', 'stagePanel-vert');
-			this.controls.classList.replace('controls-wide', 'controls-vert');
 		};
 		const setWide = () => {
 			layerPanel.layerPanel.classList.replace('dropup', 'dropend');
 			if (this.stagePanel.classList.contains('stagePanel-wide')) return;
 			this.stagePanel.classList.replace('stagePanel-vert', 'stagePanel-wide');
-			this.controls.classList.replace('controls-vert', 'controls-wide');
 		};
 
 		if (windowWidth >= bsLrgGridmin) {
@@ -183,13 +187,20 @@ const stage = {
 		return new Canvas(uuid, zIndex);
 	},
 
+	makeLayer(uuid, zIndex, name) {
+		return new Promise((res, rej) => {
+			const layer = new Layer(uuid, zIndex, name);
+			res(layer);
+		});
+	},
+
 	async newLayer(
 		uuid = uuidv4(),
 		zIndex = this.nextLayerZindex,
 		name = this.nextlayerName,
 		imgDataUri
 	) {
-		let layer = new Layer(uuid, zIndex, name);
+		let layer = await this.makeLayer(uuid, zIndex, name);
 		this.appendToLayerDiv(layer);
 		this.layers.push(layer);
 		if (imgDataUri) await layer.renderCanvas(imgDataUri);
@@ -301,6 +312,7 @@ const stage = {
 			});
 		}
 	},
+
 	createSVG(scaleValue = 1) {
 		if (scaleValue < 1) return console.error('scale value less than 1');
 		const newW = this.width * scaleValue,
@@ -332,6 +344,7 @@ const stage = {
 
 		return svg;
 	},
+
 	makeSVGRect(x, y, width, height, color) {
 		let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
 		rect.setAttribute('x', x);
@@ -348,6 +361,7 @@ const stage = {
 		pngImg.src = canvas.toDataURL();
 		return pngImg;
 	},
+
 	drawSVGtoCanvas(svgElement, ctx, callback) {
 		const svgURL = new XMLSerializer().serializeToString(svgElement);
 		const img = new Image();
@@ -357,6 +371,7 @@ const stage = {
 		};
 		img.src = 'data:image/svg+xml; charset=utf8, ' + encodeURIComponent(svgURL);
 	},
+
 	getPixelData() {
 		let pixelCollection = {
 			imgHeight: this.height,
@@ -372,6 +387,7 @@ const stage = {
 		}
 		return pixelCollection;
 	},
+
 	UintToRGB(array) {
 		const color = `rgb(${array[0]},${array[1]},${array[2]},${array[3]})`;
 		return color;

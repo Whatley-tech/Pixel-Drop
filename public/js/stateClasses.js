@@ -4,9 +4,7 @@ class ActionState {
 		this.layerData = layerData;
 	}
 	get layer() {
-		const layer = _.find(stage.layers, (layer) => {
-			return layer.uuid === this.layerData.uuid;
-		});
+		const layer = stage.findLayer(this.layerData.uuid, 'uuid');
 		return layer;
 	}
 }

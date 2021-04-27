@@ -95,9 +95,7 @@ const layerPanel = {
 			e.preventDefault();
 			const oldName = this.renameModalElement.dataset.name;
 			const newName = this.tileRenameInput.value;
-			const layer = _.find(stage.layers, (layer) => {
-				return layer.tile.dataset.name == oldName;
-			});
+			const layer = stage.findLayer(oldName, 'name');
 			layer.renameTile(newName);
 			this.renameModal.toggle();
 			this.updateTiles();
