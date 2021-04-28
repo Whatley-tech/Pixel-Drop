@@ -85,6 +85,8 @@ const stage = {
 		this.brushOverlay = this.makeCanvas('brushOverlay', this.maxZIndex);
 		this.appendToStageDiv(this.brushOverlay);
 
+		layerPanel.setLayerPviewDim();
+
 		if (!this.appIsInit) {
 			this.attachStageListeners();
 		}
