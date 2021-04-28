@@ -66,8 +66,8 @@ exportImageForm.addEventListener('submit', (e) => {
 	exportCanvasModal.toggle();
 	let scaleValue = parseInt(exportDimSlider.value);
 
-	if (e.srcElement[1].checked) stage.exportImage('svg', scaleValue);
-	if (e.srcElement[2].checked) stage.exportImage('png', scaleValue);
+	if (e.srcElement[1].checked) exportImage('svg', scaleValue);
+	if (e.srcElement[2].checked) exportImage('png', scaleValue);
 	exportDimSlider.value = 1;
 });
 
