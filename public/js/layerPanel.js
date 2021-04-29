@@ -44,8 +44,7 @@ const layerPanel = {
 
 	updateTiles() {
 		_.each(this.tileContainer.children, (child) => {
-			if (child && child.dataset.uuid != this.tileTemplate.dataset.uuid)
-				child.remove();
+			if (child) child.remove();
 		});
 
 		_.eachRight(stage.layers, (layer) => {
@@ -85,7 +84,7 @@ const layerPanel = {
 			stage.newLayer().then((layer) => {
 				stage.setActiveLayer(layer);
 				stage.updateZIndexes();
-				statePanel.saveState('newLayer', layer.state());
+				statePanel.saveState('newLayer', layer.state);
 				autoSave();
 			});
 		});

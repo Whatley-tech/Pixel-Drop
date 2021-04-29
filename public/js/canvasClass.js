@@ -1,3 +1,13 @@
+const templateElm = document.getElementById('tileTemplate');
+class LayerTile extends HTMLElement {
+	constructor() {
+		super();
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.append(templateElm.content.cloneNode(true));
+	}
+}
+customElements.define('layer-tile', LayerTile);
+
 class Canvas {
 	constructor(uuid, zIndex) {
 		//Canvas Element for stage
@@ -12,21 +22,42 @@ class Canvas {
 		this.element.classList.add('stage-canvas');
 		this.visible = true;
 	}
+
 	get img() {
 		let img = this.ctx.getImageData(0, 0, stage.width, stage.height);
 		return img;
 	}
+
 	get dataURLImg() {
 		let img = new Image();
 		img.src = this.element.toDataURL();
 		return img;
 	}
+
 	get dataUri() {
 		return this.element.toDataURL();
 	}
+
+	get layerIndex() {
+		return _.findIndex(stage.layers, (layer) => {
+			return layer === this;
+		});
+	}
+
+	get state() {
+		return {
+			uuid: this.uuid,
+			zIndex: this.zIndex,
+			name: this.name,
+			imgDataUri: this.dataUri,
+			layerIndex: this.layerIndex,
+		};
+	}
+
 	clearCanvas() {
 		this.ctx.clearRect(0, 0, stage.width, stage.height);
 	}
+
 	renderCanvas(dataUri = this.dataUri) {
 		return new Promise((res, rej) => {
 			let img = new Image();
@@ -39,37 +70,30 @@ class Canvas {
 		});
 	}
 }
+
 class Layer extends Canvas {
 	constructor(uuid, zIndex, name) {
 		super(uuid, zIndex, name);
 		this.name = name;
-		//layerPanel Element
+		this.uuid = uuid;
+
+		//layer-tile Element
+		this.tile = document.createElement('layer-tile');
 		this.tileContainer = document.querySelector('#tileContainer');
-		this.tile = document
-			.querySelector(`.tile[data-uuid='template']`)
-			.cloneNode(true);
-		this.tile.classList.toggle('template');
+		this.layerTitle = this.tile.querySelector(`.layerTitle span`);
+		this.visibleBtn = this.tile.querySelector(`.visibleBtn`);
+		this.removeBtn = this.tile.querySelector(`.removeBtn`);
+		this.tilePreview = this.tile.querySelector('canvas');
 		this.tileContainer.append(this.tile);
-		this.tile.dataset.uuid = uuid;
-		this.tile.dataset.name = name;
-		this.tile.layerTitle = document.querySelector(
-			`.tile[data-uuid='${uuid}'] .layerTitle span`
-		);
-		this.tile.layerTitle.textContent = name;
-		this.tile.visibleBtn = document.querySelector(
-			`.tile[data-uuid='${uuid}'] .visibleBtn`
-		);
-		this.tilePreviewCanvas = document.querySelector(
-			`.tile[data-uuid='${uuid}'] canvas`
-		);
-		this.tilePreviewCanvas.height = stage.height;
-		this.tilePreviewCanvas.width = stage.width;
-		this.tilePreviewCtx = this.tilePreviewCanvas.getContext('2d');
+		this.tile.stageCanvas = this.element; //reference to related stage canvas
+		this.tilePreview.height = stage.height;
+		this.tilePreview.width = stage.width;
+		this.tilePreviewCtx = this.tilePreview.getContext('2d');
+		this.tile.uuid = uuid;
+		this.tile.layerName = name;
+		this.tile.layerTitle.textContent = this.tile.layerName;
 
 		//tile controls
-		this.tile.removeBtn = document.querySelector(
-			`.tile[data-uuid='${uuid}'] .removeBtn`
-		);
 		this.tile.addEventListener('click', (e) => {
 			e.stopPropagation();
 			stage.activeLayer = this;
@@ -77,12 +101,14 @@ class Layer extends Canvas {
 			layerPanel.toggleActive();
 			autoSave();
 		});
+
 		this.tile.removeBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			if (stage.layers.length <= 1) return; //alert here "must have atleast one layer"
 			statePanel.saveState('deleteLayer', this.state());
 			stage.deleteLayer(this);
 		});
+
 		this.tile.visibleBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			if (this.visible) {
@@ -99,33 +125,25 @@ class Layer extends Canvas {
 				toggleHidden(this.element);
 			}
 		});
+
 		this.tile.layerTitle.addEventListener('click', (e) => {
-			layerPanel.renameModalElement.dataset.name = this.tile.dataset.name;
+			layerPanel.renameModalElement.dataset.name = this.tile.layerName;
 		});
 	}
+
 	renameTile(newName) {
-		this.tile.dataset.name = newName;
+		this.tile.layerName = newName;
 		this.tile.layerTitle.textContent = newName;
 		this.name = newName;
 	}
 
 	updateTilePreview() {
-		this.tilePreviewCtx.clearRect(0, 0, stage.height, stage.width);
+		this.tilePreviewCtx.clearRect(
+			0,
+			0,
+			this.tilePreview.height,
+			this.tilePreview.width
+		);
 		this.tilePreviewCtx.drawImage(this.element, 0, 0);
-	}
-
-	layerIndex() {
-		return _.findIndex(stage.layers, (layer) => {
-			return layer === this;
-		});
-	}
-	state() {
-		return {
-			uuid: this.uuid,
-			zIndex: this.zIndex,
-			name: this.name,
-			imgDataUri: this.dataUri,
-			layerIndex: this.layerIndex(),
-		};
 	}
 }

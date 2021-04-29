@@ -1,27 +1,31 @@
-<div class="tile px-0 pb-2 pt-1 dropdown-item template" data-uuid="template">
-	<div class="d-flex flex-row">
-		<div class="layerControlContainer p-2">
-			<div class="removeBtn layerBtn" title="Delete Layer">
-				<span class="material-icons md-14"> close </span>
+<template id="tileTemplate">
+	<div class="tile px-0 pb-2 pt-1 dropdown-item">
+		<div class="d-flex flex-row">
+			<div class="layerControlContainer p-2">
+				<div class="removeBtn layerBtn" title="Delete Layer">
+					<span class="material-icons md-14"> close </span>
+				</div>
+				<div class="visibleBtn layerBtn">
+					<span class="material-icons md-14" title="Toggle Layer Visibility">
+						visibility
+					</span>
+				</div>
 			</div>
-			<div class="visibleBtn layerBtn">
-				<span class="material-icons md-14" title="Toggle Layer Visibility">
-					visibility
-				</span>
-			</div>
-		</div>
-		<div class="d-flex flex-column">
-			<div
-				class="layerTitle"
-				data-bs-toggle="modal"
-				data-bs-target="#renameTileModal"
-				title="Rename Layer"
-			>
-				<h6><span class="badge bg-dark">temp</span></h6>
-			</div>
-			<div class="tilePreview border border-2 bg-light">
-				<canvas class="pixel-canvas" height="10" width="10"></canvas>
+			<div class="d-flex flex-column">
+				<div
+					class="layerTitle"
+					data-bs-toggle="modal"
+					data-bs-target="#renameTileModal"
+					title="Rename Layer"
+				>
+					<h6>
+						<span class="badge bg-dark">temp</span>
+					</h6>
+				</div>
+				<div class="tilePreview border border-2 bg-light">
+					<canvas class="pixel-canvas" height="10" width="10"></canvas>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</template>
