@@ -1,13 +1,3 @@
-const templateElm = document.getElementById('tileTemplate');
-class LayerTile extends HTMLElement {
-	constructor() {
-		super();
-		this.attachShadow({ mode: 'open' });
-		this.shadowRoot.append(templateElm.content.cloneNode(true));
-	}
-}
-customElements.define('layer-tile', LayerTile);
-
 class Canvas {
 	constructor(uuid, zIndex) {
 		//Canvas Element for stage
@@ -70,6 +60,15 @@ class Canvas {
 		});
 	}
 }
+const templateElm = document.getElementById('tileTemplate');
+class LayerTile extends HTMLElement {
+	constructor() {
+		super();
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.appendChild(templateElm.content.cloneNode(true));
+	}
+}
+customElements.define('layer-tile', LayerTile);
 
 class Layer extends Canvas {
 	constructor(uuid, zIndex, name) {
@@ -77,21 +76,22 @@ class Layer extends Canvas {
 		this.name = name;
 		this.uuid = uuid;
 
-		//layer-tile Element
 		this.tile = document.createElement('layer-tile');
+		this.tile = this.tile.shadowRoot.querySelector('.tile');
+		this.tile.stageCanvas = this.element; //reference to related stage canvas
+		this.tile.layerName = name;
+		this.tile.uuid = uuid;
+		//layer-tile Element
 		this.tileContainer = document.querySelector('#tileContainer');
 		this.layerTitle = this.tile.querySelector(`.layerTitle span`);
 		this.visibleBtn = this.tile.querySelector(`.visibleBtn`);
 		this.removeBtn = this.tile.querySelector(`.removeBtn`);
 		this.tilePreview = this.tile.querySelector('canvas');
 		this.tileContainer.append(this.tile);
-		this.tile.stageCanvas = this.element; //reference to related stage canvas
 		this.tilePreview.height = stage.height;
 		this.tilePreview.width = stage.width;
 		this.tilePreviewCtx = this.tilePreview.getContext('2d');
-		this.tile.uuid = uuid;
-		this.tile.layerName = name;
-		this.tile.layerTitle.textContent = this.tile.layerName;
+		this.layerTitle.textContent = this.tile.layerName;
 
 		//tile controls
 		this.tile.addEventListener('click', (e) => {
@@ -102,38 +102,38 @@ class Layer extends Canvas {
 			autoSave();
 		});
 
-		this.tile.removeBtn.addEventListener('click', (e) => {
+		this.removeBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			if (stage.layers.length <= 1) return; //alert here "must have atleast one layer"
-			statePanel.saveState('deleteLayer', this.state());
+			statePanel.saveState('deleteLayer', this.state);
 			stage.deleteLayer(this);
 		});
 
-		this.tile.visibleBtn.addEventListener('click', (e) => {
+		this.visibleBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			if (this.visible) {
 				this.visible = false;
-				this.tile.visibleBtn.innerHTML = `<span class="material-icons md-14">
+				this.visibleBtn.innerHTML = `<span class="material-icons md-14">
 		visibility_off
 		</span>`;
 				toggleHidden(this.element);
 			} else {
 				this.visible = true;
-				this.tile.visibleBtn.innerHTML = `<span class="material-icons md-14">
+				this.visibleBtn.innerHTML = `<span class="material-icons md-14">
 		visibility
 		</span>`;
 				toggleHidden(this.element);
 			}
 		});
 
-		this.tile.layerTitle.addEventListener('click', (e) => {
+		this.layerTitle.addEventListener('click', (e) => {
 			layerPanel.renameModalElement.dataset.name = this.tile.layerName;
 		});
 	}
 
 	renameTile(newName) {
 		this.tile.layerName = newName;
-		this.tile.layerTitle.textContent = newName;
+		this.layerTitle.textContent = newName;
 		this.name = newName;
 	}
 

@@ -69,8 +69,9 @@ const layerPanel = {
 		}
 
 		if (this.activeTile) {
+			console.log(this.activeTile);
 			this.activeTile.classList.toggle('active');
-			this.layerMenuBtn.innerText = this.activeTile.dataset.name;
+			this.layerMenuBtn.innerText = this.activeTile.name;
 
 			this.updateLayerPview();
 		}
