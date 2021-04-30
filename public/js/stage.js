@@ -240,6 +240,16 @@ const stage = {
 		this.layersDiv.appendChild(canvas.element);
 	},
 
+	appendToTileContainer(tile, index) {
+		let container = layerPanel.tileContainer;
+
+		if (index == undefined) container.append(tile);
+		else {
+			let children = container.children;
+			container.insertBefore(tile, children[index]);
+		}
+	},
+
 	updateZIndexes() {
 		for (let i = 0; i < this.layers.length; i++) {
 			let canvas = this.layers[i];
@@ -295,12 +305,14 @@ const stage = {
 	},
 
 	restoreLayer(layerData) {
-		const { uuid, zIndex, name, imgDataUri, layerIndex } = layerData;
+		const { uuid, zIndex, name, imgDataUri, layerIndex, tileIndex } = layerData;
 		let layer = new Layer(uuid, zIndex, name);
 		this.layers.splice(layerIndex, 0, layer);
 		this.appendToLayerDiv(layer);
+		this.appendToTileContainer(layer.layerTile, tileIndex);
 		if (imgDataUri) layer.renderCanvas(imgDataUri);
 		this.setActiveLayer(layer);
+
 		return layer;
 	},
 };
