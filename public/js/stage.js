@@ -218,14 +218,14 @@ const stage = {
 		_.each(stage.layers, (layer) => {
 			if (
 				layer != this.activeLayer &&
-				layer.tileDiv.classList.contains('active')
+				layer.layerTile.classList.contains('active')
 			) {
-				layer.tileDiv.classList.toggle('active');
+				layer.layerTile.classList.toggle('active');
 			} else if (
 				layer === this.activeLayer &&
-				!layer.tileDiv.classList.contains('active')
+				!layer.layerTile.classList.contains('active')
 			) {
-				layer.tileDiv.classList.toggle('active');
+				layer.layerTile.classList.toggle('active');
 			}
 		});
 	},

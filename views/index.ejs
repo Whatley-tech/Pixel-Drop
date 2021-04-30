@@ -23,11 +23,6 @@
 		<title>PixelDrop</title>
 	</head>
 	<body>
-		<div id="draglist">
-			<div class="item"><div>asdf</div></div>
-			<div class="item"><div>adbafbad</div></div>
-			<div class="item"><div>asdasdf</div></div>
-		</div>
 		<div id="mainContainer" class="container">
 			<div id="canvasNavPanel" class="row my-3">
 				<div id="canvasOptions" class="col-lg-2 btn-group btn-group-sm">
@@ -86,7 +81,7 @@
 								</button>
 
 								<div id="layerMenu" aria-labelledby="layerMenu">
-									<div id="tileContainer"><%- include('tileTemplate') %></div>
+									<div id="tileContainer"></div>
 									<div id="newLayerBtn" class="px-1 pb-2 pt-1">
 										<span class="material-icons"> add </span>
 									</div>
@@ -255,6 +250,7 @@
 			</div>
 		</div>
 
+		<%- include('tileTemplate') %>
 		<!-- modals -->
 		<%- include('newCanvasModal') %>
 		<!-- custom new canvas -->

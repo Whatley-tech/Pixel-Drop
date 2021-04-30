@@ -2,7 +2,6 @@
 const layerPanel = {
 	newLayerBtn: document.querySelector('#newLayerBtn'),
 	tileContainer: document.querySelector('#tileContainer'),
-	tileTemplate: document.querySelector(`.tile[data-uuid='template']`),
 	activeLayerPreview: document.querySelector('#activeLayerPreview'),
 	layerMenuBtn: document.getElementById('layerMenuBtn'),
 	layerPanel: document.querySelector('#layerPanel'),
@@ -15,9 +14,9 @@ const layerPanel = {
 	tileRenameInput: document.querySelector('#tileRenameInput'),
 	renameBtn: document.querySelector('#renameBtn'),
 	// draglist: document.querySelector('#draglist'),
-	sortable: new Sortable(tileTemplate, {
+	sortable: new Sortable(tileContainer, {
 		animation: 150,
-		draggable: '.item',
+		draggable: '.layer-tile',
 	}),
 
 	get tileCount() {

@@ -35,11 +35,11 @@
 .layerBtn {
 	cursor: pointer;
 }
-.tile {
+.layer-tile {
 	cursor: grab;
 	border-bottom: 2px solid rgb(160, 160, 160);
 }
-.tile:active {
+.layer-tile:active {
 	cursor: grabbing;
 }
 .layerTitle {
