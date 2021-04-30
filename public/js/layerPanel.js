@@ -14,7 +14,12 @@ const layerPanel = {
 	renameModalElement: document.querySelector('#renameTileModal'),
 	tileRenameInput: document.querySelector('#tileRenameInput'),
 	renameBtn: document.querySelector('#renameBtn'),
-	activeTile: undefined,
+	// draglist: document.querySelector('#draglist'),
+	sortable: new Sortable(tileContainer, {
+		group: 'layerTiles',
+		animation: 150,
+		draggable: '.drag-item',
+	}),
 
 	get tileCount() {
 		return this.tileContainer.children.length;

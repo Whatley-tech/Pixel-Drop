@@ -81,6 +81,7 @@ class Layer extends Canvas {
 		//create layer-tile element, append, set properties
 		this.tileContainer = document.querySelector('#tileContainer');
 		this.layerTile = document.createElement('layer-tile');
+		this.layerTile.classList.add('drag-item');
 		this.tileContainer.append(this.layerTile);
 		this.layerTile.name = name;
 		this.layerTile.uuid = uuid;
