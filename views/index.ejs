@@ -23,11 +23,11 @@
 		<title>PixelDrop</title>
 	</head>
 	<body>
-		<ul id="draglist">
-			<li class="item">one</li>
-			<li class="item">two</li>
-			<li class="item">three</li>
-		</ul>
+		<div id="draglist">
+			<div class="item"><div>asdf</div></div>
+			<div class="item"><div>adbafbad</div></div>
+			<div class="item"><div>asdasdf</div></div>
+		</div>
 		<div id="mainContainer" class="container">
 			<div id="canvasNavPanel" class="row my-3">
 				<div id="canvasOptions" class="col-lg-2 btn-group btn-group-sm">
@@ -76,23 +76,18 @@
 							id="layerPanelContainer"
 							class="mb-2 d-flex flex-column panel shadow-sm border border-2 p-1"
 						>
-							<div id="layerPanel" class="dropend d-grid p-1">
+							<div id="layerPanel" class="d-grid p-1">
 								<button
-									class="btn btn-secondary dropdown-toggle border border-1 border-dark shadow-sm"
+									class="btn btn-secondary border border-1 border-dark shadow-sm"
 									type="button"
 									id="layerMenuBtn"
-									data-bs-toggle="dropdown"
 								>
 									Layers
 								</button>
 
-								<div
-									id="layerMenu"
-									class="dropdown-menu"
-									aria-labelledby="layerMenu"
-								>
+								<div id="layerMenu" aria-labelledby="layerMenu">
 									<div id="tileContainer"><%- include('tileTemplate') %></div>
-									<div id="newLayerBtn" class="px-1 pb-2 pt-1 dropdown-item">
+									<div id="newLayerBtn" class="px-1 pb-2 pt-1">
 										<span class="material-icons"> add </span>
 									</div>
 								</div>

@@ -15,10 +15,9 @@ const layerPanel = {
 	tileRenameInput: document.querySelector('#tileRenameInput'),
 	renameBtn: document.querySelector('#renameBtn'),
 	// draglist: document.querySelector('#draglist'),
-	sortable: new Sortable(tileContainer, {
-		group: 'layerTiles',
+	sortable: new Sortable(tileTemplate, {
 		animation: 150,
-		draggable: '.drag-item',
+		draggable: '.item',
 	}),
 
 	get tileCount() {
