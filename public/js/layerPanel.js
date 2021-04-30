@@ -1,4 +1,3 @@
-//logic for the layerPanel functionality
 const layerPanel = {
 	newLayerBtn: document.querySelector('#newLayerBtn'),
 	tileContainer: document.querySelector('#tileContainer'),
@@ -13,10 +12,12 @@ const layerPanel = {
 	renameModalElement: document.querySelector('#renameTileModal'),
 	tileRenameInput: document.querySelector('#tileRenameInput'),
 	renameBtn: document.querySelector('#renameBtn'),
-	// draglist: document.querySelector('#draglist'),
 	sortable: new Sortable(tileContainer, {
-		animation: 150,
+		animation: 200,
 		draggable: '.layer-tile',
+		easing: 'cubic-bezier(1, 0, 0, 1)',
+		swapThreshold: 0.9,
+		ghostClass: 'blue-background-class',
 	}),
 
 	get tileCount() {
