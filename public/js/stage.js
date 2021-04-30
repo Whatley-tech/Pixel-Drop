@@ -267,14 +267,13 @@ const stage = {
 	},
 
 	deleteLayer(layer) {
-		const deletedLayer = this.findLayer(layer, 'uuid');
+		let deletedLayer = _.find(stage.layers, (l) => l.uuid === layer.uuid);
 		_.remove(this.layers, deletedLayer);
 		deletedLayer.element.remove();
-		deletedLayer.tile.remove();
-		if (deletedLayer.tile === layerPanel.activeTile) {
+		deletedLayer.layerTile.remove();
+		if (deletedLayer === this.activeLayer) {
 			this.setActiveLayer(_.last(this.layers));
 		}
-		layerPanel.updateTiles();
 		autoSave();
 	},
 

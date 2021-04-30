@@ -70,11 +70,9 @@ class Layer extends Canvas {
 		//create layer-tile element, append, set properties
 		this.tileContainer = document.querySelector('#tileContainer');
 		this.layerTemplate = document.getElementById('layerTemplate');
-		console.log(this.layerTemplate);
 		this.layerTile = this.layerTemplate.content.firstElementChild.cloneNode(
 			true
 		);
-		console.log(this.layerTile);
 		this.tileContainer.append(this.layerTile);
 		this.layerTile.name = name;
 		this.layerTile.uuid = uuid;
@@ -95,7 +93,6 @@ class Layer extends Canvas {
 		this.layerTile.addEventListener('click', (e) => {
 			e.stopPropagation();
 			stage.setActiveLayer(this);
-			// layerPanel.toggleActive();
 			autoSave();
 		});
 
