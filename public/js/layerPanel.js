@@ -23,18 +23,7 @@ const layerPanel = {
 	init() {
 		this.updateTiles();
 		this.addLayerPanelListeners();
-		this.toggleActive();
 		this.setLayerPviewDim();
-		$('#tileContainer').sortable({
-			stop: (event, ui) => {
-				const movedTile = ui.item[0];
-				const layer = _.find(stage.layers, (layer) => {
-					return layer.tile == movedTile;
-				});
-				statePanel.saveState('arrangeLayer', layer.state());
-				stage.moveLayer(layer);
-			},
-		});
 	},
 
 	setLayerPviewDim() {
@@ -48,33 +37,15 @@ const layerPanel = {
 		});
 
 		_.eachRight(stage.layers, (layer) => {
-			this.tileContainer.appendChild(layer.tile);
+			this.tileContainer.appendChild(layer.layerTile);
 		});
 
-		this.toggleActive();
+		stage.toggleActive();
 	},
 
 	updateLayerPview() {
 		this.layerPviewCtx.clearRect(0, 0, stage.width, stage.height);
 		this.layerPviewCtx.drawImage(stage.activeLayer.element, 0, 0);
-	},
-
-	toggleActive() {
-		const currentlyActive = document.querySelectorAll('#tileContainer .active');
-
-		if (currentlyActive.length) {
-			_.each(currentlyActive, (node) => {
-				node.classList.toggle('active');
-			});
-		}
-
-		if (this.activeTile) {
-			console.log(this.activeTile);
-			this.activeTile.classList.toggle('active');
-			this.layerMenuBtn.innerText = this.activeTile.name;
-
-			this.updateLayerPview();
-		}
 	},
 
 	addLayerPanelListeners() {
