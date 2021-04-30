@@ -119,3 +119,7 @@
 .card {
 	width: 14rem;
 }
+#layerMenu {
+	max-height: 350px;
+	overflow-y: scroll;
+}

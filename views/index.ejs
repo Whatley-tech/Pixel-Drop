@@ -71,16 +71,21 @@
 							id="layerPanelContainer"
 							class="mb-2 d-flex flex-column panel shadow-sm border border-2 p-1"
 						>
-							<div id="layerPanel" class="d-grid p-1">
+							<div id="layerPanel" class="d-grid p-1 dropup">
 								<button
-									class="btn btn-secondary border border-1 border-dark shadow-sm"
+									class="btn btn-secondary dropdown-toggle border border-1 border-dark shadow-sm"
 									type="button"
 									id="layerMenuBtn"
+									data-bs-toggle="dropdown"
 								>
 									Layers
 								</button>
 
-								<div id="layerMenu" aria-labelledby="layerMenu">
+								<div
+									id="layerMenu"
+									class="dropdown-menu"
+									aria-labelledby="layerMenu"
+								>
 									<div id="tileContainer"></div>
 									<div id="newLayerBtn" class="px-1 pb-2 pt-1">
 										<span class="material-icons"> add </span>
