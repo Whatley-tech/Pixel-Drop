@@ -10,7 +10,7 @@ class ActionState {
 	}
 
 	get currentState() {
-		return this.layer.state();
+		return this.layer.state;
 	}
 }
 

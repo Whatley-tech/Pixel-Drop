@@ -42,7 +42,7 @@ const saveSessionStates = function () {
 const saveSessionLayers = function () {
 	const prevActiveLayer = stage.activeLayer.uuid;
 	const saveData = _.map(stage.layers, (layer) => {
-		return layer.state();
+		return layer.state;
 	});
 
 	saveSessionItem('prevActiveLayer', prevActiveLayer);

@@ -40,7 +40,7 @@ const stage = {
 	attachStageListeners() {
 		this.mainDiv.addEventListener('mousedown', (e) => {
 			if (toolsPanel.activeTool.undoAble) {
-				statePanel.saveState('toolAction', this.activeLayer.state());
+				statePanel.saveState('toolAction', this.activeLayer.state);
 			}
 			statePanel.clearRedos();
 			toolsPanel.activeTool.isDrawing = true;
@@ -122,7 +122,7 @@ const stage = {
 	clearLayers() {
 		_.each(this.layers, (layer) => {
 			layer.element.remove();
-			layer.tile.remove();
+			layer.layerTile.remove();
 		});
 		_.remove(stage.layers);
 	},
@@ -209,10 +209,25 @@ const stage = {
 		return layer;
 	},
 
-	setActiveLayer(layer) {
-		this.activeLayer = layer;
-		layerPanel.activeTile = layer.tile;
-		layerPanel.updateTiles();
+	setActiveLayer(activeLayer) {
+		this.activeLayer = activeLayer;
+		this.toggleActive();
+	},
+
+	toggleActive() {
+		_.each(stage.layers, (layer) => {
+			if (
+				layer != this.activeLayer &&
+				layer.tileDiv.classList.contains('active')
+			) {
+				layer.tileDiv.classList.toggle('active');
+			} else if (
+				layer === this.activeLayer &&
+				!layer.tileDiv.classList.contains('active')
+			) {
+				layer.tileDiv.classList.toggle('active');
+			}
+		});
 	},
 
 	appendToStageDiv(canvas) {

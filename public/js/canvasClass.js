@@ -60,12 +60,13 @@ class Canvas {
 		});
 	}
 }
-const templateElm = document.getElementById('tileTemplate');
+
+const tileTemplate = document.getElementById('tileTemplate');
 class LayerTile extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: 'open' });
-		this.shadowRoot.appendChild(templateElm.content.cloneNode(true));
+		this.shadowRoot.appendChild(tileTemplate.content.cloneNode(true));
 	}
 }
 customElements.define('layer-tile', LayerTile);
@@ -73,32 +74,36 @@ customElements.define('layer-tile', LayerTile);
 class Layer extends Canvas {
 	constructor(uuid, zIndex, name) {
 		super(uuid, zIndex, name);
-		this.name = name;
-		this.uuid = uuid;
 
-		this.tile = document.createElement('layer-tile');
-		this.tile = this.tile.shadowRoot.querySelector('.tile');
-		this.tile.stageCanvas = this.element; //reference to related stage canvas
-		this.tile.layerName = name;
-		this.tile.uuid = uuid;
-		//layer-tile Element
+		this.uuid = uuid;
+		this.name = name;
+
+		//create layer-tile element, append, set properties
 		this.tileContainer = document.querySelector('#tileContainer');
-		this.layerTitle = this.tile.querySelector(`.layerTitle span`);
-		this.visibleBtn = this.tile.querySelector(`.visibleBtn`);
-		this.removeBtn = this.tile.querySelector(`.removeBtn`);
-		this.tilePreview = this.tile.querySelector('canvas');
-		this.tileContainer.append(this.tile);
+		this.layerTile = document.createElement('layer-tile');
+		this.tileContainer.append(this.layerTile);
+		this.layerTile.name = name;
+		this.layerTile.uuid = uuid;
+		this.layerTile.stageCanvas = this.element; //reference to related stage canvas
+
+		//select layer-tile shadowroot, root elements selected, set properties
+		this.tileShadowRoot = this.layerTile.shadowRoot;
+		this.tileDiv = this.tileShadowRoot.querySelector('.tile');
+		this.layerTitle = this.tileShadowRoot.querySelector('.layerTitle span');
+		this.visibleBtn = this.tileShadowRoot.querySelector('.visibleBtn');
+		this.removeBtn = this.tileShadowRoot.querySelector('.removeBtn');
+		this.tilePreview = this.tileShadowRoot.querySelector('canvas');
+
 		this.tilePreview.height = stage.height;
 		this.tilePreview.width = stage.width;
 		this.tilePreviewCtx = this.tilePreview.getContext('2d');
-		this.layerTitle.textContent = this.tile.layerName;
+		this.layerTitle.textContent = this.name;
 
 		//tile controls
-		this.tile.addEventListener('click', (e) => {
+		this.layerTile.addEventListener('click', (e) => {
 			e.stopPropagation();
-			stage.activeLayer = this;
-			layerPanel.activeTile = this.tile;
-			layerPanel.toggleActive();
+			stage.setActiveLayer(this);
+			// layerPanel.toggleActive();
 			autoSave();
 		});
 
