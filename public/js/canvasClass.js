@@ -61,16 +61,6 @@ class Canvas {
 	}
 }
 
-const tileTemplate = document.getElementById('tileTemplate');
-class LayerTile extends HTMLElement {
-	constructor() {
-		super();
-		this.attachShadow({ mode: 'open' });
-		this.shadowRoot.appendChild(tileTemplate.content.cloneNode(true));
-	}
-}
-customElements.define('layer-tile', LayerTile);
-
 class Layer extends Canvas {
 	constructor(uuid, zIndex, name) {
 		super(uuid, zIndex, name);
@@ -80,27 +70,29 @@ class Layer extends Canvas {
 
 		//create layer-tile element, append, set properties
 		this.tileContainer = document.querySelector('#tileContainer');
-		this.layerTile = document.createElement('layer-tile');
-		this.layerTile.classList.add('drag-item');
+		this.layerTemplate = document.getElementById('layerTemplate');
+		console.log(this.layerTemplate);
+		this.layerTile = this.layerTemplate.content.firstElementChild.cloneNode(
+			true
+		);
+		console.log(this.layerTile);
 		this.tileContainer.append(this.layerTile);
 		this.layerTile.name = name;
 		this.layerTile.uuid = uuid;
 		this.layerTile.stageCanvas = this.element; //reference to related stage canvas
 
-		//select layer-tile shadowroot, root elements selected, set properties
-		this.tileShadowRoot = this.layerTile.shadowRoot;
-		this.tileDiv = this.tileShadowRoot.querySelector('.tile');
-		this.layerTitle = this.tileShadowRoot.querySelector('.layerTitle span');
-		this.visibleBtn = this.tileShadowRoot.querySelector('.visibleBtn');
-		this.removeBtn = this.tileShadowRoot.querySelector('.removeBtn');
-		this.tilePreview = this.tileShadowRoot.querySelector('canvas');
+		//select layer-tile elements, set properties
+		this.layerTitle = this.layerTile.querySelector('.layerTitle span');
+		this.visibleBtn = this.layerTile.querySelector('.visibleBtn');
+		this.removeBtn = this.layerTile.querySelector('.removeBtn');
+		this.tilePreview = this.layerTile.querySelector('canvas');
 
 		this.tilePreview.height = stage.height;
 		this.tilePreview.width = stage.width;
 		this.tilePreviewCtx = this.tilePreview.getContext('2d');
 		this.layerTitle.textContent = this.name;
 
-		//tile controls
+		//tile control events
 		this.layerTile.addEventListener('click', (e) => {
 			e.stopPropagation();
 			stage.setActiveLayer(this);
