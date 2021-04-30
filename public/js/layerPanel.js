@@ -34,17 +34,17 @@ const layerPanel = {
 		this.layerPview.height = stage.height;
 	},
 
-	updateTiles() {
-		_.each(this.tileContainer.children, (child) => {
-			if (child) child.remove();
-		});
+	// updateTiles() {
+	// 	_.each(this.tileContainer.children, (child) => {
+	// 		if (child) child.remove();
+	// 	});
 
-		_.eachRight(stage.layers, (layer) => {
-			this.tileContainer.appendChild(layer.layerTile);
-		});
+	// 	_.eachRight(stage.layers, (layer) => {
+	// 		this.tileContainer.appendChild(layer.layerTile);
+	// 	});
 
-		stage.toggleActive();
-	},
+	// 	stage.toggleActive();
+	// },
 
 	updateLayerPview() {
 		this.layerPviewCtx.clearRect(0, 0, stage.width, stage.height);

@@ -29,9 +29,7 @@ class Canvas {
 	}
 
 	get layerIndex() {
-		return _.findIndex(stage.layers, (layer) => {
-			return layer === this;
-		});
+		return _.findIndex(stage.layers, this);
 	}
 
 	get state() {
@@ -41,6 +39,7 @@ class Canvas {
 			name: this.name,
 			imgDataUri: this.dataUri,
 			layerIndex: this.layerIndex,
+			tileIndex: this.tileIndex,
 		};
 	}
 
@@ -123,6 +122,11 @@ class Layer extends Canvas {
 		this.layerTitle.addEventListener('click', (e) => {
 			layerPanel.renameModalElement.dataset.name = this.tile.name;
 		});
+	}
+	get tileIndex() {
+		let container = this.tileContainer;
+		let children = container.children;
+		return _.indexOf(children, this.layerTile);
 	}
 
 	renameTile(newName) {
