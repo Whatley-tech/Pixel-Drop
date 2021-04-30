@@ -209,7 +209,7 @@ const stage = {
 		return layer;
 	},
 
-	setActiveLayer(activeLayer) {
+	setActiveLayer(activeLayer = this.activeLayer) {
 		this.activeLayer = activeLayer;
 		this.toggleActive();
 	},

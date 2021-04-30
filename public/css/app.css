@@ -4,7 +4,13 @@
 .template {
 	display: none !important;
 }
+#layerMenu {
+	position: relative;
+}
 #newLayerBtn {
+	bottom: -10px;
+
+	position: sticky;
 	cursor: pointer;
 }
 #stage {
@@ -38,6 +44,9 @@
 .layer-tile {
 	cursor: grab;
 	border-bottom: 2px solid rgb(160, 160, 160);
+}
+.ghost-class {
+	background-color: lightskyblue;
 }
 .layer-tile:active {
 	cursor: grabbing;
@@ -120,6 +129,7 @@
 	width: 14rem;
 }
 #layerMenu {
-	max-height: 350px;
+	/* min-height: fit-content; */
+	max-height: 400px;
 	overflow-y: scroll;
 }

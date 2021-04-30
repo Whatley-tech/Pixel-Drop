@@ -65,7 +65,6 @@ class Layer extends Canvas {
 	constructor(uuid, zIndex, name) {
 		super(uuid, zIndex, name);
 
-		this.uuid = uuid;
 		this.name = name;
 
 		//create layer-tile element, append, set properties
@@ -125,12 +124,12 @@ class Layer extends Canvas {
 		});
 
 		this.layerTitle.addEventListener('click', (e) => {
-			layerPanel.renameModalElement.dataset.name = this.tile.layerName;
+			layerPanel.renameModalElement.dataset.name = this.tile.name;
 		});
 	}
 
 	renameTile(newName) {
-		this.tile.layerName = newName;
+		this.layerTile.name = newName;
 		this.layerTitle.textContent = newName;
 		this.name = newName;
 	}

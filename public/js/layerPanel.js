@@ -16,8 +16,8 @@ const layerPanel = {
 		animation: 200,
 		draggable: '.layer-tile',
 		easing: 'cubic-bezier(1, 0, 0, 1)',
-		swapThreshold: 0.9,
-		ghostClass: 'blue-background-class',
+		swapThreshold: 0.7,
+		ghostClass: 'ghost-class',
 	}),
 
 	get tileCount() {
@@ -25,7 +25,6 @@ const layerPanel = {
 	},
 
 	init() {
-		this.updateTiles();
 		this.addLayerPanelListeners();
 		this.setLayerPviewDim();
 	},
