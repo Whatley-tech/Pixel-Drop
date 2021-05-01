@@ -104,7 +104,6 @@ const stage = {
 		if (!stage.sessionStorage) {
 			this.newLayer().then((layer) => {
 				this.setActiveLayer(layer);
-				this.updateZIndexes();
 			});
 		}
 		this.appIsInit = true;
@@ -204,8 +203,10 @@ const stage = {
 	) {
 		let layer = await this.makeLayer(uuid, zIndex, name);
 		this.appendToLayerDiv(layer);
-		this.layers.push(layer);
+		this.appendToTileContainer(layer.layerTile, 0);
+		this.layers.unshift(layer);
 		if (imgDataUri) await layer.renderCanvas(imgDataUri);
+		this.updateZIndexes();
 		return layer;
 	},
 
@@ -251,10 +252,13 @@ const stage = {
 	},
 
 	updateZIndexes() {
-		for (let i = 0; i < this.layers.length; i++) {
+		const layerCount = this.layers.length;
+		let z = 1; //z index starts at one to stay above bg canvas
+		for (let i = layerCount - 1; i >= 0; i--) {
+			z++;
 			let canvas = this.layers[i];
-			canvas.element.style.zIndex = i + 1;
-			canvas.zIndex = i + 1;
+			canvas.element.style.zIndex = z;
+			canvas.zIndex = z;
 		}
 	},
 
@@ -287,20 +291,16 @@ const stage = {
 		autoSave();
 	},
 
-	moveIndex(moveToIndex, moveFromIndex) {
-		element = this.layers[moveFromIndex];
-		this.layers.splice(moveFromIndex, 1);
-		this.layers.splice(moveToIndex, 0, element);
+	moveIndex(oldIndex, newIndex) {
+		layer = this.layers[oldIndex];
+		this.layers.splice(oldIndex, 1);
+		this.layers.splice(newIndex, 0, layer);
+		stage.updateZIndexes();
 	},
 
-	moveLayer(movedLayer) {
-		let tiles = [...layerPanel.tileContainer.children];
-		_.reverse(tiles);
-		const currentTileIndex = this.findArrayIndex(tiles, movedLayer.tile);
-		const currentLayerIndex = movedLayer.layerIndex();
-		this.moveIndex(currentTileIndex, currentLayerIndex);
-		this.updateZIndexes();
-		layerPanel.updateTiles();
+	moveLayer(oldIndex, newIndex) {
+		console.log(oldIndex, newIndex);
+		this.moveIndex(oldIndex, newIndex);
 		autoSave();
 	},
 

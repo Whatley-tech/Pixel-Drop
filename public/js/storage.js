@@ -4,6 +4,7 @@ const autoSave = function () {
 	saveSessionColors();
 	saveSessionStates();
 	stage.sessionStorage = true;
+	console.log('saved');
 };
 
 const checkStorage = function () {

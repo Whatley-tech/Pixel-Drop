@@ -17,6 +17,9 @@ const layerPanel = {
 		easing: 'cubic-bezier(1, 0, 0, 1)',
 		swapThreshold: 0.7,
 		ghostClass: 'ghost-class',
+		onEnd: (evt) => {
+			stage.moveLayer(evt.oldIndex, evt.newIndex);
+		},
 	}),
 
 	get tileCount() {
@@ -45,7 +48,6 @@ const layerPanel = {
 
 			stage.newLayer().then((layer) => {
 				stage.setActiveLayer(layer);
-				stage.updateZIndexes();
 				statePanel.saveState('newLayer', layer.state);
 				autoSave();
 			});

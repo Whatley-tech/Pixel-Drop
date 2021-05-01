@@ -72,7 +72,6 @@ class Layer extends Canvas {
 		this.layerTile = this.layerTemplate.content.firstElementChild.cloneNode(
 			true
 		);
-		this.tileContainer.append(this.layerTile);
 		this.layerTile.name = name;
 		this.layerTile.uuid = uuid;
 		this.layerTile.stageCanvas = this.element; //reference to related stage canvas
