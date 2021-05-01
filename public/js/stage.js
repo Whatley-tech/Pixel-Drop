@@ -73,6 +73,7 @@ const stage = {
 		this.height = height;
 		this.width = width;
 		this.resizeStage();
+		hotkeys.setScope('stage');
 
 		this.mergedView = this.makeCanvas('mergedView', 0);
 		this.appendToStageDiv(this.mergedView);

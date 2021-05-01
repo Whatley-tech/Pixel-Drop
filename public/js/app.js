@@ -30,6 +30,13 @@ customCanvasModalElm.addEventListener('shown.bs.modal', function () {
 	canvasWidthInput.focus();
 });
 
+newCanvasModalElm.addEventListener('hide.bs.modal', () =>
+	hotkeys.setScope('stage')
+);
+newCanvasModalElm.addEventListener('shown.bs.modal', () =>
+	hotkeys.setScope('modal')
+);
+
 customCanvasForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	clearSessionStorage();

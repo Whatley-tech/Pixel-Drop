@@ -1,17 +1,17 @@
-document.addEventListener('keydown', (e) => {
-	if (e.key == 'z') statePanel.undoBtn.click();
-	if (e.key == 'y') statePanel.redoBtn.click();
-	if (e.key == 'f') toolsPanel.brushBtn.click();
-	if (e.key == 'd') toolsPanel.eraserBtn.click();
-	if (e.key == 'v') toolsPanel.moveToolBtn.click();
-	if (e.key == 'a') toolsPanel.eyeDropBtn.click();
-	if (e.key == 'g') toolsPanel.fillToolBtn.click();
-	if (e.key == 'e') {
-		toolsPanel.toolSizeSlider.value--;
-		toolsPanel.toolSizeSlider.click();
-	}
-	if (e.key == 'r') {
-		toolsPanel.toolSizeSlider.value++;
-		toolsPanel.toolSizeSlider.click();
-	}
+hotkeys('z', 'stage', () => statePanel.undoBtn.click());
+hotkeys('y', 'stage', () => statePanel.redoBtn.click());
+hotkeys('f', 'stage', () => toolsPanel.brushBtn.click());
+hotkeys('d', 'stage', () => toolsPanel.eraserBtn.click());
+hotkeys('v', 'stage', () => toolsPanel.moveToolBtn.click());
+hotkeys('a', 'stage', () => toolsPanel.eyeDropBtn.click());
+hotkeys('g', 'stage', () => toolsPanel.fillToolBtn.click());
+hotkeys('e', 'stage', () => {
+	toolsPanel.toolSizeSlider.value--;
+	toolsPanel.toolSizeSlider.click();
 });
+hotkeys('r', 'stage', () => {
+	toolsPanel.toolSizeSlider.value++;
+	toolsPanel.toolSizeSlider.click();
+});
+
+hotkeys('*', 'modal', () => {});

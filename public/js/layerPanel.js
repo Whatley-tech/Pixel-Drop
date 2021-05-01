@@ -61,10 +61,14 @@ const layerPanel = {
 		this.renameModalElement.addEventListener('shown.bs.modal', (e) => {
 			const currentName = this.renameModalElement.name;
 			this.tileRenameInput.placeholder = currentName;
+			this.tileRenameInput.focus();
+			hotkeys.setScope('modal');
 		});
 
 		this.renameModalElement.addEventListener('hide.bs.modal', (e) => {
+			this.tileRenameInput.placeholder = '';
 			this.tileRenameInput.value = '';
+			hotkeys.setScope('stage');
 		});
 
 		this.tileRenameForm.addEventListener('submit', (e) => {
