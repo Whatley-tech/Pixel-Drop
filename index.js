@@ -34,13 +34,10 @@ app.post('/SVG', (req, res) => {
 	makeSvg();
 });
 
-app.get('/tiletest', (req, res) => {
-	res.render('tileTest');
-});
-
 const writeSvgElmToFile = async (svgElm) => {
 	return await fs.promises.writeFile('public/img/test.svg', svgElm);
 };
+
 const getFileStats = async (path) => {
 	const file = await fs.promises.open(path);
 	const stats = await file.stat();
