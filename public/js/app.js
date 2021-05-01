@@ -1,9 +1,8 @@
-const customCanvasModalElm = document.querySelector('#customCanvasModal'),
-	customCanvasModal = new bootstrap.Modal(customCanvasModalElm),
-	newCanvasModalElm = document.querySelector('#newCanvasModal'),
+const newCanvasModalElm = document.querySelector('#newCanvasModal'),
 	newCanvasModal = new bootstrap.Modal(newCanvasModalElm),
 	newCanvasBtn = document.querySelector('#newCanvasBtn'),
 	customCanvasForm = document.querySelector('#customCanvasForm'),
+	customCanvasBtn = document.querySelector('#customCanvasBtn'),
 	exportCanvasModalElm = document.querySelector('#exportCanvasModal'),
 	exportCanvasModal = new bootstrap.Modal(exportCanvasModalElm),
 	exportBtn = document.querySelector('#exportBtn'),
@@ -26,36 +25,33 @@ dayNightBtn.addEventListener('click', () => {
 	document.body.classList.toggle('bg-dark');
 });
 
-customCanvasModalElm.addEventListener('shown.bs.modal', function () {
-	canvasWidthInput.focus();
-});
-
 newCanvasModalElm.addEventListener('hide.bs.modal', () =>
 	hotkeys.setScope('stage')
 );
+
 newCanvasModalElm.addEventListener('shown.bs.modal', () =>
 	hotkeys.setScope('modal')
 );
 
-customCanvasForm.addEventListener('submit', (e) => {
-	e.preventDefault();
+const resetApp = function (width, height) {
 	clearSessionStorage();
 	stage.reset();
 	colorPanel.reset();
-	customCanvasModal.toggle();
+	initApp(width, height);
 	newCanvasModal.toggle();
-	initApp(canvasWidthInput.value, canvasHeightInput.value);
-	canvasHeightInput.value = null;
-	canvasWidthInput.value = null;
+};
+customCanvasForm.addEventListener('submit', (e) => {
+	e.preventDefault();
+	const width = canvasWidthInput.value;
+	const height = canvasHeightInput.value;
+	canvasWidthInput.value = '';
+	canvasHeightInput.value = '';
+	resetApp(width, height);
 });
 
 _.each(createCanvasBtn, (btn) =>
 	btn.addEventListener('click', () => {
-		clearSessionStorage();
-		stage.reset();
-		colorPanel.reset();
-		initApp(btn.dataset.width, btn.dataset.height);
-		newCanvasModal.toggle();
+		resetApp(btn.dataset.width, btn.dataset.height);
 	})
 );
 

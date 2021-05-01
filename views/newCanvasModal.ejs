@@ -113,20 +113,56 @@
 					</div>
 					<div class="card">
 						<h5 class="card-header">Custom Size</h5>
-						<img src="" class="card-img-top" alt="custom" />
 						<div class="card-body">
 							<h6 class="card-title">Custom</h6>
 							<p class="card-text">Choose a custom size!</p>
-						</div>
-						<div class="card-footer">
-							<button
-								type="button"
-								class="btn btn-sm btn-primary"
-								data-bs-toggle="modal"
-								data-bs-target="#customCanvasModal"
+						
+							<form
+								id="customCanvasForm"
+								class=""
+								action=""
+								novaliedate
 							>
-								Choose Size
+								<div class="form-group">
+									
+										<label for="width">Width:</label>
+										<input
+											id="canvasWidthInput"
+											class="form-control"
+											type="number"
+											max="500"
+											name="width"
+											placeholder="Pixels"
+											aria-describedby="canvasWidth"
+											required
+										/>
+																
+										<label for="height">Height:</label>
+										<input
+											id="canvasHeightInput"
+											class="form-control"
+											type="number"
+											max="500"
+											name="height"
+											placeholder="Pixels"
+											aria-describedby="canvasHeight"
+											required
+										/>
+								
+								</div>
+							</div>
+							<div class="card-footer">
+								<button
+								id="customCanvasBtn"
+								type="submit"
+								class="btn btn-sm btn-primary"
+								data-width=""
+								data-height=""
+								>
+								Create Canvas
 							</button>
+						</form>
+
 						</div>
 					</div>
 				</div>
