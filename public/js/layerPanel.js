@@ -17,6 +17,7 @@ const layerPanel = {
 		easing: 'cubic-bezier(1, 0, 0, 1)',
 		swapThreshold: 0.7,
 		ghostClass: 'ghost-class',
+		direction: 'horizontal',
 		onEnd: (evt) => {
 			stage.moveLayer(evt.oldIndex, evt.newIndex);
 		},
@@ -44,7 +45,7 @@ const layerPanel = {
 	addLayerPanelListeners() {
 		this.newLayerBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
-			if (this.tileCount > 8) return; //max layers
+			if (this.tileCount > 20) return; //max layers
 
 			stage.newLayer().then((layer) => {
 				stage.setActiveLayer(layer);

@@ -177,7 +177,7 @@ const stage = {
 
 	async restorePrevSession(prevLayers) {
 		const newLayers = [];
-		_.each(prevLayers, (layer) => {
+		_.eachRight(prevLayers, (layer) => {
 			const { uuid, zIndex, name, imgDataUri } = layer;
 			newLayers.push(stage.newLayer(uuid, zIndex, name, imgDataUri));
 		});
@@ -212,6 +212,7 @@ const stage = {
 
 	setActiveLayer(activeLayer = this.activeLayer) {
 		this.activeLayer = activeLayer;
+		layerPanel.updateLayerPview();
 		this.toggleActive();
 	},
 
@@ -237,7 +238,7 @@ const stage = {
 	},
 
 	appendToLayerDiv(canvas) {
-		//painting canvases,
+		//painting canvases
 		this.layersDiv.appendChild(canvas.element);
 	},
 
@@ -296,6 +297,7 @@ const stage = {
 		this.layers.splice(oldIndex, 1);
 		this.layers.splice(newIndex, 0, layer);
 		stage.updateZIndexes();
+		console.log('move done');
 	},
 
 	moveLayer(oldIndex, newIndex) {
