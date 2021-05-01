@@ -213,6 +213,7 @@ const stage = {
 	setActiveLayer(activeLayer = this.activeLayer) {
 		this.activeLayer = activeLayer;
 		layerPanel.updateLayerPview();
+		activeLayer.layerTile.scrollIntoView();
 		this.toggleActive();
 	},
 
