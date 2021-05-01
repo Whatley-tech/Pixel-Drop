@@ -96,16 +96,21 @@ class EyeDrop extends Tool {
 	constructor(buttonElement) {
 		super(buttonElement);
 		this.color = undefined;
+		this.startColor = '';
 		this.undoAble = false;
 	}
-	startAction() {}
+	startAction() {
+		this.startColor = colorPanel.currentColor;
+	}
 	action() {
 		this.color = this.selectColor();
 	}
 	releaseAction() {
-		colorPanel.setColor();
-		//do nothing if pixel was transparent
-		if (this.color) return colorPanel.updateColorHistory(this.color);
+		colorPanel.selectNewColor(this.color);
+		colorPanel.setColor(this.color);
+
+		if (this.startColor !== this.color)
+			colorPanel.updateColorHistory(this.color);
 	}
 	selectColor(x = this.xPixelPosition, y = this.yPixelPosition) {
 		let colorSample = stage.mergedView.ctx.getImageData(x, y, 1, 1).data;
@@ -114,6 +119,9 @@ class EyeDrop extends Tool {
 			let hex = colorPanel.rgbToHex(...colorSample);
 			colorPanel.selectNewColor(hex);
 			return hex;
+		} else {
+			colorPanel.selectNewColor(this.startColor);
+			return this.startColor;
 		}
 	}
 }
@@ -121,7 +129,6 @@ class FillTool extends Tool {
 	startAction() {}
 	action() {}
 	releaseAction() {
-		// this.fill();
 		this.colorReplace();
 		stage.updateMergedView();
 	}

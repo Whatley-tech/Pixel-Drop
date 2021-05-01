@@ -98,6 +98,7 @@ const stage = {
 				let activeLayer = _.find(stage.layers, (layer) => {
 					return layer.uuid === prevActiveLayer;
 				});
+				this.updateMergedView();
 				this.setActiveLayer(activeLayer);
 			});
 		}
