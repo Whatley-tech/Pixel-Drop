@@ -298,11 +298,11 @@ const stage = {
 		this.layers.splice(oldIndex, 1);
 		this.layers.splice(newIndex, 0, layer);
 		stage.updateZIndexes();
-		console.log('move done');
 	},
 
 	moveLayer(oldIndex, newIndex) {
-		console.log(oldIndex, newIndex);
+		let layer = this.layers[oldIndex];
+		statePanel.saveState('arrangeLayer', layer.state);
 		this.moveIndex(oldIndex, newIndex);
 		autoSave();
 	},

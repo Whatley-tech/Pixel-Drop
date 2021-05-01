@@ -88,7 +88,7 @@ class ArrangeAction extends ActionState {
 
 	restore() {
 		const oldIndex = this.layerData.layerIndex;
-		const newIndex = this.layer.layerIndex();
+		const newIndex = this.layer.layerIndex;
 		stage.moveIndex(newIndex, oldIndex);
 	}
 }
