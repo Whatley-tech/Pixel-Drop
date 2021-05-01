@@ -258,15 +258,12 @@
 			</div>
 		</div>
 
-		<%- include('tileTemplate') %>
-		<!-- modals -->
-		<%- include('newCanvasModal') %>
-		<!-- custom new canvas -->
-		<%- include('customCanvasModal') %>
-		<!-- rename tile modal -->
-		<%- include('renameTileModal') %>
-		<!-- save canvas modal -->
-		<%- include('exportCanvasModal') %>
+		<%-include('tileTemplate') %>
+		<!-- modals-->
+		<!-- prettier-ignore -->
+		<%-include('newCanvasModal')%> 
+		<%-include('renameTileModal') %>
+		<%-include('exportCanvasModal') %>
 
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
@@ -279,6 +276,8 @@
 		<script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
 		<script src="/lib/lodash.js"></script>
 		<script src="/js/utility.js"></script>
+		<script src="/js/newCanvasModal.js"></script>
+		<script src="/js/exportModal.js"></script>
 		<script src="/js/storage.js"></script>
 		<script src="/js/imgExport.js"></script>
 		<script src="/js/tools.js"></script>
