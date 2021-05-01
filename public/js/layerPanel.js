@@ -11,7 +11,6 @@ const layerPanel = {
 	tileRenameForm: document.getElementById('tileRenameForm'),
 	renameModalElement: document.querySelector('#renameTileModal'),
 	tileRenameInput: document.querySelector('#tileRenameInput'),
-	renameBtn: document.querySelector('#renameBtn'),
 	sortable: new Sortable(tileContainer, {
 		animation: 200,
 		draggable: '.layer-tile',
@@ -33,18 +32,6 @@ const layerPanel = {
 		this.layerPview.width = stage.width;
 		this.layerPview.height = stage.height;
 	},
-
-	// updateTiles() {
-	// 	_.each(this.tileContainer.children, (child) => {
-	// 		if (child) child.remove();
-	// 	});
-
-	// 	_.eachRight(stage.layers, (layer) => {
-	// 		this.tileContainer.appendChild(layer.layerTile);
-	// 	});
-
-	// 	stage.toggleActive();
-	// },
 
 	updateLayerPview() {
 		this.layerPviewCtx.clearRect(0, 0, stage.width, stage.height);
@@ -69,8 +56,8 @@ const layerPanel = {
 		});
 
 		this.renameModalElement.addEventListener('shown.bs.modal', (e) => {
-			const oldName = e.target.dataset.name;
-			this.tileRenameInput.placeholder = e.target.dataset.name;
+			const currentName = this.renameModalElement.name;
+			this.tileRenameInput.placeholder = currentName;
 		});
 
 		this.renameModalElement.addEventListener('hide.bs.modal', (e) => {
@@ -79,12 +66,10 @@ const layerPanel = {
 
 		this.tileRenameForm.addEventListener('submit', (e) => {
 			e.preventDefault();
-			const oldName = this.renameModalElement.dataset.name;
+			const layerTile = this.renameModalElement.layerTile;
 			const newName = this.tileRenameInput.value;
-			const layer = stage.findLayer(oldName, 'name');
-			layer.renameTile(newName);
+			layerTile.renameTile(newName);
 			this.renameModal.toggle();
-			this.updateTiles();
 			autoSave();
 		});
 	},

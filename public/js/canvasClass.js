@@ -97,7 +97,7 @@ class Layer extends Canvas {
 
 		this.removeBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
-			if (stage.layers.length <= 1) return; //alert here "must have atleast one layer"
+			if (stage.layers.length <= 1) return; //must be atleast one layer
 			statePanel.saveState('deleteLayer', this.state);
 			stage.deleteLayer(this);
 		});
@@ -120,7 +120,8 @@ class Layer extends Canvas {
 		});
 
 		this.layerTitle.addEventListener('click', (e) => {
-			layerPanel.renameModalElement.dataset.name = this.tile.name;
+			layerPanel.renameModalElement.name = this.layerTile.name;
+			layerPanel.renameModalElement.layerTile = this;
 		});
 	}
 	get tileIndex() {
