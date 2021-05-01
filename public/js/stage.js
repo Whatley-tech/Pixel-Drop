@@ -290,7 +290,7 @@ const stage = {
 		deletedLayer.element.remove();
 		deletedLayer.layerTile.remove();
 		if (deletedLayer === this.activeLayer) {
-			this.setActiveLayer(_.last(this.layers));
+			this.setActiveLayer(_.head(this.layers));
 		}
 		autoSave();
 	},
