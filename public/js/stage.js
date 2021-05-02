@@ -273,7 +273,7 @@ const stage = {
 
 	updateMergedView() {
 		this.mergedView.clearCanvas();
-		_.each(this.layers, (layer) => {
+		_.eachRight(this.layers, (layer) => {
 			this.mergedView.ctx.drawImage(
 				layer.element,
 				0,
