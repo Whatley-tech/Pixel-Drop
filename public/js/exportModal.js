@@ -19,10 +19,10 @@ exportDimSlider.addEventListener('input', (e) => {
 
 exportImageForm.addEventListener('submit', (e) => {
 	e.preventDefault();
-	exportCanvasModal.toggle();
 	let scaleValue = parseInt(exportDimSlider.value);
 
 	if (e.srcElement[1].checked) exportImage('svg', scaleValue);
 	if (e.srcElement[2].checked) exportImage('png', scaleValue);
 	exportDimSlider.value = 1;
+	exportCanvasModal.toggle();
 });

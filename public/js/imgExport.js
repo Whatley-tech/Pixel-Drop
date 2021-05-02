@@ -2,7 +2,7 @@ const exportImage = function (type, scaleValue) {
 	const svg = createSVG(scaleValue);
 
 	if (type == 'svg') {
-		let newTab = window.open('/');
+		let newTab = window.open();
 		newTab.document.body.appendChild(svg);
 	}
 	if (type == 'png') {
