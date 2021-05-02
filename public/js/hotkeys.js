@@ -1,5 +1,5 @@
 hotkeys('z', 'stage', () => statePanel.undoBtn.click());
-hotkeys('y', 'stage', () => statePanel.redoBtn.click());
+hotkeys('x', 'stage', () => statePanel.redoBtn.click());
 hotkeys('f', 'stage', () => toolsPanel.brushBtn.click());
 hotkeys('d', 'stage', () => toolsPanel.eraserBtn.click());
 hotkeys('v', 'stage', () => toolsPanel.moveToolBtn.click());
