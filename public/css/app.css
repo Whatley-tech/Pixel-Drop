@@ -4,6 +4,7 @@
 .template {
 	display: none !important;
 }
+
 #layerMenu {
 	position: relative;
 }
@@ -126,10 +127,13 @@
 	flex-basis: 30%;
 }
 .card {
-	width: 14rem;
+	width: 13rem;
+}
+.card-img-top {
+	min-height: 11.5rem;
+	object-fit: contain;
 }
 #layerMenu {
-	/* min-height: fit-content; */
 	max-height: 400px;
 	overflow-y: scroll;
 }
